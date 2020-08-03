@@ -35,7 +35,6 @@ build:  ## Build the prod suitable docker container
 		--target prod_image \
 		-t ${PROD_IMAGE_TAG} \
 		.
-	@echo "Build tag: $(PROD_IMAGE_TAG)"
 
 lint: build ## Find linting errors
 	docker build \
@@ -56,7 +55,8 @@ run-shell: build ## Run a shell insided the docker image
 		bash
 
 push: ## Build the prod docker image and push it to docker hub
-	docker login --username temdy
+	docker login 
+	# --username temdy
 	make build
 	docker tag $(PROD_IMAGE_TAG) $(DOCKER_HUB_USERNAME)/$(PROD_IMAGE_TAG)
 	docker push $(DOCKER_HUB_USERNAME)/$(PROD_IMAGE_TAG)
@@ -66,9 +66,9 @@ helm: push  ## Install the helm chart
 		-f ./deployment/helm-chart/values.yaml \
 		-f ./deployment/helm-chart/secret-values.yaml \
 		--set dockerImage=$(DOCKER_HUB_USERNAME)/$(PROD_IMAGE_TAG) \
-		tf-text-embedding \
+		text-mapper \
 		./deployment/helm-chart/
 	./deployment/script.sh
 
 helm-uninstall:  ## Un-install the helm chart
-	helm uninstall tf-text-embedding
+	helm uninstall text-mapper
