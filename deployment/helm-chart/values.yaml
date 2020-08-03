@@ -1,0 +1,34 @@
+##################################
+# Natural Lang Processing Models #
+##################################
+mlModel:
+    TFhub_cache_dir: /code/ml_models
+    pathToNLPModel: https://tfhub.dev/google/universal-sentence-encoder-large/5
+    # pathToNLPModel: /code/ml_models/universal-sentence-encoder-large_5/
+
+#####################
+# Messaging Service #
+#####################
+# Pulsar service URL. See some old documentation for the url:
+# http://pulsar.apache.org/docs/v1.19.0-incubating/deployment/Kubernetes/
+brokerServiceUrl: pulsar://pulsar-mini-broker.pulsar.svc.cluster.local:6650/
+#
+pulsarTextTopic: apache/pulsar/text-topic
+pulsarTextEmbeddingTopic: apache/pulsar/text-embedding-topic
+subscriptionName: text-embedding
+
+# Docker
+# dockerImage: temdy/text-embedding:v0.1.1
+imagePullPolicy: Always
+
+deployment:
+    is_dev: false
+
+# ## There is a secret-values.yaml file with these secrets,
+# ## but I .gitignore it
+# ##
+# imageCredentials:
+#   registry: docker.io
+#   username: *****
+#   password: *****
+#   email: hossein.*****@gmail.com
