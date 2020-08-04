@@ -15,10 +15,11 @@ brokerServiceUrl: pulsar://pulsar-mini-broker.pulsar.svc.cluster.local:6650/
 #
 pulsarTextTopic: apache/pulsar/text-topic
 pulsarTextEmbeddingTopic: apache/pulsar/text-embedding-topic
-subscriptionName: text-embedding
+subscriptionName: mapping-svc
 
 # Docker
 # dockerImage: temdy/text-embedding:v0.1.1
+podContainerName: mapping
 imagePullPolicy: Always
 
 deployment:

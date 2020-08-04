@@ -15,33 +15,16 @@ spec:
             imagePullSecrets:
             -   name: myregistrykey
             containers:
-            -   name: text-embedding
+            -   name: {{ .Values.podContainerName }}
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
-                {{- if .Values.deployment.is_dev }}
-                volumeMounts:
-                -   mountPath: /code
-                    name: localdir
-                {{- end }}
                 env:
-                -   name: TFHUB_CACHE_DIR
-                    value: {{ .Values.mlModel.TFhub_cache_dir | quote }}
-                -   name: PATH_TO_NLP_MODEL
-                    value: {{ .Values.mlModel.pathToNLPModel }}
                 -   name: BROKER_SERVICE_URL
                     value: {{ .Values.brokerServiceUrl }}
-                -   name: PULSAR_TEXT_TOPIC
-                    value: {{ .Values.pulsarTextTopic }}
                 -   name: PULSAR_TEXT_EMBEDDING_TOPIC
                     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 -   name: SUBSCRIPTION_NAME
                     value: {{ .Values.subscriptionName }}
-            {{- if .Values.deployment.is_dev }}
-            volumes:
-            -   name: localdir
-                hostPath:
-                    path: /Users/hosseins/dev/my_projects/visda/services/text-embedding
-            {{- end }}
 
 
 ---
