@@ -1,15 +1,18 @@
 .PHONY: *
 
+SERVICE_NAME := mapping
 VERSION := $(shell git describe --tags)
 CURRENT_DIR := $(shell pwd)
 DOCKERFILE_PATH := deployment/Dockerfile
-SERVICE_NAME := mapping
 
 DOCKER_HUB_USERNAME := temdy
 
 PROD_IMAGE_TAG := $(SERVICE_NAME):$(VERSION)
 DEV_IMAGE_TAG := $(SERVICE_NAME)-dev:$(VERSION)
 LINTING_IMAGE_TAG := $(SERVICE_NAME)-lint:$(VERSION)
+
+TRUNCATED_VERSION := $(shell git describe --tags | tr "." "-")
+HELM_RELEASE := $(SERVICE_NAME)-$(TRUNCATED_VERSION)
 
 export DOCKER_BUILDKIT=1
 
@@ -55,20 +58,20 @@ run-shell: build ## Run a shell insided the docker image
 		bash
 
 push: ## Build the prod docker image and push it to docker hub
-	docker login 
-	# --username temdy
+	docker login
+	# --username ${DOCKER_HUB_USERNAME}
 	make build
-	docker tag $(PROD_IMAGE_TAG) $(DOCKER_HUB_USERNAME)/$(PROD_IMAGE_TAG)
-	docker push $(DOCKER_HUB_USERNAME)/$(PROD_IMAGE_TAG)
+	docker tag ${PROD_IMAGE_TAG} ${DOCKER_HUB_USERNAME/${PROD_IMAGE_TAG}
+	docker push ${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG}
 
-helm: push  ## Install the helm chart
+hi: push  ## Install the helm chart (hi: helm install)
 	helm install \
 		-f ./deployment/helm-chart/values.yaml \
 		-f ./deployment/helm-chart/secret-values.yaml \
-		--set dockerImage=$(DOCKER_HUB_USERNAME)/$(PROD_IMAGE_TAG) \
-		text-mapper \
+		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
+		${HELM_RELEASE} \
 		./deployment/helm-chart/
 	./deployment/script.sh
 
-helm-uninstall:  ## Un-install the helm chart
-	helm uninstall text-mapper
+hu:  ## Un-install the helm chart (hu: helm uninstall)
+	helm uninstall ${HELM_RELEASE}
