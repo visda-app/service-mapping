@@ -1,2 +1,4 @@
 deployment/
+__pycache__
+tmp/*
 .git

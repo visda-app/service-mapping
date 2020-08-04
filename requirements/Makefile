@@ -15,7 +15,8 @@ all: $(outputs)
 		-w /code \
 		-v $(shell pwd):/code \
 		pip_compile_docker \
-		pip-compile -v --output-file $@ $<
+		pip-compile -v \
+			--output-file $@ $<
 
 check:
 	@which pip-compile > /dev/null

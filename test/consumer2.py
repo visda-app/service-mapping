@@ -1,16 +1,16 @@
-from src.lib.logger import logger
-from src.message_broker import MessageBroker, Consumer
-from src.configs.app import PulsarConf
-import pulsar, _pulsar
 import json
-from src.repo.schemas import TextEmbeddingSchema
+from chapar.message_broker import MessageBroker, Consumer
+from chapar.schema_repo import TextEmbeddingSchema
+
+from src.lib.logger import logger
+from src.configs.app import PulsarConf
 
 
 
 mb = MessageBroker(
     broker_service_url=PulsarConf.client,
     consumer=Consumer(
-        PulsarConf.text_embedding_topic, "sub-02",
+        PulsarConf.text_embedding_topic, "mapping-sub-02",
         schema_class=TextEmbeddingSchema
     )
 )

@@ -61,7 +61,7 @@ push: ## Build the prod docker image and push it to docker hub
 	docker login
 	# --username ${DOCKER_HUB_USERNAME}
 	make build
-	docker tag ${PROD_IMAGE_TAG} ${DOCKER_HUB_USERNAME/${PROD_IMAGE_TAG}
+	docker tag ${PROD_IMAGE_TAG} ${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG}
 	docker push ${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG}
 
 hi: push  ## Install the helm chart (hi: helm install)

@@ -1,14 +1,13 @@
 import time
 import json
+from chapar.message_broker import MessageBroker, Consumer, Producer
+from chapar.schema_repo import TextEmbeddingSchema
 
-
-from repo.schemas import TextEmbeddingSchema
 from lib.utils import text_tip
 from lib.logger import logger
 from configs.app import (
     PulsarConf,
 )
-from message_broker import MessageBroker, Consumer, Producer
 
 
 logger.info("⌛ Connecting to the message broker...")
@@ -23,8 +22,8 @@ mb = MessageBroker(
 logger.info("✅ Connection to the message broker established.")
 
 logger.info("Opening the output file...")
-FILE_NAME = "etc/output.json"
- 
+FILE_NAME = "tmp/output.json"
+
 
 logger.info("🔁 Starting the infinite loop ... ")
 while True:
@@ -33,7 +32,6 @@ while True:
     except KeyboardInterrupt:
         break
     try:
-        [msg.value().text]
         logger.debug(
             f"uuid={msg.value().uuid}, "
             f"text='{text_tip(msg.value().text)}' "
