@@ -39,6 +39,13 @@ build:  ## Build the prod suitable docker container
 		-t ${PROD_IMAGE_TAG} \
 		.
 
+build-dev:  ## Build the prod suitable docker container
+	docker build \
+		-f ${DOCKERFILE_PATH} \
+		--target dev_image \
+		-t ${DEV_IMAGE_TAG} \
+		.
+
 lint: build ## Find linting errors
 	docker build \
 		-f ${DOCKERFILE_PATH} \
@@ -50,11 +57,11 @@ lint: build ## Find linting errors
 		${LINTING_IMAGE_TAG} \
 		flake8 /code/src/
 
-run-shell: build ## Run a shell insided the docker image
+run-shell: build-dev ## Run a shell insided the docker image
 	docker run -it --rm \
 		-v ${CURRENT_DIR}:/code \
 		--env-file etc/.env \
-		${PROD_IMAGE_TAG} \
+		${DEV_IMAGE_TAG} \
 		bash
 
 push: ## Build the prod docker image and push it to docker hub
@@ -75,3 +82,15 @@ hi: push  ## Install the helm chart (hi: helm install)
 
 hu:  ## Un-install the helm chart (hu: helm uninstall)
 	helm uninstall ${HELM_RELEASE}
+
+
+notebook: build-dev ## Run the jupyter notebook in docker
+	docker run -it --rm \
+		-v ${CURRENT_DIR}:/code \
+		-p 8888:8888 \
+		-u 0 \
+		${DEV_IMAGE_TAG} \
+		jupyter notebook \
+			--ip 0.0.0.0 \
+			--no-browser \
+			--allow-root
