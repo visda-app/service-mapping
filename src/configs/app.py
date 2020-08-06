@@ -1,5 +1,6 @@
 import os
 
+
 class PulsarConf:
     """
     Configurations for Apache Pulsar message broker

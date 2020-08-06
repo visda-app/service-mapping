@@ -1,6 +1,5 @@
-import time
 import json
-from chapar.message_broker import MessageBroker, Consumer, Producer
+from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TextEmbeddingSchema
 
 from lib.utils import text_tip
