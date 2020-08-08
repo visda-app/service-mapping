@@ -91,4 +91,4 @@ RUN chown -R app:app /var/log
 USER app
 ENV PYTHONPATH=.
 COPY . /code
-CMD [ "python", "src/infloop.py" ]
+CMD [ "python", "src/main.py" ]

@@ -31,4 +31,4 @@ db:
     user: sunnyday1
     host: postgresql.db
     port: 5432
-    databasename: aab-goosht
+    databasename: aabgoosht
