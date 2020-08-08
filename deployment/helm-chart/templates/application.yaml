@@ -25,6 +25,18 @@ spec:
                     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 -   name: SUBSCRIPTION_NAME
                     value: {{ .Values.subscriptionName }}
+                -   name: DB_DRIVER
+                    value: "{{ .Values.db.driver }}"
+                -   name: DB_USER
+                    value: "{{ .Values.db.user }}"
+                -   name: DB_PASSWORD
+                    value: "{{ .Values.db.password }}"
+                -   name: DB_HOST
+                    value: "{{ .Values.db.host }}"
+                -   name: DB_PORT
+                    value: "{{ .Values.db.port }}"
+                -   name: DB_DATABASENAME
+                    value: "{{ .Values.db.databasename }}"
 
 
 ---

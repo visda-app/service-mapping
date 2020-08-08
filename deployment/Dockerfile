@@ -89,5 +89,6 @@ RUN pip install -r requirements/dev_requirements.txt
 RUN chown -R app:app /code
 RUN chown -R app:app /var/log
 USER app
+ENV PYTHONPATH=.
 COPY . /code
-CMD [ "python", "src/main.py" ]
+CMD [ "python", "src/infloop.py" ]

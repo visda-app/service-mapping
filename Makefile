@@ -71,6 +71,13 @@ push: ## Build the prod docker image and push it to docker hub
 	docker tag ${PROD_IMAGE_TAG} ${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG}
 	docker push ${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG}
 
+push-dev: ## Build the prod docker image and push it to docker hub
+	docker login
+	# --username ${DOCKER_HUB_USERNAME}
+	make build-dev
+	docker tag ${DEV_IMAGE_TAG} ${DOCKER_HUB_USERNAME}/${DEV_IMAGE_TAG}
+	docker push ${DOCKER_HUB_USERNAME}/${DEV_IMAGE_TAG}
+
 hi: push  ## Install the helm chart (hi: helm install)
 	helm install \
 		-f ./deployment/helm-chart/values.yaml \
@@ -78,7 +85,14 @@ hi: push  ## Install the helm chart (hi: helm install)
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
 		${HELM_RELEASE} \
 		./deployment/helm-chart/
-	./deployment/script.sh
+
+hide: push-dev  ## Install the helm chart (hide: helm install dev)
+	helm install \
+		-f ./deployment/helm-chart/values.yaml \
+		-f ./deployment/helm-chart/secret-values.yaml \
+		--set dockerImage=${DOCKER_HUB_USERNAME}/${DEV_IMAGE_TAG} \
+		${HELM_RELEASE} \
+		./deployment/helm-chart/
 
 hu:  ## Un-install the helm chart (hu: helm uninstall)
 	helm uninstall ${HELM_RELEASE}

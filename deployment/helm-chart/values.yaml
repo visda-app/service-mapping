@@ -1,11 +1,3 @@
-##################################
-# Natural Lang Processing Models #
-##################################
-mlModel:
-    TFhub_cache_dir: /code/ml_models
-    pathToNLPModel: https://tfhub.dev/google/universal-sentence-encoder-large/5
-    # pathToNLPModel: /code/ml_models/universal-sentence-encoder-large_5/
-
 #####################
 # Messaging Service #
 #####################
@@ -32,4 +24,11 @@ deployment:
 #   registry: docker.io
 #   username: *****
 #   password: *****
-#   email: hossein.*****@gmail.com
+#   email: *****@gmail.com
+
+db:
+    driver: postgresql
+    user: sunnyday1
+    host: postgresql.db
+    port: 5432
+    databasename: aab-goosht

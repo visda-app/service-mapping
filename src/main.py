@@ -118,7 +118,7 @@ def get_formatted_data(
 
 
 FILE_NAME = "/code/tmp/output_1000.json"
-sentiment_file_name = "/code/tmp/output_sentiments.json"
+sentiment_file_name = "/code/tmp/labeled_sentiments.json"
 
 unlabeled_embedding_data, unlabeled_vects = load_embeddings(FILE_NAME)
 labeled_embedding_data, labeled_vects = load_embeddings(sentiment_file_name)
