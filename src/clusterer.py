@@ -5,54 +5,11 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
 import matplotlib.pyplot as plt
 
-from lib.logger import logger
-
-def load_embeddings(filename):
-    """
-    Load high dimensional embedding from database
-    Args:
-    Return:
-        [
-            {
-                "uuid": "a uuid",
-                "text": "a text ",
-                "embedding": ['float1', 'float2', ....]
-            },
-            ...
-        ]
-    """
-    with open(filename, 'r') as f:
-        lines = f.readlines()
-    embedding_data = []
-    for line in lines:
-        embedding_data.append(json.loads(line))
-    vect_list = []
-    for e in embedding_data:
-        vect_list.append(e.get('embedding'))
-    vect_array = np.array(vect_list)
-    return embedding_data, vect_array
-
-
-def get_positive_sentiment_embedding():
-    """
-    Get the embedding vector for a statement with
-    a positive sentiment
-
-    Return:
-        (numpy.array): a vector embedding for a positive statemen
-    """
-    pass
-
-
-def get_negative_sentiment_embedding():
-    """
-    Get the embedding vector for a statement with a
-    negative sentiment
-
-    Return:
-        (numpy.array): a vector embedding for a negative statemen
-    """
-    pass
+from src.lib.logger import logger
+from src.models.text import (
+    load_from_db,
+    save_clustering_to_db
+    )
 
 
 def reduce_dimension(x):
@@ -117,41 +74,38 @@ def get_formatted_data(
     return result
 
 
-FILE_NAME = "/code/tmp/output_1000.json"
-sentiment_file_name = "/code/tmp/labeled_sentiments.json"
+def load_cluster_save(sequence_ids):
+    """
+    load all the texts and embeddings for a sequence id,
+    performs dimension reduction and clustering, and saves
+    the results to database
 
-unlabeled_embedding_data, unlabeled_vects = load_embeddings(FILE_NAME)
-labeled_embedding_data, labeled_vects = load_embeddings(sentiment_file_name)
-aug_vects = np.concatenate(
-    (unlabeled_vects, labeled_vects),
-    axis=0
-)
+    Args:
+        sequence_ids (list[str]): A list of ids for all
+            the texts in the sequence that will be processed
+    """
+    logger.debug("Loading data from DB...")
+    embedding_data = []
+    for i in sequence_ids:
+        embedding_data.extend(load_from_db(i))
 
-logger.debug("Start reducing dimenssion...")
-low_dim_embeddings = reduce_dimension(aug_vects)
+    vect_list = []
+    for e in embedding_data:
+        vect_list.append(e.get('embedding'))
+    vect_array = np.array(vect_list)
 
-logger.debug("Start Clustering...")
-cluster_labels, cluster_centers = cluster(low_dim_embeddings)
+    logger.debug("Reducing dimension...")
+    low_dim_embeddings = reduce_dimension(vect_array)
 
-splitter = len(unlabeled_embedding_data)
+    logger.debug("Clustering...")
+    cluster_labels, cluster_centers = cluster(low_dim_embeddings)
 
-unlabeled_data_summary = get_formatted_data(
-    low_dim_embeddings[:splitter],
-    unlabeled_embedding_data,
-    cluster_labels[:splitter],
-    cluster_centers[:splitter]
-)
+    data_summary = get_formatted_data(
+        low_dim_embeddings,
+        embedding_data,
+        cluster_labels,
+        cluster_centers
+    )
 
-labeled_data_summary = get_formatted_data(
-    low_dim_embeddings[splitter:],
-    labeled_embedding_data,
-    cluster_labels[splitter:],
-    cluster_centers[splitter:]
-)
-
-FILE_NAME_CLUSTERED_UNLABELED = "/code/tmp/output_unl_clustered.json"
-with open(FILE_NAME_CLUSTERED_UNLABELED, 'w') as f:
-    f.write(json.dumps(unlabeled_data_summary, indent=4))
-FILE_NAME_CLUSTERED_LABELED = "/code/tmp/output_l_clustered.json"
-with open(FILE_NAME_CLUSTERED_LABELED, 'w') as f:
-    f.write(json.dumps(labeled_data_summary, indent=4))
+    logger.debug("Saving to DB...")
+    save_clustering_to_db(data_summary)
