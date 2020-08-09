@@ -23,7 +23,8 @@ Base.metadata.create_all(engine)
 logger.debug('Loading data from db...')
 rv = load_from_db(sequence_id='1')
 
-# res = load_cluster_save(sequence_ids=['1'])
+res = load_cluster_save(sequence_ids=['1'])
 
 logger.debug("Loading clustering data from DB")
 c_data = load_clustering_from_db('1')
+logger.debug(f"len data= {len(c_data)}")

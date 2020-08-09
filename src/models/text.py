@@ -33,6 +33,10 @@ class RawText(Base):
             self.uuid, self.text, self.sequence_id
         )
 
+    def save_to_db(self):
+        session.add(self)
+        session.commit()
+
 
 class TextEmbedding(Base):
     __tablename__ = 'text_embeddings'
@@ -46,6 +50,10 @@ class TextEmbedding(Base):
         return "<TextEmbedding(uuid='%s', text='%s', embedding='%s')>" % (
             self.uuid, self.text, self.embedding
         )
+
+    def save_to_db(self):
+        session.add(self)
+        session.commit()
 
 
 class ClusteredText(Base):
@@ -89,6 +97,11 @@ def load_from_db(sequence_id):
 
 def save_clustering_to_db(clustering):
     for c in clustering:
+        # Remove if already exists
+        session.query(ClusteredText).filter(
+            ClusteredText.uuid == c['uuid']
+        ).delete()
+
         session.add(
             ClusteredText(
                 x=c['x'],
