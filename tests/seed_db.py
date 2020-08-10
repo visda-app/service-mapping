@@ -1,13 +1,13 @@
 from time import sleep
 import json
 
-from src.lib.logger import logger
-from src.models.db import (
+from lib.logger import logger
+from models.db import (
     engine,
     Base,
     session
 )
-from src.models.text import (
+from models.text import (
     TextEmbedding,
     RawText,
 )

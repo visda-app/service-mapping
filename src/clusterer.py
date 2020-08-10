@@ -5,8 +5,8 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
 import matplotlib.pyplot as plt
 
-from src.lib.logger import logger
-from src.models.text import (
+from lib.logger import logger
+from models.text import (
     load_from_db,
     save_clustering_to_db
     )

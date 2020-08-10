@@ -2,8 +2,8 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from src.configs.app import DB
-from src.lib.logger import logger
+from configs.app import DB
+from lib.logger import logger
 
 
 engine = sqlalchemy.create_engine(

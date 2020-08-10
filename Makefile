@@ -66,6 +66,12 @@ run-shell: build-dev ## Run a shell insided the docker image
 		${DEV_IMAGE_TAG} \
 		bash
 
+run-shell-prod: build ## Run a shell insided the prod docker image
+	docker run -it --rm \
+		--env-file etc/.env \
+		${PROD_IMAGE_TAG} \
+		bash
+
 push: ## Build the prod docker image and push it to docker hub
 	docker login
 	# --username ${DOCKER_HUB_USERNAME}

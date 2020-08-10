@@ -13,11 +13,11 @@ from sqlalchemy import (
     ForeignKey
 )
 
-from src.models.db import (
+from models.db import (
     Base,
     session
 )
-from src.lib.logger import logger
+from lib.logger import logger
 
 
 class JobStatus(enum.Enum):

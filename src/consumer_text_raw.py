@@ -7,7 +7,7 @@ from lib.logger import logger
 from configs.app import (
     PulsarConf,
 )
-from src.models.text import (
+from models.text import (
     RawText,
 )
 

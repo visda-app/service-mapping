@@ -64,10 +64,10 @@ FROM prod_requirements as prod_image
 RUN chown -R app:app /code
 RUN chown -R app:app /var/log
 USER app
-WORKDIR /code
-COPY . .
+WORKDIR /code/src
+COPY src/ .
 ENV PYTHONPATH=.
-CMD [ "python", "src/main.py" ]
+CMD [ "python", "main.py" ]
 
 #
 # BUILD STEP: 
@@ -89,6 +89,7 @@ RUN pip install -r requirements/dev_requirements.txt
 RUN chown -R app:app /code
 RUN chown -R app:app /var/log
 USER app
-ENV PYTHONPATH=.
-COPY . /code
+WORKDIR /code
+COPY . .
+ENV PYTHONPATH=/code/src/
 CMD [ "python", "src/main.py" ]
