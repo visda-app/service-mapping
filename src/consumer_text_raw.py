@@ -7,6 +7,9 @@ from lib.logger import logger
 from configs.app import (
     PulsarConf,
 )
+from src.models.text import (
+    RawText,
+)
 
 
 logger.info("⌛ Connecting to the message broker...")
@@ -19,9 +22,6 @@ mb = MessageBroker(
     ),
 )
 logger.info("✅ Connection to the message broker established.")
-
-logger.info("Opening the output file...")
-FILE_NAME = "tmp/output.json"
 
 
 logger.info("🔁 Starting the infinite loop ... ")
@@ -37,16 +37,11 @@ while True:
             f"embedding='{msg.value().embedding}'"
             "Received! 🤓"
         )
-        with open(FILE_NAME, "a") as f:
-            f.write(json.dumps(
-                {
-                    'uuid': msg.value().uuid,
-                    'text': msg.value().text,
-                    'embedding': msg.value().embedding
-                }
-            ))
-            f.write('\n')
-
+        RawText(
+            uuid=msg.value().uuid,
+            text=msg.value().text,
+            sequence_id=msg.value().sequence_id
+        ).save_to_db()
         mb.consumer_acknowledge(msg)
     except Exception as e:
         # Message failed to be processed

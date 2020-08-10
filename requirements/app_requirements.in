@@ -6,3 +6,10 @@ chapar
 # DB 
 SQLAlchemy
 psycopg2-binary
+
+# WISGI
+gunicorn
+
+# Flask
+flask
+Flask-RESTful

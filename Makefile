@@ -14,6 +14,8 @@ LINTING_IMAGE_TAG := $(SERVICE_NAME)-lint:$(VERSION)
 TRUNCATED_VERSION := $(shell git describe --tags | tr "." "-")
 HELM_RELEASE := $(SERVICE_NAME)-$(TRUNCATED_VERSION)
 
+TEST=
+
 export DOCKER_BUILDKIT=1
 
 help:  ## Print help and exit
@@ -108,3 +110,10 @@ notebook: build-dev ## Run the jupyter notebook in docker
 			--ip 0.0.0.0 \
 			--no-browser \
 			--allow-root
+
+test: build-dev  ## Run tests
+	docker run -it --rm \
+		-v ${CURRENT_DIR}:/code \
+		--env-file etc/.env \
+		${DEV_IMAGE_TAG} \
+		pytest ${TEST}
