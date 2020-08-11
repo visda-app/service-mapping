@@ -3,8 +3,7 @@ import json
 
 from lib.logger import logger
 from models.db import (
-    engine,
-    Base,
+    create_all_tables,
     session
 )
 from models.text import (
@@ -36,7 +35,7 @@ def session_add(session, d, sequence_id):
 
 
 logger.debug('Creating tables...')
-Base.metadata.create_all(engine)
+create_all_tables()
 
 # Seeding the tables:
 logger.debug("Loading unlabeled data from file...")

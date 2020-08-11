@@ -2,28 +2,22 @@ from time import sleep
 import json
 
 from lib.logger import logger
-from models.db import (
-    engine,
-    Base,
-    session
-)
+from models.db import create_all_tables
 from models.text import (
     TextEmbedding,
     RawText,
     ClusteredText,
-    load_from_db,
+    load_embeddings_from_db,
     load_clustering_from_db
 )
 from clusterer import load_cluster_save
 
 
 logger.info('Creating tables...')
-Base.metadata.create_all(engine)
+create_all_tables()
 
 logger.debug('Loading data from db...')
-rv = load_from_db(sequence_id='1')
-
-import pdb; pdb.set_trace()
+rv = load_embeddings_from_db(sequence_id='1')
 
 res = load_cluster_save(sequence_ids=['1'])
 

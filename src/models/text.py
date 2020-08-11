@@ -37,23 +37,56 @@ class RawText(Base):
         session.add(self)
         session.commit()
 
+    def get_count_by_sequence_id(self, sequence_id):
+        return session.query(self).filter(
+            RawText.sequence_id == sequence_id
+        ).count()
+
 
 class TextEmbedding(Base):
     __tablename__ = 'text_embeddings'
 
     id = Column(Integer, primary_key=True)
     uuid = Column(String, ForeignKey('raw_texts.uuid'))
-    text = Column(Text)
+    # text = Column(Text)
     embedding = Column(ARRAY(Float))
 
     def __repr__(self):
-        return "<TextEmbedding(uuid='%s', text='%s', embedding='%s')>" % (
-            self.uuid, self.text, self.embedding
+        return "<TextEmbedding(uuid='%s', embedding='%s')>" % (
+            self.uuid, self.embedding
         )
 
     def save_to_db(self):
         session.add(self)
         session.commit()
+
+    def has_same_or_more_seq_count_than_rawtext(self):
+        """
+        Check if TextEmbedding has same or more entires than RawText
+        when compared for the same sequence_id
+        """
+        q = session.query(RawText).filter(
+            RawText.uuid == self.uuid)
+        if q.count() > 1:
+            raise Exception("More than one record for a uuid!")
+        sequence_id = q.first().sequence_id
+        if not sequence_id:
+            raise Exception('Expected a sequence id!')
+        raw_text_count = session.query(RawText).filter(
+            RawText.sequence_id == sequence_id
+        ).count()
+        text_emb_count = session.query(self.__class__).join(RawText).filter(
+            RawText.sequence_id == sequence_id
+        ).count()
+        return text_emb_count >= raw_text_count
+
+    def get_sequence_id(self):
+        """
+        Get sequence id by joining tables
+        """
+        return session.query(RawText).filter(
+            RawText.uuid == self.uuid
+        ).first().sequence_id
 
 
 class ClusteredText(Base):
@@ -72,8 +105,9 @@ class ClusteredText(Base):
         )
 
 
-def load_from_db(sequence_id):
-    """load text embeddings by joining tables
+def load_embeddings_from_db(sequence_id):
+    """
+    Load text embeddings by joining tables
     """
     q = session.query(TextEmbedding, RawText).join(
         RawText
@@ -87,7 +121,7 @@ def load_from_db(sequence_id):
     for (text_embedding, raw_text) in db_vals:
         results.append({
             'embedding': text_embedding.embedding,
-            'text': text_embedding.text,
+            'text': raw_text.text,
             'uuid': text_embedding.uuid,
             'sequence_id': raw_text.sequence_id
         })

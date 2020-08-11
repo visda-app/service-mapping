@@ -66,11 +66,13 @@ run-shell: build-dev ## Run a shell insided the docker image
 		${DEV_IMAGE_TAG} \
 		bash
 
-run-shell-prod: build ## Run a shell insided the prod docker image
+run: build ## Run a server in the prod docker image
 	docker run -it --rm \
+		-v ${CURRENT_DIR}/src:/code/src \
 		--env-file etc/.env \
+		-p 5000:5000 \
 		${PROD_IMAGE_TAG} \
-		bash
+		gunicorn route:app -c configs/gunicorn_configs.py
 
 push: ## Build the prod docker image and push it to docker hub
 	docker login

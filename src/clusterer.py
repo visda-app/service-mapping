@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from lib.logger import logger
 from models.text import (
-    load_from_db,
+    load_embeddings_from_db,
     save_clustering_to_db
     )
 
@@ -87,7 +87,7 @@ def load_cluster_save(sequence_ids):
     logger.debug("Loading data from DB...")
     embedding_data = []
     for i in sequence_ids:
-        embedding_data.extend(load_from_db(i))
+        embedding_data.extend(load_embeddings_from_db(i))
 
     vect_list = []
     for e in embedding_data:

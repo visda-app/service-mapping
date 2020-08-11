@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+import models.job.Job
 
 
 class Job(Resource):
@@ -6,7 +7,7 @@ class Job(Resource):
         """
         Create a job entry in the jobs table
         """
-        return
+        return {'data': 'test post data'}
 
     def get(self):
         """
