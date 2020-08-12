@@ -1,6 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+    name: {{ template "helm-chart.fullname" . }}-web-deployment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: {{ template "helm-chart.fullname" . }}-web-pod
+    template:
+        metadata:
+            labels:
+                app: {{ template "helm-chart.fullname" . }}-web-pod
+        spec:
+            imagePullSecrets:
+            -   name: {{ template "helm-chart.fullname" . }}-registrykey
+            containers:
+            -   name: {{ .Values.podContainerName }}-web-server
+                image: {{ .Values.dockerImage }}
+                imagePullPolicy: {{ .Values.imagePullPolicy }}
+                command: ["gunicorn"]
+                args: ["route:app", "-c", "configs/gunicorn_configs.py"]
+                env:
+                -   name: DB_DRIVER
+                    value: "{{ .Values.db.driver }}"
+                -   name: DB_USER
+                    value: "{{ .Values.db.user }}"
+                -   name: DB_PASSWORD
+                    value: "{{ .Values.db.password }}"
+                -   name: DB_HOST
+                    value: "{{ .Values.db.host }}"
+                -   name: DB_PORT
+                    value: "{{ .Values.db.port }}"
+                -   name: DB_DATABASENAME
+                    value: "{{ .Values.db.databasename }}"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
     name: {{ template "helm-chart.fullname" . }}-deployment
 spec:
     replicas: 1
@@ -13,14 +51,44 @@ spec:
                 app: {{ template "helm-chart.fullname" . }}-pod
         spec:
             imagePullSecrets:
-            -   name: myregistrykey
+            -   name: {{ template "helm-chart.fullname" . }}-registrykey
             containers:
-            -   name: {{ .Values.podContainerName }}
+            -   name: {{ .Values.podContainerName }}-consumer-raw-text
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
+                command: ["python"]
+                args: ["consumer_raw_text.py"]
                 env:
                 -   name: BROKER_SERVICE_URL
                     value: {{ .Values.brokerServiceUrl }}
+                -   name: PULSAR_TEXT_TOPIC
+                    value: {{ .Values.pulsarTextTopic }}
+                -   name: PULSAR_TEXT_EMBEDDING_TOPIC
+                    value: {{ .Values.pulsarTextEmbeddingTopic }}
+                -   name: SUBSCRIPTION_NAME
+                    value: {{ .Values.subscriptionName }}
+                -   name: DB_DRIVER
+                    value: "{{ .Values.db.driver }}"
+                -   name: DB_USER
+                    value: "{{ .Values.db.user }}"
+                -   name: DB_PASSWORD
+                    value: "{{ .Values.db.password }}"
+                -   name: DB_HOST
+                    value: "{{ .Values.db.host }}"
+                -   name: DB_PORT
+                    value: "{{ .Values.db.port }}"
+                -   name: DB_DATABASENAME
+                    value: "{{ .Values.db.databasename }}"
+            -   name: {{ .Values.podContainerName }}-consumer-text-embedding
+                image: {{ .Values.dockerImage }}
+                imagePullPolicy: {{ .Values.imagePullPolicy }}
+                command: ["python"]
+                args: ["consumer_text_embedding.py"]
+                env:
+                -   name: BROKER_SERVICE_URL
+                    value: {{ .Values.brokerServiceUrl }}
+                -   name: PULSAR_TEXT_TOPIC
+                    value: {{ .Values.pulsarTextTopic }}
                 -   name: PULSAR_TEXT_EMBEDDING_TOPIC
                     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 -   name: SUBSCRIPTION_NAME
@@ -38,6 +106,19 @@ spec:
                 -   name: DB_DATABASENAME
                     value: "{{ .Values.db.databasename }}"
 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: {{ template "helm-chart.fullname" . }}-proxy-service
+spec:
+    type: LoadBalancer
+    selector:
+        app: {{ template "helm-chart.fullname" . }}-web-pod
+    ports:
+        - port: {{ .Values.webServerPort }}
+          targetPort: {{ .Values.webServerPort }}
 
 ---
 
@@ -48,17 +129,17 @@ metadata:
 spec:
     type: NodePort
     selector:
-        name: {{ template "helm-chart.fullname" . }}-pod
+        app: {{ template "helm-chart.fullname" . }}-web-pod
     ports:
-        - port: 80
-          targetPort: 1001
+        - port: {{ .Values.webServerPort }}
+          targetPort: {{ .Values.webServerPort }}
 
 ---
 
 apiVersion: v1
 kind: Secret
 metadata:
-    name: myregistrykey
+    name: {{ template "helm-chart.fullname" . }}-registrykey
 type: kubernetes.io/dockerconfigjson
 data:
     .dockerconfigjson: {{ template "imagePullSecret" . }}

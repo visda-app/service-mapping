@@ -13,3 +13,6 @@ gunicorn
 # Flask
 flask
 Flask-RESTful
+
+jsonschema
+asbool

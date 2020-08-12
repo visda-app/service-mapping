@@ -11,14 +11,18 @@ from models.text import (
     TextEmbedding,
     RawText
 )
+from models.db import create_all_tables
 from clusterer import load_cluster_save
 
+
+create_all_tables()
 
 def start_next_task(text_embedding):
     """
     Start the next task, dimension reduction and clustering.
     """
     sequence_id = text_embedding.get_sequence_id()
+    logger.debug(f"Starting clustering for Sequence_id={sequence_id}")
     load_cluster_save([sequence_id])
 
 
@@ -29,10 +33,7 @@ def consumer_loop(message_broker):
     """
     mb = message_broker
     while True:
-        try:
-            msg = mb.consumer_receive()
-        except KeyboardInterrupt:
-            break
+        msg = mb.consumer_receive()
         try:
             logger.debug(
                 f"uuid={msg.value().uuid}, "

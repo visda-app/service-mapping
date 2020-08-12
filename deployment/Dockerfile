@@ -67,7 +67,7 @@ USER app
 WORKDIR /code/src
 COPY src/ .
 ENV PYTHONPATH=.
-CMD [ "python", "main.py" ]
+CMD [ "python", "infiloop.py" ]
 
 #
 # BUILD STEP: 

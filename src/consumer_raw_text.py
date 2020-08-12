@@ -1,6 +1,6 @@
 import json
 from chapar.message_broker import MessageBroker, Consumer
-from chapar.schema_repo import TextEmbeddingSchema
+from chapar.schema_repo import TextSchema
 
 from lib.utils import text_tip
 from lib.logger import logger
@@ -10,15 +10,18 @@ from configs.app import (
 from models.text import (
     RawText,
 )
+from models.db import create_all_tables
 
+
+create_all_tables()
 
 logger.info("⌛ Connecting to the message broker...")
 mb = MessageBroker(
     broker_service_url=PulsarConf.client,
     consumer=Consumer(
-        PulsarConf.text_embedding_topic,
+        PulsarConf.text_topic,
         PulsarConf.subscription_name,
-        schema_class=TextEmbeddingSchema
+        schema_class=TextSchema
     ),
 )
 logger.info("✅ Connection to the message broker established.")
@@ -26,15 +29,12 @@ logger.info("✅ Connection to the message broker established.")
 
 logger.info("🔁 Starting the infinite loop ... ")
 while True:
-    try:
-        msg = mb.consumer_receive()
-    except KeyboardInterrupt:
-        break
+    msg = mb.consumer_receive()
     try:
         logger.debug(
             f"uuid={msg.value().uuid}, "
             f"text='{text_tip(msg.value().text)}' "
-            f"embedding='{msg.value().embedding}'"
+            f"sequence_id='{msg.value().sequence_id}'"
             "Received! 🤓"
         )
         RawText(

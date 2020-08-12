@@ -3,7 +3,6 @@ import time
 import numpy as np
 from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
-import matplotlib.pyplot as plt
 
 from lib.logger import logger
 from models.text import (

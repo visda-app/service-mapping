@@ -1,6 +1,7 @@
 .PHONY: *
 
 SERVICE_NAME := mapping
+SERVICE_PORT := 5001
 VERSION := $(shell git describe --tags)
 CURRENT_DIR := $(shell pwd)
 DOCKERFILE_PATH := deployment/Dockerfile
@@ -70,7 +71,7 @@ run: build ## Run a server in the prod docker image
 	docker run -it --rm \
 		-v ${CURRENT_DIR}/src:/code/src \
 		--env-file etc/.env \
-		-p 5000:5000 \
+		-p ${SERVICE_PORT}:${SERVICE_PORT} \
 		${PROD_IMAGE_TAG} \
 		gunicorn route:app -c configs/gunicorn_configs.py
 
@@ -90,6 +91,14 @@ push-dev: ## Build the prod docker image and push it to docker hub
 
 hi: push  ## Install the helm chart (hi: helm install)
 	helm install \
+		-f ./deployment/helm-chart/values.yaml \
+		-f ./deployment/helm-chart/secret-values.yaml \
+		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
+		${HELM_RELEASE} \
+		./deployment/helm-chart/
+
+ht:  ## Shows the Helm template
+	helm template \
 		-f ./deployment/helm-chart/values.yaml \
 		-f ./deployment/helm-chart/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \

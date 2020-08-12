@@ -148,7 +148,7 @@ def save_clustering_to_db(clustering):
     session.commit()
 
 
-def load_clustering_from_db(sequence_id):
+def get_query_clustering(sequence_id):
     q = session.query(
         ClusteredText, RawText
     ).join(
@@ -157,6 +157,16 @@ def load_clustering_from_db(sequence_id):
         RawText.sequence_id == sequence_id
     )
     logger.debug(q)
+    return q
+
+
+def get_clustering_count(sequence_id):
+    q = get_query_clustering(sequence_id)
+    return q.count()
+
+
+def load_clustering_from_db(sequence_id):
+    q = get_query_clustering(sequence_id)
     vals = q.all()
 
     data = []
