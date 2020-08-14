@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from flask import request
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
@@ -57,7 +57,7 @@ class Job(Resource):
             return {
                 'sequence_id': sequence_id,
                 'count': count,
-                'clustering': payload
+                'data': payload
             }, 200
         except ValidationError as e:
             logger.exception(str(e))
@@ -65,7 +65,6 @@ class Job(Resource):
         except Exception as e:
             logger.exception(str(e))
             return {'message': 'Something went wrong'}, 500
-
 
     def put(self):
         """
