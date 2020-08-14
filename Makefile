@@ -8,12 +8,12 @@ DOCKERFILE_PATH := deployment/Dockerfile
 
 DOCKER_HUB_USERNAME := temdy
 
-PROD_IMAGE_TAG := $(SERVICE_NAME):$(VERSION)
-DEV_IMAGE_TAG := $(SERVICE_NAME)-dev:$(VERSION)
-LINTING_IMAGE_TAG := $(SERVICE_NAME)-lint:$(VERSION)
+PROD_IMAGE_TAG := ${SERVICE_NAME}:$(VERSION)
+DEV_IMAGE_TAG := ${SERVICE_NAME}-dev:$(VERSION)
+LINTING_IMAGE_TAG := ${SERVICE_NAME}-lint:$(VERSION)
 
 TRUNCATED_VERSION := $(shell git describe --tags | tr "." "-")
-HELM_RELEASE := $(SERVICE_NAME)-$(TRUNCATED_VERSION)
+HELM_RELEASE := ${SERVICE_NAME} # -$(TRUNCATED_VERSION)
 
 TEST=
 
@@ -91,27 +91,27 @@ push-dev: ## Build the prod docker image and push it to docker hub
 
 hi: push  ## Install the helm chart (hi: helm install)
 	helm install \
-		-f ./deployment/helm-chart/values.yaml \
-		-f ./deployment/helm-chart/secret-values.yaml \
+		-f ./deployment/${SERVICE_NAME}/values.yaml \
+		-f ./deployment/${SERVICE_NAME}/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
 		${HELM_RELEASE} \
-		./deployment/helm-chart/
+		./deployment/${SERVICE_NAME}/
 
 ht:  ## Shows the Helm template
 	helm template \
-		-f ./deployment/helm-chart/values.yaml \
-		-f ./deployment/helm-chart/secret-values.yaml \
+		-f ./deployment/${SERVICE_NAME}/values.yaml \
+		-f ./deployment/${SERVICE_NAME}/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
 		${HELM_RELEASE} \
-		./deployment/helm-chart/
+		./deployment/${SERVICE_NAME}/
 
 hide: push-dev  ## Install the helm chart (hide: helm install dev)
 	helm install \
-		-f ./deployment/helm-chart/values.yaml \
-		-f ./deployment/helm-chart/secret-values.yaml \
+		-f ./deployment/${SERVICE_NAME}/values.yaml \
+		-f ./deployment/${SERVICE_NAME}/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${DEV_IMAGE_TAG} \
 		${HELM_RELEASE} \
-		./deployment/helm-chart/
+		./deployment/${SERVICE_NAME}/
 
 hu:  ## Un-install the helm chart (hu: helm uninstall)
 	helm uninstall ${HELM_RELEASE}
