@@ -3,7 +3,7 @@ from flask_restful import Api
 
 from models.db import create_all_tables
 from lib.logger import logger
-import resources.job
+from resources.job import Job
 
 
 app = Flask(__name__)
@@ -15,7 +15,7 @@ def create_tables():
     create_all_tables()
 
 
-api.add_resource(resources.job.Job, '/job')
+api.add_resource(Job, '/job')
 
 
 @app.route('/status')

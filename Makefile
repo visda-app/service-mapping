@@ -131,6 +131,6 @@ notebook: build-dev ## Run the jupyter notebook in docker
 test: build-dev  ## Run tests
 	docker run -it --rm \
 		-v ${CURRENT_DIR}:/code \
-		--env-file etc/.env \
+		--env-file etc/test.env \
 		${DEV_IMAGE_TAG} \
 		pytest ${TEST}

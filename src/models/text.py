@@ -49,7 +49,7 @@ class TextEmbedding(Base):
     id = Column(Integer, primary_key=True)
     uuid = Column(String, ForeignKey('raw_texts.uuid'))
     # text = Column(Text)
-    embedding = Column(ARRAY(Float))
+    embedding = Column(Text)
 
     def __repr__(self):
         return "<TextEmbedding(uuid='%s', embedding='%s')>" % (
@@ -57,6 +57,7 @@ class TextEmbedding(Base):
         )
 
     def save_to_db(self):
+        self.embedding = str(self.embedding)
         session.add(self)
         session.commit()
 

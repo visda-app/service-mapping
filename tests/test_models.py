@@ -39,6 +39,24 @@ class TestTextModel(unittest.TestCase):
         # Check if deleted successfully
         assert len(q.all()) == 0
 
+    def test_save_text_embedding_to_db(self):
+        # Create a record in DB:
+        uuid = str(uuid4())
+        TextEmbedding(
+            uuid=uuid,
+            embedding=[1.2, 3, 0.91, 5.0]
+        ).save_to_db()
+        # Query the created record:
+        q = session.query(TextEmbedding).filter(
+            TextEmbedding.uuid == uuid
+        )
+        # Check if the record is in DB
+        assert len(q.all()) == 1
+        # Delete record
+        q.delete()
+        # Check if deleted successfully
+        assert len(q.all()) == 0
+
     def test_text_embedding_has_same_or_more_items_than_raw_text(self):
         """
         Check if the TextEmbedding model has same or more items
@@ -117,7 +135,7 @@ class TestJobModel(unittest.TestCase):
         )
         assert len(q.all()) == 1
 
-        assert q.first().status.value == 'created'
+        assert q.first().status.name == 'created'
 
         q.delete()
         assert len(q.all()) == 0

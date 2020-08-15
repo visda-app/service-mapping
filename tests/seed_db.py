@@ -14,7 +14,7 @@ from models.text import (
 
 def session_add(session, d, sequence_id):
     uuid = d['uuid']
-    # logger.debug(f"Wrting data for uuid={uuid}")
+    # logger.debug(f"Writing data for uuid={uuid}")
     session.add(
         RawText(
             uuid=uuid,
