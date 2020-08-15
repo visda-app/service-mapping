@@ -22,7 +22,8 @@ SCHEMA = {
       "type": "string"
     },
     "include_payload": {
-      "description": "Include payload if True; otherwise, just return count. Default: False",
+      "description": "Include payload if True; "
+                     "otherwise, just return count. Default: False",
       "type": "boolean"
     }
   },

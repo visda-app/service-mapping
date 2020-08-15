@@ -19,7 +19,7 @@ create_all_tables()
 
 
 class TestTextModel(unittest.TestCase):
-    def test_save_raw_text_to_db(self):
+    def test_raw_text_save_to_db(self):
         # Create a record in DB:
         uuid = str(uuid4())
         sequence_id = str(uuid4())
@@ -39,7 +39,7 @@ class TestTextModel(unittest.TestCase):
         # Check if deleted successfully
         assert len(q.all()) == 0
 
-    def test_save_text_embedding_to_db(self):
+    def test_text_embedding_save_to_db(self):
         # Create a record in DB:
         uuid = str(uuid4())
         TextEmbedding(
@@ -55,6 +55,26 @@ class TestTextModel(unittest.TestCase):
         # Delete record
         q.delete()
         # Check if deleted successfully
+        assert len(q.all()) == 0
+
+    def test_text_embedding_save_to_db_type(self):
+        # Create a record in DB:
+        uuid = str(uuid4())
+        with self.assertRaises(ValueError) as e:
+            TextEmbedding(
+                uuid=uuid,
+                embedding='[1.2, 3 0.91, 5.0]'
+            ).save_to_db()
+        with self.assertRaises(ValueError) as e:
+            TextEmbedding(
+                uuid=uuid,
+                embedding='3'
+            ).save_to_db()
+        # Query the created record:
+        q = session.query(TextEmbedding).filter(
+            TextEmbedding.uuid == uuid
+        )
+        # Check if the record is in DB
         assert len(q.all()) == 0
 
     def test_text_embedding_has_same_or_more_items_than_raw_text(self):

@@ -3,7 +3,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from configs.app import DB
-from lib.logger import logger
 
 
 engine = sqlalchemy.create_engine(

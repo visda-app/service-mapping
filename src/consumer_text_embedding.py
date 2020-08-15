@@ -1,4 +1,3 @@
-import json
 from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TextEmbeddingSchema
 
@@ -7,15 +6,13 @@ from lib.logger import logger
 from configs.app import (
     PulsarConf,
 )
-from models.text import (
-    TextEmbedding,
-    RawText
-)
+from models.text import TextEmbedding
 from models.db import create_all_tables
 from clusterer import load_cluster_save
 
 
 create_all_tables()
+
 
 def start_next_task(text_embedding):
     """

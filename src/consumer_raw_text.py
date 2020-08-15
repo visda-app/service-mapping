@@ -1,4 +1,3 @@
-import json
 from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TextSchema
 
@@ -7,9 +6,7 @@ from lib.logger import logger
 from configs.app import (
     PulsarConf,
 )
-from models.text import (
-    RawText,
-)
+from models.text import RawText
 from models.db import create_all_tables
 
 

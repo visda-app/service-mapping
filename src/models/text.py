@@ -8,9 +8,8 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
-    ARRAY,
-    Float,
     Boolean,
+    Float,
     ForeignKey
 )
 
@@ -48,7 +47,6 @@ class TextEmbedding(Base):
 
     id = Column(Integer, primary_key=True)
     uuid = Column(String, ForeignKey('raw_texts.uuid'))
-    # text = Column(Text)
     embedding = Column(Text)
 
     def __repr__(self):
@@ -57,6 +55,17 @@ class TextEmbedding(Base):
         )
 
     def save_to_db(self):
+        """
+        Making sure embedding is a list of floats
+        """
+        embeddings = self.embedding
+        if type(self.embedding) == str:
+            embeddings = json.loads(self.embedding)
+        if type(embeddings) != list:
+            raise ValueError('Expected a list')
+        if not all(type(e) in [float, int] for e in embeddings):
+            raise ValueError('Embedding types must be numbers')
+
         self.embedding = str(self.embedding)
         session.add(self)
         session.commit()
@@ -101,9 +110,11 @@ class ClusteredText(Base):
     cluster_label = Column(Integer)
 
     def __repr__(self):
-        return "<ClusteredText(uuid='%s', x='%s', y='%s', cluster_label='%s', is_cluster_head='%s')>" % (
-            self.uuid, self.x, self.y, self.cluster_label, self.is_cluster_head
-        )
+        return "<ClusteredText(uuid='%s', x='%s', y='%s', cluster_label='%s', is_cluster_head='%s')>" % (  # noqa
+                self.uuid, self.x, self.y,
+                self.cluster_label,
+                self.is_cluster_head
+            )
 
 
 def load_embeddings_from_db(sequence_id):

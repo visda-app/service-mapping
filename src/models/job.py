@@ -2,22 +2,18 @@
 The database models that deal with
 text segments.
 """
-import json
 import enum
 from sqlalchemy import (
     Column,
     Integer,
     String,
-    Text,
     Enum,
-    ForeignKey
 )
 
 from models.db import (
     Base,
     session
 )
-from lib.logger import logger
 
 
 class JobStatus(enum.Enum):
@@ -47,4 +43,3 @@ class Job(Base):
     def save_to_db(self):
         session.add(self)
         session.commit()
-

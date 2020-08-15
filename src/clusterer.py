@@ -1,5 +1,3 @@
-import json
-import time
 import numpy as np
 from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
