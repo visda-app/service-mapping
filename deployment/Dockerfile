@@ -2,7 +2,7 @@
 # BUILD STEP: 
 # Pull the base image
 #
-FROM ubuntu:groovy-20200723 as base_image
+FROM ubuntu:20.04 as base_image
 USER root
 # Create a working user
 RUN addgroup -gid 1000 app
@@ -29,7 +29,7 @@ RUN apt-get update && \
 # Make some useful symlinks that are expected to exist
 RUN ln -s /usr/bin/python$PYTHON_VERSION /usr/bin/python
 # Upgrade PIP
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 
 
 #

@@ -108,19 +108,19 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-    name: {{ template "helm-chart.fullname" . }}-proxy-service
-spec:
-    type: LoadBalancer
-    selector:
-        app: {{ template "helm-chart.fullname" . }}-web-pod
-    ports:
-        - port: {{ .Values.webServerPort }}
-          targetPort: {{ .Values.webServerPort }}
+# apiVersion: v1
+# kind: Service
+# metadata:
+#     name: {{ template "helm-chart.fullname" . }}-proxy-service
+# spec:
+#     type: LoadBalancer
+#     selector:
+#         app: {{ template "helm-chart.fullname" . }}-web-pod
+#     ports:
+#         - port: {{ .Values.webServerPort }}
+#           targetPort: {{ .Values.webServerPort }}
 
----
+# ---
 
 apiVersion: v1
 kind: Service
