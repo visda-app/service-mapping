@@ -3,7 +3,7 @@
 #####################
 # Pulsar service URL. See some old documentation for the url:
 # http://pulsar.apache.org/docs/v1.19.0-incubating/deployment/Kubernetes/
-brokerServiceUrl: pulsar://pulsar-mini-broker.pulsar.svc.cluster.local:6650/
+brokerServiceUrl: pulsar://pulsar-broker.pulsar.svc.cluster.local:6650/
 #
 pulsarTextTopic: apache/pulsar/text-topic
 pulsarTextEmbeddingTopic: apache/pulsar/text-embedding-topic

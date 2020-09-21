@@ -12,7 +12,7 @@ PROD_IMAGE_TAG := ${SERVICE_NAME}:$(VERSION)
 DEV_IMAGE_TAG := ${SERVICE_NAME}-dev:$(VERSION)
 LINTING_IMAGE_TAG := ${SERVICE_NAME}-lint:$(VERSION)
 
-TRUNCATED_VERSION := $(shell git describe --tags | tr "." "-")
+TRUNCATED_VERSION := $(shell git describe --tags --abbrev=0)
 HELM_RELEASE := ${SERVICE_NAME} # -$(TRUNCATED_VERSION)
 
 TEST=

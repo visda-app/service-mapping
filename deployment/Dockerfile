@@ -2,7 +2,7 @@
 # BUILD STEP: 
 # Pull the base image
 #
-FROM ubuntu:20.04 as base_image
+FROM ubuntu:focal-20200729 as base_image
 USER root
 # Create a working user
 RUN addgroup -gid 1000 app
