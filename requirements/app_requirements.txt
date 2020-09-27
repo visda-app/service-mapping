@@ -9,7 +9,7 @@ apache-bookkeeper-client==4.11.0  # via pulsar-client
 asbool==0.1.1             # via -r app_requirements.in
 attrs==19.3.0             # via jsonschema
 certifi==2020.6.20        # via pulsar-client, requests
-chapar==0.1.4             # via -r app_requirements.in
+chapar==0.2.0             # via -r app_requirements.in
 chardet==3.0.4            # via requests
 click==7.1.2              # via flask
 fastavro==0.24.0          # via pulsar-client
