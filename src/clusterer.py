@@ -5,7 +5,7 @@ from sklearn.cluster import AffinityPropagation
 from lib.logger import logger
 from models.text import (
     load_embeddings_from_db,
-    save_clustering_to_db
+    save_clusterings_to_db
     )
 
 
@@ -90,6 +90,7 @@ def load_cluster_save(sequence_ids):
     for e in embedding_data:
         vect_list.append(e.get('embedding'))
     vect_array = np.array(vect_list)
+    logger.debug(f"vect_array={vect_array}")
 
     logger.debug("Reducing dimension...")
     low_dim_embeddings = reduce_dimension(vect_array)
@@ -105,4 +106,4 @@ def load_cluster_save(sequence_ids):
     )
 
     logger.debug("Saving to DB...")
-    save_clustering_to_db(data_summary)
+    save_clusterings_to_db(data_summary)

@@ -132,7 +132,7 @@ def load_embeddings_from_db(sequence_id):
 
     for (text_embedding, raw_text) in db_vals:
         results.append({
-            'embedding': text_embedding.embedding,
+            'embedding': json.loads(text_embedding.embedding),
             'text': raw_text.text,
             'uuid': text_embedding.uuid,
             'sequence_id': raw_text.sequence_id
@@ -141,7 +141,7 @@ def load_embeddings_from_db(sequence_id):
     return results
 
 
-def save_clustering_to_db(clustering):
+def save_clusterings_to_db(clustering):
     for c in clustering:
         # Remove if already exists
         session.query(ClusteredText).filter(

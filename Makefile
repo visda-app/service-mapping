@@ -90,7 +90,7 @@ push-dev: ## Build the prod docker image and push it to docker hub
 	docker push ${DOCKER_HUB_USERNAME}/${DEV_IMAGE_TAG}
 
 hi: push  ## Install the helm chart (hi: helm install)
-	helm install \
+	helm upgrade --install \
 		-f ./deployment/${SERVICE_NAME}/values.yaml \
 		-f ./deployment/${SERVICE_NAME}/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \

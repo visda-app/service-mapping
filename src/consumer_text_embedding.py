@@ -38,6 +38,9 @@ def consumer_loop(message_broker):
                 f"embedding='{msg.value().embedding}'"
                 "Received! 🤓"
             )
+
+            mb.consumer_acknowledge(msg)
+
             txt_emb = TextEmbedding(
                 uuid=msg.value().uuid,
                 embedding=msg.value().embedding
@@ -46,7 +49,6 @@ def consumer_loop(message_broker):
             if txt_emb.has_same_or_more_seq_count_than_rawtext():
                 start_next_task(txt_emb)
 
-            mb.consumer_acknowledge(msg)
         except Exception as e:
             # Message failed to be processed
             logger.error('❌ message "{}" failed 👎'.format(msg.value().text))
