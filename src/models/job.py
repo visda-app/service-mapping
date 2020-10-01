@@ -26,8 +26,11 @@ class JobStatus(enum.Enum):
     started = 1
     raw_text_received = 2
     embeddings_done = 3
-    clustering_started = 4
-    clustering_done = 5
+    mapping_started = 4
+    dimension_reduction_started = 5
+    clustering_started = 6
+    clustering_done = 6
+    mapping_done = 8
     done = 10
 
 
@@ -36,7 +39,7 @@ class Job(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     job_id = Column(String)  # same as sequence_id
-    status = Column(Enum(JobStatus))
+    status = Column(String)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):
@@ -54,8 +57,26 @@ class Job(Base):
             cls.job_id == job_id
         ).order_by(cls.time_created.desc()).first()
         if latest_status:
-            return latest_status.status.name
+            return latest_status.status
 
     @classmethod
     def log_status(cls, job_id, status):
-        cls(job_id=job_id, status=status)._save_to_db()
+        """
+        Add an entry to the table with the latest
+        job status
+
+        Parameters
+        ----------
+            job_id : str
+                A unique identifier for the job or sequence id
+            status : JobStatus
+                A status structure
+
+        Returns
+        -------
+            self
+        """
+        if type(status) is not JobStatus:
+            raise ValueError('status must be of type JobStatus')
+
+        return cls(job_id=job_id, status=status.name)._save_to_db()

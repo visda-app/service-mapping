@@ -7,6 +7,8 @@ from models.text import (
     load_embeddings_from_db,
     save_clusterings_to_db
     )
+from models.job import JobStatus
+from models.job import Job as JobModel
 
 
 def reduce_dimension(x):
@@ -71,6 +73,11 @@ def get_formatted_data(
     return result
 
 
+def log_status(sequence_ids, status):
+    for seq_id in sequence_ids:
+        JobModel.log_status(seq_id, status)
+
+
 def load_cluster_save(sequence_ids):
     """
     load all the texts and embeddings for a sequence id,
@@ -93,9 +100,11 @@ def load_cluster_save(sequence_ids):
     logger.debug(f"vect_array={vect_array}")
 
     logger.debug("Reducing dimension...")
+    log_status(sequence_ids, JobStatus.dimension_reduction_started)
     low_dim_embeddings = reduce_dimension(vect_array)
 
     logger.debug("Clustering...")
+    log_status(sequence_ids, JobStatus.clustering_started)
     cluster_labels, cluster_centers = cluster(low_dim_embeddings)
 
     data_summary = get_formatted_data(
@@ -106,4 +115,5 @@ def load_cluster_save(sequence_ids):
     )
 
     logger.debug("Saving to DB...")
+    log_status(sequence_ids, JobStatus.clustering_done)
     save_clusterings_to_db(data_summary)

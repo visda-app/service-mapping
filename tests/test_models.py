@@ -1,5 +1,6 @@
 import unittest
 from uuid import uuid4
+import time
 
 from models.text import (
     RawText,
@@ -148,7 +149,7 @@ class TestJobModel(unittest.TestCase):
         )
         assert len(q.all()) == 1
 
-        assert q.first().status.name == 'started'
+        assert q.first().status == 'started'
 
         q.delete()
         assert len(q.all()) == 0
@@ -169,3 +170,12 @@ class TestJobModel(unittest.TestCase):
 
         ret_status = Job.get_latest_status(uuid)
         assert ret_status == JobStatus.done.name
+
+    def test_set_status_type_check(self):
+        """
+        Test set_status only accepts the right type of status
+        """
+        uuid = str(uuid4())
+
+        with self.assertRaises(ValueError) as e:
+            Job.log_status(uuid, "A_dummy_status")

@@ -21,9 +21,9 @@ def start_next_task(text_embedding):
     """
     sequence_id = text_embedding.get_sequence_id()
     logger.debug(f"Starting clustering for Sequence_id={sequence_id}")
-    Job.log_status(sequence_id, JobStatus.clustering_started)
+    Job.log_status(sequence_id, JobStatus.mapping_started)
     load_cluster_save([sequence_id])
-    Job.log_status(sequence_id, JobStatus.clustering_done)
+    Job.log_status(sequence_id, JobStatus.mapping_done)
 
 
 def consumer_loop(message_broker):
