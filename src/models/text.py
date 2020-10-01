@@ -36,9 +36,10 @@ class RawText(Base):
         session.add(self)
         session.commit()
 
-    def get_count_by_sequence_id(self, sequence_id):
-        return session.query(self).filter(
-            RawText.sequence_id == sequence_id
+    @classmethod
+    def get_count_by_sequence_id(cls, sequence_id):
+        return session.query(cls).filter(
+            cls.sequence_id == sequence_id
         ).count()
 
 
@@ -70,6 +71,17 @@ class TextEmbedding(Base):
         session.add(self)
         session.commit()
 
+    @classmethod
+    def get_count_by_sequence_id(cls, sequence_id):
+        """
+        Check if TextEmbedding has same or more entires than RawText
+        when compared for the same sequence_id
+        """
+        text_emb_count = session.query(cls).join(RawText).filter(
+            RawText.sequence_id == sequence_id
+        ).count()
+        return text_emb_count
+
     def has_same_or_more_seq_count_than_rawtext(self):
         """
         Check if TextEmbedding has same or more entires than RawText
@@ -82,12 +94,10 @@ class TextEmbedding(Base):
         sequence_id = q.first().sequence_id
         if not sequence_id:
             raise Exception('Expected a sequence id!')
-        raw_text_count = session.query(RawText).filter(
-            RawText.sequence_id == sequence_id
-        ).count()
-        text_emb_count = session.query(self.__class__).join(RawText).filter(
-            RawText.sequence_id == sequence_id
-        ).count()
+
+        raw_text_count = RawText.get_count_by_sequence_id(sequence_id)
+        text_emb_count = self.get_count_by_sequence_id(sequence_id)
+
         return text_emb_count >= raw_text_count
 
     def get_sequence_id(self):

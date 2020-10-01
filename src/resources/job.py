@@ -7,8 +7,11 @@ from asbool import asbool
 from lib.logger import logger
 from models.text import (
     load_clustering_from_db,
-    get_clustering_count
+    get_clustering_count,
+    RawText,
+    TextEmbedding
 )
+from models.job import Job as JobModel
 
 
 SCHEMA = {
@@ -50,14 +53,20 @@ class Job(Resource):
 
             sequence_id = data['sequence_id']
             include_payload = data.get('include_payload')
-            count = get_clustering_count(sequence_id)
             payload = ''
             if include_payload:
                 payload = load_clustering_from_db(sequence_id)
 
+            status = {
+              'total_texts': RawText.get_count_by_sequence_id(sequence_id),
+              'vectorized_texts': TextEmbedding.get_count_by_sequence_id(
+                sequence_id),
+              'latest_status': JobModel.get_latest_status(sequence_id)
+            }
+
             return {
                 'sequence_id': sequence_id,
-                'count': count,
+                'status': status,
                 'data': payload
             }, 200
         except ValidationError as e:

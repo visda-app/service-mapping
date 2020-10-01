@@ -4,7 +4,7 @@ from uuid import uuid4
 from models.text import (
     RawText,
     TextEmbedding,
-    session 
+    session
 )
 from models.job import (
     Job,
@@ -19,18 +19,37 @@ create_all_tables()
 
 
 class TestTextModel(unittest.TestCase):
+    def setUp(self):
+        self.uuid1 = str(uuid4())
+        self.uuid2 = str(uuid4())
+        self.sequence_id = str(uuid4())
+        RawText(
+            uuid=self.uuid1, text='some text', sequence_id=self.sequence_id,
+        ).save_to_db()
+        RawText(
+            uuid=self.uuid2, text='some other text', sequence_id=self.sequence_id,
+        ).save_to_db()
+
+    def tearDown(self):
+        # Delete users
+        session.query(TextEmbedding).delete()
+
+        session.query(RawText).filter(
+            RawText.uuid.in_([self.uuid1, self.uuid2])
+        ).delete(synchronize_session=False)
+
     def test_raw_text_save_to_db(self):
         # Create a record in DB:
-        uuid = str(uuid4())
+        uuid1 = str(uuid4())
         sequence_id = str(uuid4())
         RawText(
-            uuid=uuid,
+            uuid=uuid1,
             text='some random text',
             sequence_id=sequence_id
         ).save_to_db()
         # Query the created record:
         q = session.query(RawText).filter(
-            RawText.uuid == uuid
+            RawText.uuid == uuid1
         )
         # Check if the record is in DB
         assert len(q.all()) == 1
@@ -40,19 +59,18 @@ class TestTextModel(unittest.TestCase):
         assert len(q.all()) == 0
 
     def test_text_embedding_save_to_db(self):
-        # Create a record in DB:
-        uuid = str(uuid4())
+        # Should create a raw text to satisfy the foreign key constraint
         TextEmbedding(
-            uuid=uuid,
+            uuid=self.uuid1,
             embedding=[1.2, 3, 0.91, 5.0]
         ).save_to_db()
         # Query the created record:
         q = session.query(TextEmbedding).filter(
-            TextEmbedding.uuid == uuid
+            TextEmbedding.uuid == self.uuid1
         )
         # Check if the record is in DB
         assert len(q.all()) == 1
-        # Delete record
+        # Delete records
         q.delete()
         # Check if deleted successfully
         assert len(q.all()) == 0
@@ -77,65 +95,44 @@ class TestTextModel(unittest.TestCase):
         # Check if the record is in DB
         assert len(q.all()) == 0
 
+    def test_text_embedding_get_count_by_sequence_id(self):
+        """
+        Test TextEmbedding model to have the right count by sequence_id
+        """
+        TextEmbedding(uuid=self.uuid1, embedding=[]).save_to_db()
+        assert TextEmbedding.get_count_by_sequence_id(self.sequence_id) == 1
+        TextEmbedding(uuid=self.uuid2, embedding=[]).save_to_db()
+        assert TextEmbedding.get_count_by_sequence_id(self.sequence_id) == 2
+
     def test_text_embedding_has_same_or_more_items_than_raw_text(self):
         """
         Check if the TextEmbedding model has same or more items
         than RawText for the same sequence id
         """
-        uuid1 = str(uuid4())
-        uuid2 = str(uuid4())
-        sequence_id = str(uuid4())
-        RawText(
-            uuid=uuid1, text='some text', sequence_id=sequence_id,
-        ).save_to_db()
-        RawText(
-            uuid=uuid2, text='some other text', sequence_id=sequence_id,
-        ).save_to_db()
         te = TextEmbedding(
-            uuid=uuid1, embedding=[1.3, 9.0]
+            uuid=self.uuid1, embedding=[1.3, 9.0]
         )
         te.save_to_db()
         has_more = te.has_same_or_more_seq_count_than_rawtext()
         assert not has_more
 
         te = TextEmbedding(
-            uuid=uuid2, embedding=[1.3, 0.0]
+            uuid=self.uuid2, embedding=[1.3, 0.0]
         )
         te.save_to_db()
         has_more = te.has_same_or_more_seq_count_than_rawtext()
         assert has_more
 
-        # Delete records
-        session.query(TextEmbedding).filter(
-            TextEmbedding.uuid.in_([uuid1, uuid2])
-        ).delete(synchronize_session=False)
-        session.query(RawText).filter(
-            RawText.uuid.in_([uuid1, uuid2])
-        ).delete(synchronize_session=False)
-
     def test_get_sequence_id(self):
         """
         Test getting sequence id for TextEmbedding model
         """
-        uuid1 = str(uuid4())
-        sequence_id = str(uuid4())
-        RawText(
-            uuid=uuid1, text='some text', sequence_id=sequence_id,
-        ).save_to_db()
         te = TextEmbedding(
-            uuid=uuid1, embedding=[1.3, 9.0]
+            uuid=self.uuid1, embedding=[1.3, 9.0]
         )
         te.save_to_db()
 
-        assert te.get_sequence_id() == sequence_id
-
-        # delete records from DB
-        session.query(TextEmbedding).filter(
-            TextEmbedding.uuid.in_([uuid1])
-        ).delete(synchronize_session=False)
-        session.query(RawText).filter(
-            RawText.uuid.in_([uuid1])
-        ).delete(synchronize_session=False)
+        assert te.get_sequence_id() == self.sequence_id
 
 
 class TestJobModel(unittest.TestCase):
@@ -144,18 +141,31 @@ class TestJobModel(unittest.TestCase):
         Test creating a job entry in the table
         """
         uuid = str(uuid4())
-        Job(
-            job_id=uuid,
-            subtask_count=20,
-            status=JobStatus.created
-        ).save_to_db()
+        Job.log_status(uuid, JobStatus.started)
 
         q = session.query(Job).filter(
             Job.job_id == uuid
         )
         assert len(q.all()) == 1
 
-        assert q.first().status.name == 'created'
+        assert q.first().status.name == 'started'
 
         q.delete()
         assert len(q.all()) == 0
+
+    def test_set_status(self):
+        """
+        Test creating a job entry in the table
+        """
+        uuid = str(uuid4())
+
+        ret_status = Job.get_latest_status(uuid)
+        assert ret_status is None
+
+        for status in JobStatus:
+            Job.log_status(uuid, status)
+            ret_status = Job.get_latest_status(uuid)
+            assert ret_status == status.name
+
+        ret_status = Job.get_latest_status(uuid)
+        assert ret_status == JobStatus.done.name

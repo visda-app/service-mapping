@@ -3,11 +3,14 @@ The database models that deal with
 text segments.
 """
 import enum
+import datetime
+from sqlalchemy.sql import func
 from sqlalchemy import (
     Column,
     Integer,
     String,
     Enum,
+    DateTime,
 )
 
 from models.db import (
@@ -20,26 +23,39 @@ class JobStatus(enum.Enum):
     """
     An enum to keep the stage of a job
     """
-    created = 1
+    started = 1
     raw_text_received = 2
     embeddings_done = 3
-    clustering_done = 4
-    done = 5
+    clustering_started = 4
+    clustering_done = 5
+    done = 10
 
 
 class Job(Base):
     __tablename__ = 'jobs'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    job_id = Column(String)
-    subtask_count = Column(Integer)
+    job_id = Column(String)  # same as sequence_id
     status = Column(Enum(JobStatus))
+    time_created = Column(DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):
-        return "<Job(job_id='%s', subtask_count='%s', status='%s')>" % (
-            self.job_id, self.subtask_count, self.status
+        return "<Job(job_id='%s', status='%s')>" % (
+            self.job_id, self.status
         )
 
-    def save_to_db(self):
+    def _save_to_db(self):
         session.add(self)
         session.commit()
+
+    @classmethod
+    def get_latest_status(cls, job_id):
+        latest_status = session.query(cls).filter(
+            cls.job_id == job_id
+        ).order_by(cls.time_created.desc()).first()
+        if latest_status:
+            return latest_status.status.name
+
+    @classmethod
+    def log_status(cls, job_id, status):
+        cls(job_id=job_id, status=status)._save_to_db()

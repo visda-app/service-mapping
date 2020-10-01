@@ -2,3 +2,4 @@ deployment/
 __pycache__
 tmp/*
 .git
+test-app.db
