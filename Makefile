@@ -92,7 +92,7 @@ push-dev: ## Build the prod docker image and push it to docker hub
 hi: push  ## Install the helm chart (hi: helm install)
 	helm upgrade --install \
 		-f ./deployment/${SERVICE_NAME}/values.yaml \
-		-f ./deployment/${SERVICE_NAME}/secret-values.yaml \
+		-f ../secrets/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
 		${HELM_RELEASE} \
 		./deployment/${SERVICE_NAME}/
@@ -100,7 +100,7 @@ hi: push  ## Install the helm chart (hi: helm install)
 ht:  ## Shows the Helm template
 	helm template \
 		-f ./deployment/${SERVICE_NAME}/values.yaml \
-		-f ./deployment/${SERVICE_NAME}/secret-values.yaml \
+		-f ../secrets/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
 		${HELM_RELEASE} \
 		./deployment/${SERVICE_NAME}/
@@ -108,7 +108,7 @@ ht:  ## Shows the Helm template
 hide: push-dev  ## Install the helm chart (hide: helm install dev)
 	helm install \
 		-f ./deployment/${SERVICE_NAME}/values.yaml \
-		-f ./deployment/${SERVICE_NAME}/secret-values.yaml \
+		-f ../secrets/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${DEV_IMAGE_TAG} \
 		${HELM_RELEASE} \
 		./deployment/${SERVICE_NAME}/
