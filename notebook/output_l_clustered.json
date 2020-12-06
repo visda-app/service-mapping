@@ -1,0 +1,122 @@
+[
+    {
+        "x": "-26.993086",
+        "y": "-24.304926",
+        "uuid": "6d99977a-63af-44d7-8bcf-b8f6c43425b1",
+        "text": "It is positive.",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-26.994543",
+        "y": "-24.335684",
+        "uuid": "b4729ef3-e2d4-44c4-9734-b19a86903034",
+        "text": "It is negative.",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-25.403288",
+        "y": "-27.400747",
+        "uuid": "9661af3e-eb8d-45be-93f6-122b4b5de70c",
+        "text": "I recommend it!",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-25.3608",
+        "y": "-27.387423",
+        "uuid": "e61a1ae7-19ed-4995-bd1c-effae6ecdb40",
+        "text": "I do not recommend it.",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-27.545656",
+        "y": "-27.663969",
+        "uuid": "4ede5dd7-7d9b-49e2-b2e9-a59ede8fe06b",
+        "text": "It is awesome!",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-27.161865",
+        "y": "-27.486088",
+        "uuid": "50ee4b3c-088c-47c1-9800-241b4dd01873",
+        "text": "It is horrible!",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-30.052025",
+        "y": "-25.18071",
+        "uuid": "331a827d-7b63-452f-ba94-ff1af7af28e7",
+        "text": "I am happy.",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-30.026474",
+        "y": "-25.04147",
+        "uuid": "40de3648-77ee-4955-851f-bf81b5eece8c",
+        "text": "I am not happy.",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-27.837357",
+        "y": "-26.935722",
+        "uuid": "49a3fedb-f3cd-4b53-a9bd-3cf9903cb05b",
+        "text": "I love it!",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-27.769602",
+        "y": "-26.64573",
+        "uuid": "ad9e7517-658a-42b3-aae8-60f55a31cd5c",
+        "text": "I hate it!",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-29.709143",
+        "y": "-27.297878",
+        "uuid": "d77b3cdc-766b-4e77-936a-c3347ea4596f",
+        "text": "Love",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-29.682245",
+        "y": "-27.222752",
+        "uuid": "deb4ee5f-6593-4e78-b751-aafe99c042f4",
+        "text": "Hate",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-30.281647",
+        "y": "-26.122822",
+        "uuid": "5eeaa51d-df63-4ad0-9c16-2788beb5a07c",
+        "text": "Happy",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-30.677",
+        "y": "-26.74372",
+        "uuid": "81c7a055-6507-422a-b17e-b73a07f2a5d9",
+        "text": "Sad",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    },
+    {
+        "x": "-27.662426",
+        "y": "-26.203543",
+        "uuid": "e6107cc3-5a51-4e03-b525-9e1219da9d93",
+        "text": "I disliked it!",
+        "cluster_label": 23,
+        "is_cluster_head": false
+    }
+]
