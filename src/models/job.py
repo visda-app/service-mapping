@@ -28,10 +28,13 @@ class JobStatus(enum.Enum):
     embeddings_done = 3
     mapping_started = 4
     dimension_reduction_started = 5
-    clustering_started = 6
-    clustering_done = 6
-    mapping_done = 8
-    done = 10
+    clustering_started = 10
+    clustering_done = 11
+    breaking_down_large_clusters = 12
+    formatting_data = 13
+    mapping_done = 20
+    saving_to_db = 30
+    done = 31
 
 
 class Job(Base):
