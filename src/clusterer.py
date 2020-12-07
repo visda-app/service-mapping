@@ -484,4 +484,5 @@ def load_and_cluster_and_save(sequence_ids):
     log_status(sequence_ids, JobStatus.saving_to_db)
     save_clusterings_to_db(formatted_data)
 
+    logger.debug("Done!")
     log_status(sequence_ids, JobStatus.done)

@@ -39,7 +39,7 @@ def seed_db():
 
     # Seeding the tables:
     logger.debug("Loading unlabeled data from file...")
-    with open('/code/tmp/output_1000.json', 'r') as f:
+    with open('/code/tests/data/output_1000.json', 'r') as f:
         lines = f.readlines()
 
     logger.debug("Writing data to DB...")
@@ -51,7 +51,7 @@ def seed_db():
 
     # seeding the sentiments
     logger.debug("Loading sentiment data from file and writing to DB...")
-    with open('/code/tmp/labeled_sentiments.json', 'r') as f:
+    with open('/code/tests/data/labeled_sentiments.json', 'r') as f:
         lines = f.readlines()
     for line in lines:
         d = json.loads(line)
