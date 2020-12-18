@@ -450,6 +450,8 @@ def load_and_cluster_and_save(sequence_ids):
     embedding_data = []
     for i in sequence_ids:
         embedding_data.extend(load_embeddings_from_db(i))
+        
+    import pdb; pdb.set_trace()
 
     logger.debug("Reducing dimension...")
     log_status(sequence_ids, JobStatus.dimension_reduction_started)
@@ -480,10 +482,12 @@ def load_and_cluster_and_save(sequence_ids):
     formatted_data = get_formatted_data(copy(head))
     formatted_data['metadata'] = head['metadata']
 
+    import pdb; pdb.set_trace()
+
     logger.debug("Saving to DB...")
     log_status(sequence_ids, JobStatus.saving_to_db)
     # TODO: Fix DB write and read
-    save_clusterings_to_db(formatted_data)
+    save_clusterings_to_db( formatted_data)
 
     logger.debug("Done!")
     log_status(sequence_ids, JobStatus.done)

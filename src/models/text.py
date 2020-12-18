@@ -3,6 +3,7 @@ The database models that deal with
 text segments.
 """
 import json
+from sqlalchemy.sql import func
 from sqlalchemy import (
     Column,
     Integer,
@@ -10,7 +11,12 @@ from sqlalchemy import (
     Text,
     Boolean,
     Float,
-    ForeignKey
+    ForeignKey,
+    DateTime
+)
+from sqlalchemy.dialects.postgresql import (
+    JSON,
+    JSONB
 )
 
 from models.db import (
@@ -48,7 +54,8 @@ class TextEmbedding(Base):
 
     id = Column(Integer, primary_key=True)
     uuid = Column(String, ForeignKey('raw_texts.uuid'))
-    embedding = Column(Text)
+    # embedding is a list of floats
+    embedding = Column(JSON)
 
     def __repr__(self):
         return "<TextEmbedding(uuid='%s', embedding='%s')>" % (
@@ -56,18 +63,6 @@ class TextEmbedding(Base):
         )
 
     def save_to_db(self):
-        """
-        Making sure embedding is a list of floats
-        """
-        embeddings = self.embedding
-        if type(self.embedding) == str:
-            embeddings = json.loads(self.embedding)
-        if type(embeddings) != list:
-            raise ValueError('Expected a list')
-        if not all(type(e) in [float, int] for e in embeddings):
-            raise ValueError('Embedding types must be numbers')
-
-        self.embedding = str(self.embedding)
         session.add(self)
         session.commit()
 
@@ -113,18 +108,28 @@ class ClusteredText(Base):
     __tablename__ = 'clustered_texts'
 
     id = Column(Integer, primary_key=True)
-    x = Column(Float)
-    y = Column(Float)
-    uuid = Column(String, ForeignKey('raw_texts.uuid'))
-    is_cluster_head = Column(Boolean)
-    cluster_label = Column(Integer)
+    # a list of sequence id's 
+    sequence_ids = Column(JSONB)
+    clustering = Column(JSONB)
+    time_created = Column(DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):
-        return "<ClusteredText(uuid='%s', x='%s', y='%s', cluster_label='%s', is_cluster_head='%s')>" % (  # noqa
-                self.uuid, self.x, self.y,
-                self.cluster_label,
-                self.is_cluster_head
-            )
+        return "<ClusteredText(sequence_id='%s', clustering='%s')>" % (  # noqa
+                self.sequence_id, self.clustering)
+
+    def save_to_db(self):
+        session.add(self)
+        session.commit()
+
+    @classmethod
+    def get_last_by_sequence_id(cls, sequence_id):
+        q = session.query(cls).filter(
+            cls.sequence_id == sequence_id
+        ).order_by(
+            cls.time_created.desc()
+        )
+        results = q.first()
+        return results
 
 
 def load_embeddings_from_db(sequence_id):
@@ -151,25 +156,6 @@ def load_embeddings_from_db(sequence_id):
     return results
 
 
-def save_clusterings_to_db(clustering):
-    for c in clustering:
-        # Remove if already exists
-        session.query(ClusteredText).filter(
-            ClusteredText.uuid == c['uuid']
-        ).delete()
-
-        session.add(
-            ClusteredText(
-                x=c['x'],
-                y=c['y'],
-                uuid=c['uuid'],
-                is_cluster_head=c['is_cluster_head'],
-                cluster_label=c['cluster_label']
-            )
-        )
-    session.commit()
-
-
 def get_query_clustering(sequence_id):
     q = session.query(
         ClusteredText, RawText
@@ -187,24 +173,8 @@ def get_clustering_count(sequence_id):
     return q.count()
 
 
-def load_clustering_from_db(sequence_id):
-    q = get_query_clustering(sequence_id)
-    vals = q.all()
-
-    data = []
-    for ct, rt in vals:
-        entry = {
-            'x': ct.x,
-            'y': ct.y,
-            'uuid': rt.uuid,
-            'text': rt.text,
-            'cluster_label': ct.cluster_label,
-            'is_cluster_head': ct.is_cluster_head,
-        }
-        data.append(entry)
-
-    result = sorted(
-        data, key=lambda x:
-            (x['cluster_label'], not x['is_cluster_head'])
-    )
-    return result
+def save_clusterings_to_db(sequence_ids, clustering):
+    ClusteredText(
+        sequence_ids=sequence_ids,
+        clustering=clustering
+    ).save_to_db()

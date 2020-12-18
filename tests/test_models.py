@@ -33,7 +33,9 @@ class TestTextModel(unittest.TestCase):
 
     def tearDown(self):
         # Delete users
-        session.query(TextEmbedding).delete()
+        session.query(TextEmbedding).filter(
+            TextEmbedding.uuid.in_([self.uuid1, self.uuid2])
+        ).delete(synchronize_session=False)
 
         session.query(RawText).filter(
             RawText.uuid.in_([self.uuid1, self.uuid2])
@@ -71,30 +73,6 @@ class TestTextModel(unittest.TestCase):
         )
         # Check if the record is in DB
         assert len(q.all()) == 1
-        # Delete records
-        q.delete()
-        # Check if deleted successfully
-        assert len(q.all()) == 0
-
-    def test_text_embedding_save_to_db_type(self):
-        # Create a record in DB:
-        uuid = str(uuid4())
-        with self.assertRaises(ValueError) as e:
-            TextEmbedding(
-                uuid=uuid,
-                embedding='[1.2, 3 0.91, 5.0]'
-            ).save_to_db()
-        with self.assertRaises(ValueError) as e:
-            TextEmbedding(
-                uuid=uuid,
-                embedding='3'
-            ).save_to_db()
-        # Query the created record:
-        q = session.query(TextEmbedding).filter(
-            TextEmbedding.uuid == uuid
-        )
-        # Check if the record is in DB
-        assert len(q.all()) == 0
 
     def test_text_embedding_get_count_by_sequence_id(self):
         """

@@ -1,13 +1,14 @@
 from time import sleep
 import json
+from time import sleep
 
-from src.lib.logger import logger
-from src.models.db import (
+from lib.logger import logger
+from models.db import (
     engine,
     Base,
     session
 )
-from src.models.text import (
+from models.text import (
     TextEmbedding,
     RawText,
     ClusteredText
@@ -17,13 +18,13 @@ from src.models.text import (
 # Base.metadata.create_all(engine)
 
 logger.info('Deleting entries...')
-session.query(TextEmbedding).delete()
-session.query(ClusteredText).delete()
-session.query(RawText).delete()
+session.query(TextEmbedding).delete(synchronize_session=False)
+# session.query(ClusteredText).delete(synchronize_session=False)
+session.query(RawText).delete(synchronize_session=False)
 
 print(session.query(RawText).count())
 print(session.query(TextEmbedding).count())
-print(session.query(ClusteredText).count())
+# print(session.query(ClusteredText).count())
 
 
 # logger.info('Dropping tables...')

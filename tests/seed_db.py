@@ -15,22 +15,16 @@ from models.text import (
 def session_add(session, d, sequence_id):
     uuid = d['uuid']
     # logger.debug(f"Writing data for uuid={uuid}")
-    session.add(
-        RawText(
-            uuid=uuid,
-            text=d['text'],
-            sequence_id=sequence_id,
-        ),
-    )
-    session.commit()
-    session.add(
-        TextEmbedding(
-            uuid=uuid,
-            text=d['text'],
-            embedding=d['embedding'],
-        )
-    )
-    session.commit()
+    RawText(
+        uuid=uuid,
+        text=d['text'],
+        sequence_id=sequence_id,
+    ).save_to_db()
+
+    TextEmbedding(
+        uuid=uuid,
+        embedding=d['embedding'],
+    ).save_to_db()
 
 
 
@@ -39,7 +33,7 @@ create_all_tables()
 
 # Seeding the tables:
 logger.debug("Loading unlabeled data from file...")
-with open('/code/tests/data/output_1000.json', 'r') as f:
+with open('/code/tests/data/raw_embedding_1000.json', 'r') as f:
     lines = f.readlines()
 
 logger.debug("Writing data to DB...")
@@ -49,10 +43,10 @@ for i in range(len(lines)):
     session_add(session, d, sequence_id)
 
 
-# seeding the sentiments
-logger.debug("Loading sentiment data from file and writing to DB...")
-with open('/code/tests/data/labeled_sentiments.json', 'r') as f:
-    lines = f.readlines()
-for line in lines:
-    d = json.loads(line)
-    session_add(session, d, 'labeled')
+# # seeding the sentiments
+# logger.debug("Loading sentiment data from file and writing to DB...")
+# with open('/code/tests/data/labeled_sentiments.json', 'r') as f:
+#     lines = f.readlines()
+# for line in lines:
+#     d = json.loads(line)
+#     session_add(session, d, 'labeled')

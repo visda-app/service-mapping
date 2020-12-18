@@ -129,3 +129,8 @@ def test_insert_children_count():
     clusterer.insert_children_count(MULTI_NESTED_DATA)
     actual_result = MULTI_NESTED_DATA
     assert actual_result == expected_result
+
+
+def test_main():
+    sequence_ids = ['1']
+    clusterer.load_and_cluster_and_save(sequence_ids)
