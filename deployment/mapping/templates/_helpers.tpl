@@ -66,7 +66,7 @@ Create the name of the service account to use
 Create secrets for pulling docker image from docker hub registry
 */}}
 {{- define "imagePullSecret" }}
-{{- with .Values.imageCredentials }}
+{{- with .Values.secrets.imageCredentials }}
 {{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .password .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
 {{- end }}
 {{- end }}
