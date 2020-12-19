@@ -15,7 +15,7 @@ from clusterer import load_and_cluster_and_save
 create_all_tables()
 
 
-def start_next_task(text_embedding):
+def start_clustering_task(text_embedding):
     """
     Start the next task, dimension reduction and clustering.
     """
@@ -50,7 +50,7 @@ def consumer_loop(message_broker):
             )
             txt_emb.save_to_db()
             if txt_emb.has_same_or_more_seq_count_than_rawtext():
-                start_next_task(txt_emb)
+                start_clustering_task(txt_emb)
 
         except Exception as e:
             # Message failed to be processed
