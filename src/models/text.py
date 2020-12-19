@@ -108,8 +108,8 @@ class ClusteredText(Base):
     __tablename__ = 'clustered_texts'
 
     id = Column(Integer, primary_key=True)
-    # a list of sequence id's 
-    sequence_ids = Column(JSONB)
+    # a list of sequence id's
+    sequence_id = Column(String)
     clustering = Column(JSONB)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -147,7 +147,7 @@ def load_embeddings_from_db(sequence_id):
 
     for (text_embedding, raw_text) in db_vals:
         results.append({
-            'embedding': json.loads(text_embedding.embedding),
+            'embedding': text_embedding.embedding,
             'text': raw_text.text,
             'uuid': text_embedding.uuid,
             'sequence_id': raw_text.sequence_id
@@ -173,8 +173,8 @@ def get_clustering_count(sequence_id):
     return q.count()
 
 
-def save_clusterings_to_db(sequence_ids, clustering):
+def save_clusterings_to_db(sequence_id, clustering):
     ClusteredText(
-        sequence_ids=sequence_ids,
+        sequence_id=sequence_id,
         clustering=clustering
     ).save_to_db()

@@ -2,6 +2,7 @@ import json
 from uuid import uuid4
 from copy import copy, deepcopy
 import numpy as np
+from collections import defaultdict
 from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
 
@@ -9,7 +10,7 @@ from lib.logger import logger
 from models.text import (
     load_embeddings_from_db,
     save_clusterings_to_db
-    )
+)
 from models.job import JobStatus
 from models.job import Job as JobModel
 
@@ -417,7 +418,7 @@ def get_formatted_item(item):
     return entry
 
 
-def get_formatted_data(node):
+def get_reshaped_data(node):
     """
     """
     if not node:
@@ -426,14 +427,68 @@ def get_formatted_data(node):
     if 'low_dim_embedding' in node:
         new_node = get_formatted_item(node)
     new_node['children'] = [
-        get_formatted_data(c) for c in node['children']
+        get_reshaped_data(c) for c in node['children']
     ]
     return new_node
 
 
+def partition_by_sequence_id(list_of_objects):
+    """
+    Partition the input data by their sequence id's
+
+    Args:
+      list_of_objects (list): A list of objects (dicts)
+    """
+    KEY = 'sequence_id'
+    partitioned_items = defaultdict(list)
+    for item in list_of_objects:
+        key = item[KEY]
+        partitioned_items[key].append(item)
+    return partitioned_items
+
+
+def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
+    """
+    Cluster the input data into a graph (hierarchical)
+    clustering and add meta data
+
+    Args:
+        sequence_id (str): An ID for the sequence
+        data_w_low_dim (list): list of dicts
+    """
+    logger.debug("Clustering...")
+    log_status(sequence_id, JobStatus.clustering_started)
+    nested_clusters = cluster_hierarchically(
+        data_w_low_dim, include_original_cluster_label=True
+    )
+
+    logger.debug("Further breaking down clusters...")
+    log_status(sequence_id, JobStatus.breaking_down_large_clusters)
+    head = {}
+    head['children'] = nested_clusters
+    bfs_break_down(head)
+
+    logger.debug("Insert Stuff...")
+    insert_children_count(head)
+    insert_d3uuid(head)
+    insert_parents_info(head)
+    radius_multiplier_factor = get_radius_multiplier(head['children'])
+    insert_radius(head, radius_multiplier_factor)
+    insert_meta_data(head)
+
+    logger.debug("Formatting data...")
+    log_status(sequence_id, JobStatus.formatting_data)
+    reshaped_data = get_reshaped_data(copy(head))
+    reshaped_data['metadata'] = head['metadata']
+    return reshaped_data
+
+
 def log_status(sequence_ids, status):
-    for seq_id in sequence_ids:
-        JobModel.log_status(seq_id, status)
+    if type(sequence_ids) is list:
+        for seq_id in sequence_ids:
+            JobModel.log_status(seq_id, status)
+    elif type(sequence_ids) is str:
+        JobModel.log_status(sequence_ids, status)
 
 
 def load_and_cluster_and_save(sequence_ids):
@@ -450,44 +505,26 @@ def load_and_cluster_and_save(sequence_ids):
     embedding_data = []
     for i in sequence_ids:
         embedding_data.extend(load_embeddings_from_db(i))
-        
-    import pdb; pdb.set_trace()
 
     logger.debug("Reducing dimension...")
     log_status(sequence_ids, JobStatus.dimension_reduction_started)
     data_w_low_dim = reduce_dimension(embedding_data)
 
-    logger.debug("Clustering...")
-    log_status(sequence_ids, JobStatus.clustering_started)
-    nested_clusters = cluster_hierarchically(
-        data_w_low_dim, include_original_cluster_label=True
-    )
+    logger.debug("Partition by seqence_id...")
+    partitioned_data = partition_by_sequence_id(data_w_low_dim)
 
-    logger.debug("Further breaking down clusters...")
-    log_status(sequence_ids, JobStatus.breaking_down_large_clusters)
-    head = {}
-    head['children'] = nested_clusters
-    bfs_break_down(head)
+    logger.debug("Start clustering for all sequence id's...")
+    for sequence_id in partitioned_data:
+        clustered_data = cluster_hierarchically_add_meta_data(
+            sequence_id, partitioned_data[sequence_id]
+        )
 
-    logger.debug("Insert Stuff...")
-    insert_children_count(head)
-    insert_d3uuid(head)
-    insert_parents_info(head)
-    radius_multiplier_factor = get_radius_multiplier(head['children'])
-    insert_radius(head, radius_multiplier_factor)
-    insert_meta_data(head)
+        logger.debug(f"Saving sequence_id={sequence_id} to DB...")
+        log_status(sequence_ids, JobStatus.saving_to_db)
 
-    logger.debug("Formatting data...")
-    log_status(sequence_ids, JobStatus.formatting_data)
-    formatted_data = get_formatted_data(copy(head))
-    formatted_data['metadata'] = head['metadata']
-
-    import pdb; pdb.set_trace()
-
-    logger.debug("Saving to DB...")
-    log_status(sequence_ids, JobStatus.saving_to_db)
-    # TODO: Fix DB write and read
-    save_clusterings_to_db( formatted_data)
+        save_clusterings_to_db(
+            sequence_id, clustered_data
+        )
 
     logger.debug("Done!")
     log_status(sequence_ids, JobStatus.done)

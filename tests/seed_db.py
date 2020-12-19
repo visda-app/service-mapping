@@ -1,4 +1,3 @@
-from time import sleep
 import json
 
 from lib.logger import logger
@@ -6,10 +5,12 @@ from models.db import (
     create_all_tables,
     session
 )
+# Import all the models you want to create tables for
 from models.text import (
     TextEmbedding,
     RawText,
 )
+from models.job import Job
 
 
 def session_add(session, d, sequence_id):

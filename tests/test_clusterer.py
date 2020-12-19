@@ -131,6 +131,51 @@ def test_insert_children_count():
     assert actual_result == expected_result
 
 
+def test_partition_by_sequence_id():
+    KEY = 'sequence_id'
+    data = [
+        {
+            KEY: '1',
+            "text": "This is the first entry",
+        },
+        {
+            KEY: 2,
+            "text": "Fall is colorful",
+        },
+        {
+            KEY: 2,
+            "text": "Baked potato is delicious",
+        }
+    ]
+    actual_results = clusterer.partition_by_sequence_id(data)
+    expected_result = {
+        2: [
+            {
+                KEY: 2,
+                "text": "Fall is colorful",
+            },
+            {
+                KEY: 2,
+                "text": "Baked potato is delicious",
+            }
+        ],
+        '1': [
+            {
+                KEY: '1',
+                "text": "This is the first entry",
+            },
+        ]
+    }
+    assert actual_results == expected_result
+
+
 def test_main():
-    sequence_ids = ['1']
-    clusterer.load_and_cluster_and_save(sequence_ids)
+    """
+    A functional test for the main clusterer
+    """
+    sequence_ids = ['1', '2']
+    # clusterer.load_and_cluster_and_save(sequence_ids)
+
+    # from models.text import ClusteredText
+    # res = ClusteredText.get_last_by_sequence_id('1')
+    # import pdb; pdb.set_trace()

@@ -9,7 +9,7 @@ from configs.app import (
 from models.text import TextEmbedding
 from models.job import Job, JobStatus
 from models.db import create_all_tables
-from clusterer import load_cluster_save
+from clusterer import load_and_cluster_and_save
 
 
 create_all_tables()
@@ -22,7 +22,7 @@ def start_next_task(text_embedding):
     sequence_id = text_embedding.get_sequence_id()
     logger.debug(f"Starting clustering for Sequence_id={sequence_id}")
     Job.log_status(sequence_id, JobStatus.mapping_started)
-    load_cluster_save([sequence_id])
+    load_and_cluster_and_save([sequence_id])
     Job.log_status(sequence_id, JobStatus.mapping_done)
 
 
