@@ -24,6 +24,7 @@ RUN apt-get update && \
     --no-install-recommends \
     python$PYTHON_VERSION python3-pip python3-setuptools \
     git \
+    sudo vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # Make some useful symlinks that are expected to exist
@@ -76,12 +77,6 @@ CMD [ "python", "infiloop.py" ]
 FROM prod_requirements as dev_image
 
 USER root
-RUN apt-get update && \
-    apt-get install -y \
-    --no-install-recommends \
-    sudo vim \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements/dev_requirements.txt requirements/
 RUN pip install -r requirements/dev_requirements.txt

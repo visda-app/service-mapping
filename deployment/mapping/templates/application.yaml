@@ -57,7 +57,7 @@ spec:
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
                 command: ["python"]
-                args: ["consumer_raw_text.py"]
+                args: ["consumers/raw_text.py"]
                 env:
                 -   name: BROKER_SERVICE_URL
                     value: {{ .Values.brokerServiceUrl }}
@@ -83,7 +83,7 @@ spec:
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
                 command: ["python"]
-                args: ["consumer_text_embedding.py"]
+                args: ["consumers/text_embedding.py"]
                 env:
                 -   name: BROKER_SERVICE_URL
                     value: {{ .Values.brokerServiceUrl }}
