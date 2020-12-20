@@ -30,3 +30,10 @@ class DB:
         SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
     else:
         SQLALCHEMY_DATABASE_URI = f"{DB_DRIVER}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"  # noqa
+
+
+class ThirdParty:
+    """
+    configurations for the third party apps
+    """
+    GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
