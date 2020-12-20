@@ -105,6 +105,32 @@ spec:
                     value: "{{ .Values.db.port }}"
                 -   name: DB_DATABASENAME
                     value: "{{ .Values.db.databasename }}"
+            -   name: {{ .Values.podContainerName }}-consumer-task
+                image: {{ .Values.dockerImage }}
+                imagePullPolicy: {{ .Values.imagePullPolicy }}
+                command: ["python"]
+                args: ["consumers/task.py"]
+                env:
+                -   name: BROKER_SERVICE_URL
+                    value: {{ .Values.brokerServiceUrl }}
+                -   name: PULSAR_TASK_TOPIC
+                    value: {{ .Values.pulsarTaskTopic }}
+                -   name: SUBSCRIPTION_NAME
+                    value: {{ .Values.subscriptionName }}
+                -   name: DB_DRIVER
+                    value: "{{ .Values.db.driver }}"
+                -   name: DB_USER
+                    value: "{{ .Values.db.user }}"
+                -   name: DB_PASSWORD
+                    value: "{{ .Values.secrets.db.password }}"
+                -   name: DB_HOST
+                    value: "{{ .Values.db.host }}"
+                -   name: DB_PORT
+                    value: "{{ .Values.db.port }}"
+                -   name: DB_DATABASENAME
+                    value: "{{ .Values.db.databasename }}"
+                -   name: GOOGLE_API_KEY
+                    value: "{{ .Values.google.api_key }}"
 
 ---
 
