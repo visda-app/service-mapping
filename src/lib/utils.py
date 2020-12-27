@@ -1,6 +1,7 @@
 import time
 import functools
 from lib.logger import logger
+import importlib
 
 
 def timerD(func):
@@ -22,3 +23,7 @@ def text_tip(s):
         return s[:20] + " ... " + s[-15:]
     else:
         return s
+
+
+def get_module_from_string(module_path):
+    return importlib.import_module(module_path)

@@ -1,0 +1,3211 @@
+{
+    "kind": "youtube#commentThreadListResponse",
+    "etag": "f25oC-CWgwquSyCYMhILTwngi-w",
+    "nextPageToken": "QURTSl9pMlJPOE0zRVJ3a2daVndKZ0JUMWZrSXQ3Z1JSWmpyM3ZLMmg4LVRiV0tuR2N3cVRya0M0clIwSkFQaXhaY0VTeXV5cEJWNHlKOA==",
+    "pageInfo": {
+        "totalResults": 100,
+        "resultsPerPage": 100
+    },
+    "items": [
+        {
+            "kind": "youtube#commentThread",
+            "etag": "t_3ZkuYzQdOHD1eNjL5eU__mp0k",
+            "id": "UgylvVfL54hk5yuBQAZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "21TudHytgaJ0YInuRrLOsCvjSQA",
+                    "id": "UgylvVfL54hk5yuBQAZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Love the bus Sir, it's very cool being self sufficient",
+                        "textOriginal": "Love the bus Sir, it's very cool being self sufficient",
+                        "authorDisplayName": "LightOfReason7",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnj1jsrBGcOWa0tQ7UW4P0y67zWt7R8IPSuRaA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCQT0gnoTKe4wZPKQrtZmDyA",
+                        "authorChannelId": {
+                            "value": "UCQT0gnoTKe4wZPKQrtZmDyA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:38:57Z",
+                        "updatedAt": "2020-12-20T15:38:57Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "ollw3_MCxbYjKfoRKU0VcQfPSEU",
+            "id": "UgwS3jGPz47SgezxDNB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "kk_AXKxkP7XU8htJORdjl4NeJzc",
+                    "id": "UgwS3jGPz47SgezxDNB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "The woman that couldn\u2019t write a profile will still destroy a man in court if she chooses to. \nThat woman has all those expensive habits but needs to take a literature course so she can learn to write and express herself",
+                        "textOriginal": "The woman that couldn\u2019t write a profile will still destroy a man in court if she chooses to. \nThat woman has all those expensive habits but needs to take a literature course so she can learn to write and express herself",
+                        "authorDisplayName": "A. C.",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngSVlLORXNXRyJ2xgoNHO0lnVI_XO7T6GJdzHndhw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC10JLEmfYCuePveS0jZch4Q",
+                        "authorChannelId": {
+                            "value": "UC10JLEmfYCuePveS0jZch4Q"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:37:25Z",
+                        "updatedAt": "2020-12-20T15:37:25Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "iASHtzrsfQ7gH5ZlXRxaGaPUUJI",
+            "id": "UgxOcer__SqrzYVZiLd4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "79ADemVtvzaNATiPHTCrvZ_HXy8",
+                    "id": "UgxOcer__SqrzYVZiLd4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "No matter how careful a guy will behave, the court will always favor woman and every women can at any time deny their consent by claiming she was pressured or manipulated into something she didn't want. The last consequence will by, that most men will stay away from women!",
+                        "textOriginal": "No matter how careful a guy will behave, the court will always favor woman and every women can at any time deny their consent by claiming she was pressured or manipulated into something she didn't want. The last consequence will by, that most men will stay away from women!",
+                        "authorDisplayName": "FilmBuff",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngiTgUVNMH5i742NDTCBWI30_gkv5JhBo8nJw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC-zrZyufWOvx2huRjf5K_uw",
+                        "authorChannelId": {
+                            "value": "UC-zrZyufWOvx2huRjf5K_uw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:37:18Z",
+                        "updatedAt": "2020-12-20T15:37:18Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "ysmoeallXC21DCIzH6urpnBkDDs",
+            "id": "UgzU8rvuSG9V27pPx_14AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "_sbKPbr48cW4R3weq1OlkG4d4T0",
+                    "id": "UgzU8rvuSG9V27pPx_14AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "It is for reasons like this that Islamic Laws require *two* women witnesses to that of one man.",
+                        "textOriginal": "It is for reasons like this that Islamic Laws require *two* women witnesses to that of one man.",
+                        "authorDisplayName": "Taj C.",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhU6-RkdJh_0iJEQi394zMVp1BP1HipRsh1hqzf=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCQzmoc441QtGVBzLtA4UdmQ",
+                        "authorChannelId": {
+                            "value": "UCQzmoc441QtGVBzLtA4UdmQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 3,
+                        "publishedAt": "2020-12-20T15:34:36Z",
+                        "updatedAt": "2020-12-20T15:34:36Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "7ek8O7XZeAL4nqrhMjqt0AIavg4",
+            "id": "UgyARhfJ65CiRnjbNPd4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "D03v6BY0MmCzbetY1O653Yg1RCM",
+                    "id": "UgyARhfJ65CiRnjbNPd4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "I learn a lot from these comments, however I  am seeing a pattern. While the women, mainly lgbtq community, are taking away men's rights, I have met many men that have converted to Islamic beliefs. Put that in the court of law and it becomes an uuuuggggllly messs!  Congratulations to all the lgbtq people. You should have kept your opinions to yourself and persued your own dreams instead of trying to take away someone else's, straight men. FYI..Muslim people have already seated themselves in our political arena.",
+                        "textOriginal": "I learn a lot from these comments, however I  am seeing a pattern. While the women, mainly lgbtq community, are taking away men's rights, I have met many men that have converted to Islamic beliefs. Put that in the court of law and it becomes an uuuuggggllly messs!  Congratulations to all the lgbtq people. You should have kept your opinions to yourself and persued your own dreams instead of trying to take away someone else's, straight men. FYI..Muslim people have already seated themselves in our political arena.",
+                        "authorDisplayName": "RJ Graditude",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnj10zQzj_gdl5GqfvaFFCNeyv5eArbfo1xmfA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC3rTr4O5Zy39llujyA0uoXQ",
+                        "authorChannelId": {
+                            "value": "UC3rTr4O5Zy39llujyA0uoXQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:33:56Z",
+                        "updatedAt": "2020-12-20T15:33:56Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "qEgLzd4snPGjxkhQpV_Yu-uy4as",
+            "id": "UgwZbMfrC2uPnHuItdx4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "Ugp8Xya6wYw9ArTGMuRLfIKnccI",
+                    "id": "UgwZbMfrC2uPnHuItdx4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Today, a guy should get a signed contract that's notorized the day before",
+                        "textOriginal": "Today, a guy should get a signed contract that's notorized the day before",
+                        "authorDisplayName": "Henry Hyde",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhx_79L261SIVgyBOy92VqaAhmnsxH4dMn2FQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCG9clvuOVOu66ZeLHNwgrsA",
+                        "authorChannelId": {
+                            "value": "UCG9clvuOVOu66ZeLHNwgrsA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:32:54Z",
+                        "updatedAt": "2020-12-20T15:32:54Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "rbPHwDYXRFuHvEl3LUNb_DtH7dY",
+            "id": "Ugxfw1iRdjnM_zqD78F4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "tGQqZZsqpJgWgHiD7P04zKxzYEQ",
+                    "id": "Ugxfw1iRdjnM_zqD78F4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "What if the woman says that the man forced her to sign it?",
+                        "textOriginal": "What if the woman says that the man forced her to sign it?",
+                        "authorDisplayName": "StrengthOver40",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjMwMJshoqBXfKfI5XfovPMV0BSCdsT7SWEuoaI=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCPevYCvg-0j-WwpHgvBipGg",
+                        "authorChannelId": {
+                            "value": "UCPevYCvg-0j-WwpHgvBipGg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:32:49Z",
+                        "updatedAt": "2020-12-20T15:32:49Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "cHVp1O1M6AGY8ReddZL_W4XFoUo",
+            "id": "UgzPSuxp5nnE5zPutW54AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "tK5m8wpKCW_vGqavtfFYIPHPyuU",
+                    "id": "UgzPSuxp5nnE5zPutW54AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "The bus is looking great \ud83e\udd18",
+                        "textOriginal": "The bus is looking great \ud83e\udd18",
+                        "authorDisplayName": "juan_ gotdeported",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngNn7XNIKILyQtIvTF_9PQypJtjmsI5ibtQ_1sKAw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCyq8q0mT5DyziCBorntwoPQ",
+                        "authorChannelId": {
+                            "value": "UCyq8q0mT5DyziCBorntwoPQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:30:57Z",
+                        "updatedAt": "2020-12-20T15:30:57Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "jG5FyjrNVp1QMLupGqEyH2puc-c",
+            "id": "Ugxs0Kd2GPKAY1Gb9hp4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "ZGMfaSwWxQ8VDiTpEIhtL_-fvIA",
+                    "id": "Ugxs0Kd2GPKAY1Gb9hp4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Joker.... damn what a nice man cave, feels like 15000 B.C. Congrats!",
+                        "textOriginal": "Joker.... damn what a nice man cave, feels like 15000 B.C. Congrats!",
+                        "authorDisplayName": "DaKussh",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniDu_nDWKbX4UzzGh_tyL_xsCWubkVDBXeUpYuz=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCBGSqUwC8_m2ft7VBFZ0GRQ",
+                        "authorChannelId": {
+                            "value": "UCBGSqUwC8_m2ft7VBFZ0GRQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:30:47Z",
+                        "updatedAt": "2020-12-20T15:30:47Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "zoLkyfMnF-N8b8BqPO3lgxjnLNA",
+            "id": "UgzHRJV5ZTNeDO9YhhZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "WxB9Umi_bdo6bYcU4Hfd1S2R7Yw",
+                    "id": "UgzHRJV5ZTNeDO9YhhZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Chad and Tyrone must beware.",
+                        "textOriginal": "Chad and Tyrone must beware.",
+                        "authorDisplayName": "Henry Hyde",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhx_79L261SIVgyBOy92VqaAhmnsxH4dMn2FQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCG9clvuOVOu66ZeLHNwgrsA",
+                        "authorChannelId": {
+                            "value": "UCG9clvuOVOu66ZeLHNwgrsA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:30:42Z",
+                        "updatedAt": "2020-12-20T15:30:42Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 2,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "k19khGpZqhjYvb_mh3Us9dGU3Pc",
+            "id": "Ugxc4JvHKAurxrI-4gx4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "cEOBeqULXgir7BIJ_LZqITCjg8Y",
+                    "id": "Ugxc4JvHKAurxrI-4gx4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Next step will be a requirement of a government official being present during sex just to make sure it's consensual...",
+                        "textOriginal": "Next step will be a requirement of a government official being present during sex just to make sure it's consensual...",
+                        "authorDisplayName": "Kuba",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjQuDhZn7wIQej9kyzlA4BFL5SVel8CXTqKeQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCWDtB5iY--NLWgLMfGEquhw",
+                        "authorChannelId": {
+                            "value": "UCWDtB5iY--NLWgLMfGEquhw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:29:39Z",
+                        "updatedAt": "2020-12-20T15:29:39Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "UrvlpUAag_cV8RquJCYQgESyv2A",
+            "id": "Ugw0rDC2tN5xBx8qmHd4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "4Rkp5ac4uOb7sV1uT-x332UTYFg",
+                    "id": "Ugw0rDC2tN5xBx8qmHd4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Your video sent me down the rabbit hole. I discovered that there are millions of videos about consent. Check it out on YouTube. This could be the fodder for a lot of good future videos from you.",
+                        "textOriginal": "Your video sent me down the rabbit hole. I discovered that there are millions of videos about consent. Check it out on YouTube. This could be the fodder for a lot of good future videos from you.",
+                        "authorDisplayName": "Seguro Sincero",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwni0D-Pzk44wRlFbqL4PvoZeihV2cloxvZOGc_xwKw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCuymswzegF58VZeW72KBFSA",
+                        "authorChannelId": {
+                            "value": "UCuymswzegF58VZeW72KBFSA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:27:37Z",
+                        "updatedAt": "2020-12-20T15:27:37Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "TqWQOgCmnUe0AYt0RT6--xbv4kg",
+            "id": "UgwxHxG8tWDwyh68yaZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "AVok6GT1hV4-Y7eXQZtFrEUDsgQ",
+                    "id": "UgwxHxG8tWDwyh68yaZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "it is unfair to judge the intelligence of a person based on their knowledge of foreign languages, but the content of what she write does  make her seams unintelligent",
+                        "textOriginal": "it is unfair to judge the intelligence of a person based on their knowledge of foreign languages, but the content of what she write does  make her seams unintelligent",
+                        "authorDisplayName": "TheMotoremi",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjZ2ZWmfyBaCmE7co7Nw6MZHTkPR0AiNDiKzA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCslvDq3I6Pyc25n2JBV5R8w",
+                        "authorChannelId": {
+                            "value": "UCslvDq3I6Pyc25n2JBV5R8w"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:27:08Z",
+                        "updatedAt": "2020-12-20T15:27:08Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 1,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "okkJFZ_k2mePxJzKabouu1IWMlk",
+            "id": "UgzcIfrI0SPguJ_9tp54AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "gUEeScxro71zgAzboWmZwvBjHFQ",
+                    "id": "UgzcIfrI0SPguJ_9tp54AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "We need to Ask a consent before every thrust",
+                        "textOriginal": "We need to Ask a consent before every thrust",
+                        "authorDisplayName": "adam naculak",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniB-a6hwfZTKchxIfVajEozQeX36nypHe30HA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCTJce0JsW08OIoKhmP2PgXQ",
+                        "authorChannelId": {
+                            "value": "UCTJce0JsW08OIoKhmP2PgXQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:26:50Z",
+                        "updatedAt": "2020-12-20T15:26:50Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 1,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "1VQpHRyuAckq-CJcy9HUzYr6C8I",
+            "id": "UgxKBjMaQnDLhGzsoqZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "wcYDGVuZl3ohOs_0-hVj4y9yTRs",
+                    "id": "UgxKBjMaQnDLhGzsoqZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Another thing is you lock up enough men for trivial laws like this then they are all gonna come out as hardened Ex-convicts. Good luck with turning many men into to hardened criminals. Locking someone up unfairly usually turns them into a monster.\nThese feminists don not see this cloning but I see it as a natural progression. Get a man to lose everything, torcher him in jail and give him a place to workout and study during that time and as his heart grows colder his muscles will become stronger and his mind will fill with an unquenchable rage.\nDo that to enough men and you\u2019ll eventually have society way out of control and the barbarians will return to society.",
+                        "textOriginal": "Another thing is you lock up enough men for trivial laws like this then they are all gonna come out as hardened Ex-convicts. Good luck with turning many men into to hardened criminals. Locking someone up unfairly usually turns them into a monster.\nThese feminists don not see this cloning but I see it as a natural progression. Get a man to lose everything, torcher him in jail and give him a place to workout and study during that time and as his heart grows colder his muscles will become stronger and his mind will fill with an unquenchable rage.\nDo that to enough men and you\u2019ll eventually have society way out of control and the barbarians will return to society.",
+                        "authorDisplayName": "A. C.",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngSVlLORXNXRyJ2xgoNHO0lnVI_XO7T6GJdzHndhw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC10JLEmfYCuePveS0jZch4Q",
+                        "authorChannelId": {
+                            "value": "UC10JLEmfYCuePveS0jZch4Q"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:24:16Z",
+                        "updatedAt": "2020-12-20T15:24:16Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "pGfSLkk64qpAiSwzjCW0rVAzdvQ",
+            "id": "UgxegC6z-VgIWlJyYGx4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "cKEZY-PoWcuNCw66m3RzIXT1DkM",
+                    "id": "UgxegC6z-VgIWlJyYGx4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "I think when your country is the size of one a small US state it's easy to get away with making laws like that. As a lawyer I already know he said / she said arguments in the US favor women most of the time, but I couldn't see any red states (or the federal government) passing similar laws to our neighbors across the pond.",
+                        "textOriginal": "I think when your country is the size of one a small US state it's easy to get away with making laws like that. As a lawyer I already know he said / she said arguments in the US favor women most of the time, but I couldn't see any red states (or the federal government) passing similar laws to our neighbors across the pond.",
+                        "authorDisplayName": "MyBesso",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngSnl-suKb1rEtLNKTDANkegD4cMiYwx4QKyw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC2RmUZqfWTDcqqzqQgeBubw",
+                        "authorChannelId": {
+                            "value": "UC2RmUZqfWTDcqqzqQgeBubw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:23:55Z",
+                        "updatedAt": "2020-12-20T15:23:55Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "xrRLElmBxK4SdtwflAL-KIWjDy4",
+            "id": "UgwCDZUlU01SRn8iqe14AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "qXLnE-4LQhw_9wBx0ul2nMC5Cd4",
+                    "id": "UgwCDZUlU01SRn8iqe14AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Let's see the dog!",
+                        "textOriginal": "Let's see the dog!",
+                        "authorDisplayName": "Henry Hyde",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhx_79L261SIVgyBOy92VqaAhmnsxH4dMn2FQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCG9clvuOVOu66ZeLHNwgrsA",
+                        "authorChannelId": {
+                            "value": "UCG9clvuOVOu66ZeLHNwgrsA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:23:38Z",
+                        "updatedAt": "2020-12-20T15:23:38Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "b6qR3euyDU385dba6DY8T45dpHI",
+            "id": "UgySqGNj17G2HdfrHSZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "cz8JEZf1HPnt-btR9vKzBcsEsjk",
+                    "id": "UgySqGNj17G2HdfrHSZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "im 18 and im pissed that this is the kind of world I have to live in/get into. I've seen it happen to my father. Why get into relationships?",
+                        "textOriginal": "im 18 and im pissed that this is the kind of world I have to live in/get into. I've seen it happen to my father. Why get into relationships?",
+                        "authorDisplayName": "Dawsen Van Ede",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhxTN82K_hTr6FX--axtYwfI5Kh7Z7vxkqr6Q=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCKE5B001Cub64-q-klKTinA",
+                        "authorChannelId": {
+                            "value": "UCKE5B001Cub64-q-klKTinA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:23:02Z",
+                        "updatedAt": "2020-12-20T15:23:21Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "AeCXIGmVywi5269ACjUp00qlaE8",
+            "id": "Ugxt7TUOcMy8pQruZFl4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "TMEn7ZuLrNYM4zM-NZWcuUSvhGY",
+                    "id": "Ugxt7TUOcMy8pQruZFl4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "What's funny is how some women will claim they're not like that but they never speak out about things like this. This is only going to drive the wedge between the genders even deeper then they're going to complain men won't interact with them. WAKE UP LADIES. Staying silent on matters like this only proves you support these laws and it will lead to your own destruction.",
+                        "textOriginal": "What's funny is how some women will claim they're not like that but they never speak out about things like this. This is only going to drive the wedge between the genders even deeper then they're going to complain men won't interact with them. WAKE UP LADIES. Staying silent on matters like this only proves you support these laws and it will lead to your own destruction.",
+                        "authorDisplayName": "Wolfgang548",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhWkkE7qByq-mFe12lPu1Eb8r1-fJvNn6KD9g=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCp7KfIPlPovuJSFUt3o0wKw",
+                        "authorChannelId": {
+                            "value": "UCp7KfIPlPovuJSFUt3o0wKw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:22:27Z",
+                        "updatedAt": "2020-12-20T15:22:27Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "KP9XUuXoLHAow5awqCIEsYOnhQY",
+            "id": "UgxzqD-x-pvkbeN559h4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "1VuQyYeY4GS0VjCye32qfHH-CpQ",
+                    "id": "UgxzqD-x-pvkbeN559h4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "They play the yes-no game, but if you take \"no\" for an answer, the next day she'll be telling all her friends you're a wimp because you gave up so easily.",
+                        "textOriginal": "They play the yes-no game, but if you take \"no\" for an answer, the next day she'll be telling all her friends you're a wimp because you gave up so easily.",
+                        "authorDisplayName": "Rimshot 22",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniBZXMxbfKaYwTHWTjz44WjgLg9Wg8TcNsjkQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCb9it9IKUBvGcpqxkHfyYOg",
+                        "authorChannelId": {
+                            "value": "UCb9it9IKUBvGcpqxkHfyYOg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:21:50Z",
+                        "updatedAt": "2020-12-20T15:21:50Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "Mhc-08ExsN_yibEeJMW_XvDvOJQ",
+            "id": "Ugye2cgx_If61ulRk3J4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "pDPxEiSSKePNO47NV9n03PUsYEs",
+                    "id": "Ugye2cgx_If61ulRk3J4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "i saw twice in my life women harm themselves and then call the police,, one retracted when the guy agreed on doing what she wanted, the other guy didn't go to jail but now can't go back to that town. another woman admitted to me she lied about abuses to have custody and more money, when she was the one filing for divorce and cheating on him. this law isn't going to change anything",
+                        "textOriginal": "i saw twice in my life women harm themselves and then call the police,, one retracted when the guy agreed on doing what she wanted, the other guy didn't go to jail but now can't go back to that town. another woman admitted to me she lied about abuses to have custody and more money, when she was the one filing for divorce and cheating on him. this law isn't going to change anything",
+                        "authorDisplayName": "TheMotoremi",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjZ2ZWmfyBaCmE7co7Nw6MZHTkPR0AiNDiKzA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCslvDq3I6Pyc25n2JBV5R8w",
+                        "authorChannelId": {
+                            "value": "UCslvDq3I6Pyc25n2JBV5R8w"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:21:17Z",
+                        "updatedAt": "2020-12-20T15:21:17Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "MN0eUeWsQhILxcyMS00CR0kjo4M",
+            "id": "UgyB_LaGQHoA6nqT7vB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "-ybHVsfN9DECyPHi4YFevgo6sAM",
+                    "id": "UgyB_LaGQHoA6nqT7vB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Truly all these people wanting government involved in everything don't think. Once they are involved there is no going back. Once it's law it's law pretty much. So sad the world and dating have become like this. Though men still at fault because they will complain men are not adventurous or whatever any more. It's like yeah because anything we do can get us put away so it's better to stay away simple as that.",
+                        "textOriginal": "Truly all these people wanting government involved in everything don't think. Once they are involved there is no going back. Once it's law it's law pretty much. So sad the world and dating have become like this. Though men still at fault because they will complain men are not adventurous or whatever any more. It's like yeah because anything we do can get us put away so it's better to stay away simple as that.",
+                        "authorDisplayName": "BlackDRagin21",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniBHzBNBYzbbP-nklUWo3l_x9I6Gj_SzaO4cg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCkq-4bk0d3KWW_8FiBjb_fQ",
+                        "authorChannelId": {
+                            "value": "UCkq-4bk0d3KWW_8FiBjb_fQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:15:55Z",
+                        "updatedAt": "2020-12-20T15:15:55Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "3VSZdoKOdlMXEIt6Kz7IlOx-yc8",
+            "id": "UgyH5fxCZ8vxiy6skjh4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "9_MVeGYKI_8uJSBYZzrhpe1QhGE",
+                    "id": "UgyH5fxCZ8vxiy6skjh4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Damn that bus is amazing man. Living my dream, I'll get there someday.",
+                        "textOriginal": "Damn that bus is amazing man. Living my dream, I'll get there someday.",
+                        "authorDisplayName": "Luke W",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjWune1UjW_tLgeGe7J3GQWHOrBx-MiUQYaWw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCovMMm84aZzqYviN3X77W7g",
+                        "authorChannelId": {
+                            "value": "UCovMMm84aZzqYviN3X77W7g"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:15:37Z",
+                        "updatedAt": "2020-12-20T15:15:37Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "AJO8Sa64eO4K6FmUP17v5GISnjA",
+            "id": "UgxC4Ax0kxhvdgxXb8B4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "pw1Md_huFPpG_LzYoraXLthxmW4",
+                    "id": "UgxC4Ax0kxhvdgxXb8B4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "guilty until proven innocent...",
+                        "textOriginal": "guilty until proven innocent...",
+                        "authorDisplayName": "john03063",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhtpfdwaoeDUOAeDDKqLI5ApWANxFi3x2r7aSQ4=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC8kDmraQweu3alxtLMV681Q",
+                        "authorChannelId": {
+                            "value": "UC8kDmraQweu3alxtLMV681Q"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:14:53Z",
+                        "updatedAt": "2020-12-20T15:14:53Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "RvBkciVPz3dyS03QQVxiCIaXjtA",
+            "id": "UgzK9KAPkARBVBEObIB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "_7ihU1xa-18cyY1wLD66RVhOgog",
+                    "id": "UgzK9KAPkARBVBEObIB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "The only way to win this game is to just not play.",
+                        "textOriginal": "The only way to win this game is to just not play.",
+                        "authorDisplayName": "Michael Collins",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjejHJm45BaAfvmrmoAiHGNk3DI_MPKvJDKIg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCaFjBCkIZVeMkkZiCzljwoA",
+                        "authorChannelId": {
+                            "value": "UCaFjBCkIZVeMkkZiCzljwoA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:14:49Z",
+                        "updatedAt": "2020-12-20T15:14:49Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "S9sP972mY4IdR3qhJxaFbEer9iQ",
+            "id": "UgxLc5qPlP4v9LMGU-J4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "hDUpP3o2o5dIFXaLSwW3Yw8Jf6c",
+                    "id": "UgxLc5qPlP4v9LMGU-J4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "That bus build out is sick. Great job. Speaking for myself I'd like to see a playlist on the build. Perhaps a separate channel may drive more Patrons/views/revenue without the algorithm nannyfail kicking in. Hot content right now.",
+                        "textOriginal": "That bus build out is sick. Great job. Speaking for myself I'd like to see a playlist on the build. Perhaps a separate channel may drive more Patrons/views/revenue without the algorithm nannyfail kicking in. Hot content right now.",
+                        "authorDisplayName": "NotaBRZ NotaMiata",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniEi17NuXhnynnlna1pJbygVpd532ICmv3xXA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCiAi7CZkXnTaWJcXrxOiKGQ",
+                        "authorChannelId": {
+                            "value": "UCiAi7CZkXnTaWJcXrxOiKGQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:14:30Z",
+                        "updatedAt": "2020-12-20T15:17:21Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "frjh0zSWU2tH7DIpSryUJKM4h1M",
+            "id": "UgzUaE0OsPssDteoXN94AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "H3zTgTmERUM00-MlhsAWQjPdkjI",
+                    "id": "UgzUaE0OsPssDteoXN94AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "You should have a witness present when you both sign the paper so that the woman can't say that you \"forced\" her to sign it under duress. This sounds ridiculous and it is. The western societies are so messed up.",
+                        "textOriginal": "You should have a witness present when you both sign the paper so that the woman can't say that you \"forced\" her to sign it under duress. This sounds ridiculous and it is. The western societies are so messed up.",
+                        "authorDisplayName": "Chris Kerton",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwng1n51OD0Cm45bRcTiUn7d1VIggN2-_Vx7YnD8bIA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCGJa5reYkKjk6jufiTSZEDw",
+                        "authorChannelId": {
+                            "value": "UCGJa5reYkKjk6jufiTSZEDw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:13:30Z",
+                        "updatedAt": "2020-12-20T15:14:41Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "Y0pKnJEDAs28ySXTsIO2fG6i454",
+            "id": "UgyJQ0Z4DUlwXEG20Uh4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "w77UXpfKdqiRfpdJhMu3rAVwB7U",
+                    "id": "UgyJQ0Z4DUlwXEG20Uh4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "EU is union which has no future. Guys I am telling you that soon it will be punishable by law if guy does not want to date or marry.",
+                        "textOriginal": "EU is union which has no future. Guys I am telling you that soon it will be punishable by law if guy does not want to date or marry.",
+                        "authorDisplayName": "freak777power",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniFBRGXtuCzj9hF_2ayHrD367AOz4_2eKz2Ug=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCAOxQn7_S8LM8JGHTLpJxCw",
+                        "authorChannelId": {
+                            "value": "UCAOxQn7_S8LM8JGHTLpJxCw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:13:14Z",
+                        "updatedAt": "2020-12-20T15:18:59Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "9KIF6oo8bfftgPCjJSrn1q7iNps",
+            "id": "UgxBxknRDtFONBVlDLd4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "5wTJLz03A_bujXNDQzO4YcKb_HY",
+                    "id": "UgxBxknRDtFONBVlDLd4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Are they just trying to lock all men up and make an Amazon society? This is f*cked up. \nYea men will start life on Mars or the Moon just to get away from the crazy feminists. Well take the feminine women with us and let Amazon Society crumble behind us.",
+                        "textOriginal": "Are they just trying to lock all men up and make an Amazon society? This is f*cked up. \nYea men will start life on Mars or the Moon just to get away from the crazy feminists. Well take the feminine women with us and let Amazon Society crumble behind us.",
+                        "authorDisplayName": "A. C.",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngSVlLORXNXRyJ2xgoNHO0lnVI_XO7T6GJdzHndhw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC10JLEmfYCuePveS0jZch4Q",
+                        "authorChannelId": {
+                            "value": "UC10JLEmfYCuePveS0jZch4Q"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:12:56Z",
+                        "updatedAt": "2020-12-20T15:12:56Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "xoMXXbY7WyzC9SbJv_btaZrQ72I",
+            "id": "UgyrNGH7GESwXkFm_fd4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "p2AJ0q7UW9kXyqB2fokMA2SPcZE",
+                    "id": "UgyrNGH7GESwXkFm_fd4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "I hate to say this . But the younger men will have hell to pay for just wanting to love a woooman. The things the next generation will see is crazy.",
+                        "textOriginal": "I hate to say this . But the younger men will have hell to pay for just wanting to love a woooman. The things the next generation will see is crazy.",
+                        "authorDisplayName": "pirate pete",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnid4DulnP_lF_hj_15EZJQH3tW_WaSE5AYE_w=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCvtSmjGoAZvCo6t7ktqm2Lw",
+                        "authorChannelId": {
+                            "value": "UCvtSmjGoAZvCo6t7ktqm2Lw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:11:21Z",
+                        "updatedAt": "2020-12-20T15:11:21Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "mHVxA5h2x6wbKi5_n8yzWLfM0zg",
+            "id": "UgyW6Ppsc8qZMqxeVKt4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "SrTyJl_xgpLt2MYjBThzymgzNuE",
+                    "id": "UgyW6Ppsc8qZMqxeVKt4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Great work on the bus. Being handy is very important at least as per Red Green Show \"If the women don't find you handsome, they should at least find you handy\".",
+                        "textOriginal": "Great work on the bus. Being handy is very important at least as per Red Green Show \"If the women don't find you handsome, they should at least find you handy\".",
+                        "authorDisplayName": "Ed Ku",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjtxFBQuOBwjqyZH7x9i5QKUFDs5Anm4IrUqQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCX5oHeNF3uyIryJs2ENaoHQ",
+                        "authorChannelId": {
+                            "value": "UCX5oHeNF3uyIryJs2ENaoHQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:10:41Z",
+                        "updatedAt": "2020-12-20T15:10:41Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "qB7ptuoLf56CWLBOId454Ewzo_4",
+            "id": "UgyprJRZ-LAiMDelvPJ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "x9CG8BfJKatgvW0YJNtzIvCqrJQ",
+                    "id": "UgyprJRZ-LAiMDelvPJ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "I never thought I would be living a monk lifestyle but it seems to be the safest path. Nice bus bro.",
+                        "textOriginal": "I never thought I would be living a monk lifestyle but it seems to be the safest path. Nice bus bro.",
+                        "authorDisplayName": "Harvey Rickard",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjaIBF8KETGe6E6F8tSkizCij1Xu3ICwsVOb1Zj=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCspTt_x6JJjCEaBRF9vpEeA",
+                        "authorChannelId": {
+                            "value": "UCspTt_x6JJjCEaBRF9vpEeA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:10:12Z",
+                        "updatedAt": "2020-12-20T15:10:12Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "pPxEii6gyX494TqhcUGjtPKQfRo",
+            "id": "UgyJKR55m2spFaLbsTB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "1H_Xfy61ABmF_hdH2Ap8V1rah1o",
+                    "id": "UgyJKR55m2spFaLbsTB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "One answer to this mess :  BACHELOR  PAD  ECONOMICS,  read it and  leave the hell",
+                        "textOriginal": "One answer to this mess :  BACHELOR  PAD  ECONOMICS,  read it and  leave the hell",
+                        "authorDisplayName": "charlotte sky",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnh-ErKqlT7VFlxXYF0MQTkLDOpwE_mx_s7SEg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCzUozzHW7hcW2EAjTrqMTLQ",
+                        "authorChannelId": {
+                            "value": "UCzUozzHW7hcW2EAjTrqMTLQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:10:07Z",
+                        "updatedAt": "2020-12-20T15:10:07Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "6tD6Eai8E6tDGgN25q3xCURg4Mk",
+            "id": "Ugwby0YUdIXbQW9ksxV4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "nNJ_x0b5xfy7HDm5x4PHZUGoyic",
+                    "id": "Ugwby0YUdIXbQW9ksxV4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "I would like a 500 word essay on why she\u2019s obese, without using \u201cgenetics.\u201d",
+                        "textOriginal": "I would like a 500 word essay on why she\u2019s obese, without using \u201cgenetics.\u201d",
+                        "authorDisplayName": "Carl Auclair",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnj_7kqPLqZJa9IWGYrESi1Ya0WLOqMBZIZqwg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCM7pRFukQd79VPfTOuhaS9g",
+                        "authorChannelId": {
+                            "value": "UCM7pRFukQd79VPfTOuhaS9g"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:10:06Z",
+                        "updatedAt": "2020-12-20T15:10:06Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "vm7yFQs2N87f3i2n2RwjNBAE9dM",
+            "id": "UgychO5--dPbAZW0lTZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "KhAvsNagkGsemow8C3ca8rDQmi8",
+                    "id": "UgychO5--dPbAZW0lTZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "So now hiring a prostitute is the best way to prove consent.",
+                        "textOriginal": "So now hiring a prostitute is the best way to prove consent.",
+                        "authorDisplayName": "Ray Gordon Teaches Chess",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwni0w9gnwTUbZrUbxi3dID8VX6dzWwVDoOru5xcfiA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCXbMY38oREkEvxe02FprrCg",
+                        "authorChannelId": {
+                            "value": "UCXbMY38oREkEvxe02FprrCg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:08:31Z",
+                        "updatedAt": "2020-12-20T15:08:31Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "dPmIqgJ02LUpruOFF3WxKckQy6I",
+            "id": "UgwwNkj5ggwL4gwciQh4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "h12c-9JGBPYzJSR4duEd2sSngQI",
+                    "id": "UgwwNkj5ggwL4gwciQh4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Nothing lasts forever. Its going to be a hard fall and they won't expect it.",
+                        "textOriginal": "Nothing lasts forever. Its going to be a hard fall and they won't expect it.",
+                        "authorDisplayName": "Muscle Man",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnj5zIFTJbmmRgD-hcJ34rlJ3xsE3uGnoKLcaLO1RQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCoW0kTuDe5x9GS6okVbseVQ",
+                        "authorChannelId": {
+                            "value": "UCoW0kTuDe5x9GS6okVbseVQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:08:22Z",
+                        "updatedAt": "2020-12-20T15:08:22Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "5RZyMreRGJQVw4fBjv11QwhMZcE",
+            "id": "UgwFn8ibMS0Qm_DahUt4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "qO1q21gnmMiLhWfjj4FyjS3M8bI",
+                    "id": "UgwFn8ibMS0Qm_DahUt4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "In the military I saw more guys charged with the old struggle snuggle accusations than I ever saw females graped .... one guy got charged sent to Mannheim for 6 months pretrial confinement for tagging the ex GF who happened to now be dating a CID agent, with pressure from agent secret \"Merde\" she accused our hero with grape ..... truth came out and he was released back to duty .... after he loss his car to repo and his credit shot .... she got promoted and sent to Frankfurt .... when in doubt get the fq out ...",
+                        "textOriginal": "In the military I saw more guys charged with the old struggle snuggle accusations than I ever saw females graped .... one guy got charged sent to Mannheim for 6 months pretrial confinement for tagging the ex GF who happened to now be dating a CID agent, with pressure from agent secret \"Merde\" she accused our hero with grape ..... truth came out and he was released back to duty .... after he loss his car to repo and his credit shot .... she got promoted and sent to Frankfurt .... when in doubt get the fq out ...",
+                        "authorDisplayName": "C T",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjm3naA5xfEImGe_kZlgIMMQuZmpf7DoQavXLkddw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC2GMG_pduDV8YXC8PV7kllQ",
+                        "authorChannelId": {
+                            "value": "UC2GMG_pduDV8YXC8PV7kllQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:08:19Z",
+                        "updatedAt": "2020-12-20T15:08:41Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "lw8SswrC1mTJVm99ImNeoMBw3S0",
+            "id": "UgwZy5zSU-kEmTJsaxZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "5TKKipj5dH5XIU08ov6_AOPmoMA",
+                    "id": "UgwZy5zSU-kEmTJsaxZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Just wear a bodycam fuck it and if prenuptial agreements are thrown out in court. What makes you think they won't throw out a petty consent form if she's under \"duress\".",
+                        "textOriginal": "Just wear a bodycam fuck it and if prenuptial agreements are thrown out in court. What makes you think they won't throw out a petty consent form if she's under \"duress\".",
+                        "authorDisplayName": "Hector Flextor",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwng3Z32lgoSYPEA6c4aqibMVG6gAli3e4Ll3813zeA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC02VpPCblebmCyn7ZnM1LbA",
+                        "authorChannelId": {
+                            "value": "UC02VpPCblebmCyn7ZnM1LbA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:08:07Z",
+                        "updatedAt": "2020-12-20T15:08:07Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "MMxRAXHdsH0SY1UULfR_X8TOEEI",
+            "id": "UgzOcDHYmYc0aBtd3F94AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "Vu1jezTIvGmnDESTwUZ_GGW34R8",
+                    "id": "UgzOcDHYmYc0aBtd3F94AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Working as a Campus Police Seargent after my retirement for five years, we all say this coming as we had to teach these levels of concent. THIS WAS OVER SEVEN YEARS AGO! JUST HOW STOOPID, can these NEW feminists get? Can't they see this will only further alienate men FROM women in a time where heterosexual dating and marriage is ALREADY at an ALL-TIME LOW? Oh, but wait a minute. These feminists DONT DATE MEN ANYWAY DO THEY? So when in the world are the world's REAL women going to wake up and take a stand?!? Joker, I hope the world's men realize just how important your videos are to the future survival of modern men! In other words, if the WOMAN chooses, she can end you life with but a word. It's the Salem Witch Hunts all over again!",
+                        "textOriginal": "Working as a Campus Police Seargent after my retirement for five years, we all say this coming as we had to teach these levels of concent. THIS WAS OVER SEVEN YEARS AGO! JUST HOW STOOPID, can these NEW feminists get? Can't they see this will only further alienate men FROM women in a time where heterosexual dating and marriage is ALREADY at an ALL-TIME LOW? Oh, but wait a minute. These feminists DONT DATE MEN ANYWAY DO THEY? So when in the world are the world's REAL women going to wake up and take a stand?!? Joker, I hope the world's men realize just how important your videos are to the future survival of modern men! In other words, if the WOMAN chooses, she can end you life with but a word. It's the Salem Witch Hunts all over again!",
+                        "authorDisplayName": "J Thomas Stroud",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwng18skSpzmxX87Yzgp_mJ21_bbFTvQTUQJFa9xecQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCY1X-EFZUT1laU1bSriTfCQ",
+                        "authorChannelId": {
+                            "value": "UCY1X-EFZUT1laU1bSriTfCQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:06:54Z",
+                        "updatedAt": "2020-12-20T15:18:34Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "K9A64ISClcZ0zXnSzIbdJ2vOo3w",
+            "id": "Ugx04L4_31JnlaVP7214AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "sWsvue_uXF9vxBkiizCwrk0G49o",
+                    "id": "Ugx04L4_31JnlaVP7214AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "At this point, I am moving to Mars! Hope Ellon Musk finishes his project ASAP",
+                        "textOriginal": "At this point, I am moving to Mars! Hope Ellon Musk finishes his project ASAP",
+                        "authorDisplayName": "Vicente Garcia",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngxJBnvHRk_zEtbMiXwJG4bIqndEm-UEWj1wIpBgA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCcVDIFW6YGj8LQNSAmghRaw",
+                        "authorChannelId": {
+                            "value": "UCcVDIFW6YGj8LQNSAmghRaw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:04:51Z",
+                        "updatedAt": "2020-12-20T15:04:51Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "a1b96Rk48D_EtGSr80XZXJYj4CM",
+            "id": "UgySpQR8eFOZNzOII8d4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "vKvkMz_3hGNJfOnrZ55b8UxgJ1U",
+                    "id": "UgySpQR8eFOZNzOII8d4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Since she can revoke the sex, a third-party witness filming the sex is the only wya to protect himself.",
+                        "textOriginal": "Since she can revoke the sex, a third-party witness filming the sex is the only wya to protect himself.",
+                        "authorDisplayName": "Ray Gordon Teaches Chess",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwni0w9gnwTUbZrUbxi3dID8VX6dzWwVDoOru5xcfiA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCXbMY38oREkEvxe02FprrCg",
+                        "authorChannelId": {
+                            "value": "UCXbMY38oREkEvxe02FprrCg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:04:41Z",
+                        "updatedAt": "2020-12-20T15:04:41Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "mELO8roJ36aUrcz_QdA2vcOv8Kc",
+            "id": "Ugxy5oykK6-MgZ4T9Ux4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "f5WxKET_rSE0iFyKxgn0TOMvzs0",
+                    "id": "Ugxy5oykK6-MgZ4T9Ux4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Z.P.G.",
+                        "textOriginal": "Z.P.G.",
+                        "authorDisplayName": "Dav 9000",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnggbNhCLRmIEGYiwGlMOSaTL2E5C3LP-c02kRrphQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCSAhlFNNa2Pn5SYvCjmzsgQ",
+                        "authorChannelId": {
+                            "value": "UCSAhlFNNa2Pn5SYvCjmzsgQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:03:09Z",
+                        "updatedAt": "2020-12-20T15:03:09Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "WeBP33aIthV5g7d5Pjdc1ZOjJw4",
+            "id": "UgxYJFieivR3XLZylaJ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "qhz9OIhCtpuUvdg97D9mVzJRZOs",
+                    "id": "UgxYJFieivR3XLZylaJ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Time for men to wear body cams 24/7 I guess.",
+                        "textOriginal": "Time for men to wear body cams 24/7 I guess.",
+                        "authorDisplayName": "DAVE",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhJ0fMvn_HyKHcTibHRKZF-6RUX-GLpfVd3F90Z=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCucO7o7Uhvz_fZ1j2R9W7KQ",
+                        "authorChannelId": {
+                            "value": "UCucO7o7Uhvz_fZ1j2R9W7KQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:02:12Z",
+                        "updatedAt": "2020-12-20T15:02:12Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "OkpTJdm68ENrVcXkXWRjwTGvNCA",
+            "id": "UgxYKTP-ayTu8r3wMlB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "iCv79vFtxJ4HdnehZU-vguJwAp4",
+                    "id": "UgxYKTP-ayTu8r3wMlB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Your second dating profile, looks a hell of a lot like Bernie Dexter. I'm guessing it's not the posters photo either.",
+                        "textOriginal": "Your second dating profile, looks a hell of a lot like Bernie Dexter. I'm guessing it's not the posters photo either.",
+                        "authorDisplayName": "Aymeric De Ascalon",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhK22CVJDM7aDNQ53HFinDAeJl222yqLA6VnIk=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCaXg90uaxhfO_uOIGODsXdw",
+                        "authorChannelId": {
+                            "value": "UCaXg90uaxhfO_uOIGODsXdw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:01:23Z",
+                        "updatedAt": "2020-12-20T15:01:23Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "acC0KjRj59WFgbVTf3p8NWICYXk",
+            "id": "UgwKLl4rPNJwTj86XIV4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "dUEJfYQoxNgR4ITpgEBKnJDiMik",
+                    "id": "UgwKLl4rPNJwTj86XIV4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "It's all part of the NWO. The elites want to prevent the peasants from even meeting up.",
+                        "textOriginal": "It's all part of the NWO. The elites want to prevent the peasants from even meeting up.",
+                        "authorDisplayName": "Mick Mars",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjoIa96nDIx3z7ja4XwoEi67FHmQylRQhlRCfzlWw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCKPHe-oLS92uw_sf0jTW2PQ",
+                        "authorChannelId": {
+                            "value": "UCKPHe-oLS92uw_sf0jTW2PQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T15:00:21Z",
+                        "updatedAt": "2020-12-20T15:00:21Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "JLpwo-A7M8xDyG9NEA2G9ZWZkZQ",
+            "id": "Ugy2uVbqC5LweaG5G454AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "PulZ5oz4p8RSqGWMdT3YoC8rmw0",
+                    "id": "Ugy2uVbqC5LweaG5G454AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "It is nearing the end. I think most men will just realize the bullshit and just do their thing throughout their day, turn to a 5 min freebie on the net before bed and not deal with any drama. No longer have to bother with any of the expenses or other things included into the dating or otherwise rollercoaster of a womans life",
+                        "textOriginal": "It is nearing the end. I think most men will just realize the bullshit and just do their thing throughout their day, turn to a 5 min freebie on the net before bed and not deal with any drama. No longer have to bother with any of the expenses or other things included into the dating or otherwise rollercoaster of a womans life",
+                        "authorDisplayName": "Nayib Seluja",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwng-K05vN76fdj2SlkdZ3qjps4fx6UXMIuWw2esp6w=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC8MZXuhryDZhHt-WEPw8EkQ",
+                        "authorChannelId": {
+                            "value": "UC8MZXuhryDZhHt-WEPw8EkQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T15:00:05Z",
+                        "updatedAt": "2020-12-20T15:00:05Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "DFIjID5YgNqpP9x7jSaf6C8Fu6Q",
+            "id": "Ugz28gXVctJC5VztxjR4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "Awu06g2tdlQT-E8fmsddC8fLr80",
+                    "id": "Ugz28gXVctJC5VztxjR4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "God I hate women.....",
+                        "textOriginal": "God I hate women.....",
+                        "authorDisplayName": "Skullkid Sid",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnicer5EmKIeEDyOUnCklMmjVBAOljgufdNHweX6=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCDnwLCdCF_MrcLKGmt9f8Eg",
+                        "authorChannelId": {
+                            "value": "UCDnwLCdCF_MrcLKGmt9f8Eg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:59:26Z",
+                        "updatedAt": "2020-12-20T14:59:26Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "6IaavHvFDThR_eSJJfLJXY78q0A",
+            "id": "UgyRAO8C3xXvhwTxiCh4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "M_f_nHfD_HFf-Q-_1CBajjCRA9w",
+                    "id": "UgyRAO8C3xXvhwTxiCh4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "GENTLEMEN\nTHIS IS SERIOUS\nBEFORE *AND* AFTER SEX, YOU SEND A TEXT MESSAGE, AND YOU SCREENSHOT AND ARCHIVE EVERYTHING ON USB KEYS, EXTERNAL HDDS, THE CLOUD, ETC.\n1. Before: \"still good for today 8pm?\" or something along the lines?\n2. After: \"hey, that was really fun sweetie, I look forward to seeing you again\" and you get the answer, whichever the answer it is, it proves that she consented to it.\n\nALWAYS ALWAYS ALWAYS ALWAYS ALWAYS NO EXCEPTIONS.",
+                        "textOriginal": "GENTLEMEN\nTHIS IS SERIOUS\nBEFORE *AND* AFTER SEX, YOU SEND A TEXT MESSAGE, AND YOU SCREENSHOT AND ARCHIVE EVERYTHING ON USB KEYS, EXTERNAL HDDS, THE CLOUD, ETC.\n1. Before: \"still good for today 8pm?\" or something along the lines?\n2. After: \"hey, that was really fun sweetie, I look forward to seeing you again\" and you get the answer, whichever the answer it is, it proves that she consented to it.\n\nALWAYS ALWAYS ALWAYS ALWAYS ALWAYS NO EXCEPTIONS.",
+                        "authorDisplayName": "Tariko Benwalid",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnj6RxwBInYBLf5xBwxYb20GWMbcnzh1JXcFQQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC0dFXX8TvTt1pGy-02Uho-w",
+                        "authorChannelId": {
+                            "value": "UC0dFXX8TvTt1pGy-02Uho-w"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:58:37Z",
+                        "updatedAt": "2020-12-20T14:58:37Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "G6ObLnQvoKAAuZYDJ7TVMi3r5fQ",
+            "id": "UgyvhDLCCS1oWRctmQ94AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "r0hwxhN-L28qhV5NYQxCAK62gtc",
+                    "id": "UgyvhDLCCS1oWRctmQ94AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "2030: Possessing a Y-chromosome officially becomes a criminally punishable offense.\n\nDoesn't seem like THAT much of a long-shot at this point, does it?",
+                        "textOriginal": "2030: Possessing a Y-chromosome officially becomes a criminally punishable offense.\n\nDoesn't seem like THAT much of a long-shot at this point, does it?",
+                        "authorDisplayName": "That Guy",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngFyOOKXDR7_ZMkRi0U25itgzo0wp7zgQxfuYa4yg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCM2Pm8O3XYVQj082ReVo90Q",
+                        "authorChannelId": {
+                            "value": "UCM2Pm8O3XYVQj082ReVo90Q"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:54:58Z",
+                        "updatedAt": "2020-12-20T14:54:58Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "x5b-vJVooKCXlipOM_4JgZgW8eA",
+            "id": "Ugzs_oqZvqhELs1nNkN4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "I8aGyvZYthlb-gyjdGiBWpZekRU",
+                    "id": "Ugzs_oqZvqhELs1nNkN4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "I don't ever wanna hear a vagina wielder complain about not being able to find a man.",
+                        "textOriginal": "I don't ever wanna hear a vagina wielder complain about not being able to find a man.",
+                        "authorDisplayName": "Alex Barranco",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniaPtS_GErkyIQz9zm51eGru2IdABpPizyM=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCbBJsJCjsv22CQbUzrMbmxA",
+                        "authorChannelId": {
+                            "value": "UCbBJsJCjsv22CQbUzrMbmxA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:54:19Z",
+                        "updatedAt": "2020-12-20T14:54:19Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 4,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "pPlz42n_YO-WA6s8P6-XDVtgnoc",
+            "id": "UgySk7NrceQVKDiVMa94AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "couxoYqhUbyD2wnyf8H4bLgZzSs",
+                    "id": "UgySk7NrceQVKDiVMa94AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Remember when we used to joke about this stuff 10 or so years ago.",
+                        "textOriginal": "Remember when we used to joke about this stuff 10 or so years ago.",
+                        "authorDisplayName": "TheMyth",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngSr7kUsvnQXFY0I_wmVtDRzFq0gReNySUBsWyw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCQkjfV1q9z4afYM2qv4peYw",
+                        "authorChannelId": {
+                            "value": "UCQkjfV1q9z4afYM2qv4peYw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:50:26Z",
+                        "updatedAt": "2020-12-20T14:50:26Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "Vlj4XhiVv0WO-emaCzXp8z2Rbgs",
+            "id": "UgykPXAcO8qeIz6eaLt4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "ekRadkUvyzzfqmZJAubftnpvW0g",
+                    "id": "UgykPXAcO8qeIz6eaLt4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Relationships are done ,finished",
+                        "textOriginal": "Relationships are done ,finished",
+                        "authorDisplayName": "The Rider",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngHigiCXHefYrAmRzFXvX5hR8xqgyAGDXa9OUwMIA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCYhPvzMN-xH21k8KT3UuJ9A",
+                        "authorChannelId": {
+                            "value": "UCYhPvzMN-xH21k8KT3UuJ9A"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 2,
+                        "publishedAt": "2020-12-20T14:49:47Z",
+                        "updatedAt": "2020-12-20T14:49:47Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "MzyTKfOKwDMFY37h_q4eIxSKWbI",
+            "id": "UgwaN8NtHWPzLV4ABx14AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "o0wUj-H0yYrMqqPfGv8qyjIn3yU",
+                    "id": "UgwaN8NtHWPzLV4ABx14AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Dam that bus looking good \ud83d\udc4d",
+                        "textOriginal": "Dam that bus looking good \ud83d\udc4d",
+                        "authorDisplayName": "kyle gamble",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniUp9-dBaJkrGSokRp_cnGgrAmIq3KPyL6IUQlu=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCUsNfdcwLelaNYM0qWv4ALQ",
+                        "authorChannelId": {
+                            "value": "UCUsNfdcwLelaNYM0qWv4ALQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:48:34Z",
+                        "updatedAt": "2020-12-20T14:48:34Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "Nsu1ivmWBuuMSwKPllGCc1nCKDk",
+            "id": "UgzCHIyJawlaEhLhOhV4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "67a9FLCcPscD9YmeHeoEF2OC89U",
+                    "id": "UgzCHIyJawlaEhLhOhV4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "\u201cDenmark regularly leads indexes on gender equality and access to justice.\u201d\n\nThat\u2019s debatable. I don\u2019t see any positive changes being made for men.",
+                        "textOriginal": "\u201cDenmark regularly leads indexes on gender equality and access to justice.\u201d\n\nThat\u2019s debatable. I don\u2019t see any positive changes being made for men.",
+                        "authorDisplayName": "Official Silver Business",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnj9o6zx8w1bOTt8eeQZyidoa6so7dU_BM7b-fvFeA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCGEF33WhriV0S_rrLJk4kpA",
+                        "authorChannelId": {
+                            "value": "UCGEF33WhriV0S_rrLJk4kpA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:48:10Z",
+                        "updatedAt": "2020-12-20T14:48:10Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "7p2QCB02wWYAT95n6XKVaozA5D0",
+            "id": "Ugx0QK40sWauN-QHN6l4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "8UdBtasG-nGxZG-YtN3Rmcijp4E",
+                    "id": "Ugx0QK40sWauN-QHN6l4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Frontier justice as Bill burr said. This is getting so ridiculous. Anyone out of the west is glad things aren't as bad. At the same time it's sad to see this happen to it. If only the stupid simps woke up, we'd take over and never lose control again. Let this generation be an example.",
+                        "textOriginal": "Frontier justice as Bill burr said. This is getting so ridiculous. Anyone out of the west is glad things aren't as bad. At the same time it's sad to see this happen to it. If only the stupid simps woke up, we'd take over and never lose control again. Let this generation be an example.",
+                        "authorDisplayName": "TheMyth",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngSr7kUsvnQXFY0I_wmVtDRzFq0gReNySUBsWyw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCQkjfV1q9z4afYM2qv4peYw",
+                        "authorChannelId": {
+                            "value": "UCQkjfV1q9z4afYM2qv4peYw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:48:07Z",
+                        "updatedAt": "2020-12-20T14:48:07Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "WkS-2WLqntyx8Hyey41agirvbTc",
+            "id": "UgzriS8Fa2nRUxU5IW14AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "M6nSslh03lKlNhuv4BxFngWAA0g",
+                    "id": "UgzriS8Fa2nRUxU5IW14AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Wow, as a UK guy, I've never thought I'd want to leave my country anytime soon until I heard this crazy news, I'm glad I'm bisexual lol :/\nAwesome bus-house btw.",
+                        "textOriginal": "Wow, as a UK guy, I've never thought I'd want to leave my country anytime soon until I heard this crazy news, I'm glad I'm bisexual lol :/\nAwesome bus-house btw.",
+                        "authorDisplayName": "Commander Spyder",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngYk1fM8pvpMGo79ZdoipoMmNvHJ3kJoWlDcLagsA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCFne5M-FifzrzjCH04HG5Pg",
+                        "authorChannelId": {
+                            "value": "UCFne5M-FifzrzjCH04HG5Pg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:48:05Z",
+                        "updatedAt": "2020-12-20T14:50:10Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "P5N8tiI9nUBJ4RjqTCA8OkluQFY",
+            "id": "UgxsAjObvdYdYnW6L_x4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "bdc6qxmM41ON_ju-iiA4GqMAJRE",
+                    "id": "UgxsAjObvdYdYnW6L_x4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Bacon... This would also be a good essay to the first dating profile, repeat it 499 times.",
+                        "textOriginal": "Bacon... This would also be a good essay to the first dating profile, repeat it 499 times.",
+                        "authorDisplayName": "DesertEagleA",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwng5L-9nU6yC_xRG-Ir0MjNp4yiOeRtJBsLhjw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCRtVz_IPHAFcDCinJKHTWzg",
+                        "authorChannelId": {
+                            "value": "UCRtVz_IPHAFcDCinJKHTWzg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:47:11Z",
+                        "updatedAt": "2020-12-20T15:00:09Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "KQD2xvjsAxRjUVeo9lkQ2KhJj1k",
+            "id": "Ugy9ZbcguCYk3TIhtaV4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "0nU2e_lwjm9GG020jgxXNZbt8XQ",
+                    "id": "Ugy9ZbcguCYk3TIhtaV4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "That's  simply  NOT  possible.   Soon or later  a man  who  end in jail  because of  a false  R.  accusation  will  commit  a mass murder  once he'll be free.",
+                        "textOriginal": "That's  simply  NOT  possible.   Soon or later  a man  who  end in jail  because of  a false  R.  accusation  will  commit  a mass murder  once he'll be free.",
+                        "authorDisplayName": "charlotte sky",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnh-ErKqlT7VFlxXYF0MQTkLDOpwE_mx_s7SEg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCzUozzHW7hcW2EAjTrqMTLQ",
+                        "authorChannelId": {
+                            "value": "UCzUozzHW7hcW2EAjTrqMTLQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:47:02Z",
+                        "updatedAt": "2020-12-20T14:47:02Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "jhVV7CVLtSGoEeeexdLTb85NiXM",
+            "id": "UgyrpIDlzH06pLmV6uZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "cLlSYNUsRMcLIopxwyCDDv0B-eQ",
+                    "id": "UgyrpIDlzH06pLmV6uZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Love the cash register. Need some of Pink Floyd's \"Money\" playing background. But you'd probably get a copyright strike. Never mind.",
+                        "textOriginal": "Love the cash register. Need some of Pink Floyd's \"Money\" playing background. But you'd probably get a copyright strike. Never mind.",
+                        "authorDisplayName": "W K",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhAgojIRa5TWq6GmNWBDF7e41zmLlASjMosPpjfng=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCVcbKdGdvpHRIywkIRgg3Ig",
+                        "authorChannelId": {
+                            "value": "UCVcbKdGdvpHRIywkIRgg3Ig"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:45:04Z",
+                        "updatedAt": "2020-12-20T14:45:04Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "hXKYNNWnP3yt0W5TgPEPrQBzYPk",
+            "id": "UgzNmZXRLY4RXFxtMyd4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "sRpr8d9ZnYxI_R6_-6AlwZz3waU",
+                    "id": "UgzNmZXRLY4RXFxtMyd4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "This is a sneaky way for the police state to control reproduction.",
+                        "textOriginal": "This is a sneaky way for the police state to control reproduction.",
+                        "authorDisplayName": "Mystery Man",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjq_HD5ClzL3hQcYJJBqEtsLdezRGbr-vB8wRaRqQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCRNetkkldNKDcbekCuoB1FQ",
+                        "authorChannelId": {
+                            "value": "UCRNetkkldNKDcbekCuoB1FQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T14:45:00Z",
+                        "updatedAt": "2020-12-20T14:45:00Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "Mf6HJloGXrz1VxR_UMBrMCpDhDo",
+            "id": "UgzpvDc2TPymMMfbErh4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "JLJvjzgF3op0bBxepdPgIpmQVI4",
+                    "id": "UgzpvDc2TPymMMfbErh4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Unbelievably stupid laws. Also, men get the old member go to salute several times during the night.",
+                        "textOriginal": "Unbelievably stupid laws. Also, men get the old member go to salute several times during the night.",
+                        "authorDisplayName": "Kenneth Barkley",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhxY-4N-xtfTLoNBvl4jQe3MrWO4KZa2KE3dw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC8B47HwGtMWJ4nx9WkATijA",
+                        "authorChannelId": {
+                            "value": "UC8B47HwGtMWJ4nx9WkATijA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:44:33Z",
+                        "updatedAt": "2020-12-20T14:45:52Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "CHRVh3M25YbI3N53ltAVFn4nz9c",
+            "id": "UgwvCO0_4xdwRLKeh5V4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "0AKRrzYTQ4CWJo8szaomdk5qcNw",
+                    "id": "UgwvCO0_4xdwRLKeh5V4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "I'm guessing that these deranged laws won't be applied to those of the \"religion of peace\".\nKeep it simple. Like TFM says, \" just get a doll\".",
+                        "textOriginal": "I'm guessing that these deranged laws won't be applied to those of the \"religion of peace\".\nKeep it simple. Like TFM says, \" just get a doll\".",
+                        "authorDisplayName": "brian",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjMv3-vO66i3_Nxx7e0FCpuHa_DdZnFKyzi-Q=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCMVHDGtbnaplR4_eTY-CGyw",
+                        "authorChannelId": {
+                            "value": "UCMVHDGtbnaplR4_eTY-CGyw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:44:03Z",
+                        "updatedAt": "2020-12-20T14:44:03Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "xNLs3VLKnjg0Sjg7_SX34H_aAtk",
+            "id": "UgypS-OlRWSpmw_wWxF4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "bDqYi9FYxd479ntiPGll2FUmDqs",
+                    "id": "UgypS-OlRWSpmw_wWxF4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Me: \"I'm calling...\"\nWoman: \"Your parents? You're gonna tell them about us? That's so sweet.\"\nMe: \"My attorney.\"",
+                        "textOriginal": "Me: \"I'm calling...\"\nWoman: \"Your parents? You're gonna tell them about us? That's so sweet.\"\nMe: \"My attorney.\"",
+                        "authorDisplayName": "Nothing Cheeseburger",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjKxVTFm6iemzIR8DiEHGeV40KJtHQMo7DdAGm9lA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC_v5i7saPSMcCwVBcV3KzRw",
+                        "authorChannelId": {
+                            "value": "UC_v5i7saPSMcCwVBcV3KzRw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 6,
+                        "publishedAt": "2020-12-20T14:42:07Z",
+                        "updatedAt": "2020-12-20T14:42:07Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "ROsdC2Au55moDDeGF2Y2hXRww-o",
+            "id": "UgzfftSOnq3-Bk0IEwB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "OyFjRsEjE1tR9HkMyT_UaqsnX6g",
+                    "id": "UgzfftSOnq3-Bk0IEwB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Depopulation agenda is progressing smoothly I see, congratulations girl power advocates, what a bunch of \"useful idiots\"",
+                        "textOriginal": "Depopulation agenda is progressing smoothly I see, congratulations girl power advocates, what a bunch of \"useful idiots\"",
+                        "authorDisplayName": "Amarjit Dhillon",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngqCDZXRDwjf6kbAk56uSXAXb3meikZ174CHQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCiH5AeZGvGuecA_UTA_dTWQ",
+                        "authorChannelId": {
+                            "value": "UCiH5AeZGvGuecA_UTA_dTWQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:42:04Z",
+                        "updatedAt": "2020-12-20T14:47:20Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "GAb37EraHzaSHzRJjUOT068IzP4",
+            "id": "UgwBw6op8bFpfPNeof54AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "hInKmM7ZTLQL7rdTus1aPt87m6k",
+                    "id": "UgwBw6op8bFpfPNeof54AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Another quick thought fellas.  What if all men drew up a contract to be signed before any man signed up for their \"Onlyfans\" accounts? No paper, no fees - think of the outcry then by women against women! Battle tactics 101 - divide and conquer",
+                        "textOriginal": "Another quick thought fellas.  What if all men drew up a contract to be signed before any man signed up for their \"Onlyfans\" accounts? No paper, no fees - think of the outcry then by women against women! Battle tactics 101 - divide and conquer",
+                        "authorDisplayName": "GSD7755",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjCewD4UMGrutOhmQbqNPfIle3gP0aL19jPnQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCVWBZdh3cdljG6pbefgqpTw",
+                        "authorChannelId": {
+                            "value": "UCVWBZdh3cdljG6pbefgqpTw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:39:44Z",
+                        "updatedAt": "2020-12-20T14:39:44Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "p-IBjp_BpkvmCbVJoEMMtK_9PiA",
+            "id": "UgxoubmdcQwdu-IHqmF4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "e_qtLZrQwFYDjn6rMJEUb6tSMGY",
+                    "id": "UgxoubmdcQwdu-IHqmF4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "At this point dating is more like gambling, because all of your belongings, life savings and reputation are on the table for her to take",
+                        "textOriginal": "At this point dating is more like gambling, because all of your belongings, life savings and reputation are on the table for her to take",
+                        "authorDisplayName": "HeroOfTime",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjTLIlnoM0v7aOMqMeiTFQhUw4AJwSEVMYj8Ci7aA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCOUxkoqBCBg8F5Q84IYrSmA",
+                        "authorChannelId": {
+                            "value": "UCOUxkoqBCBg8F5Q84IYrSmA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T14:39:35Z",
+                        "updatedAt": "2020-12-20T14:41:07Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "_lVzfS8aUSWZ2LKMfm-8BBuhYnY",
+            "id": "UgxlL1gURWliGLIMU0Z4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "-8xozg7QxR10do39MYTtu7ZIQ3Y",
+                    "id": "UgxlL1gURWliGLIMU0Z4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "\"Did she ever audibly consent?\"\n\"No, she sucked my dick, started slapping her ass, told me to call her aslut and choke her while we were at it.\"\n\"AHA SO SHE NEVER CONSENTED!!!!!\"\n\nThis shit law means nothing... it will just increase the rift between men and women.",
+                        "textOriginal": "\"Did she ever audibly consent?\"\n\"No, she sucked my dick, started slapping her ass, told me to call her aslut and choke her while we were at it.\"\n\"AHA SO SHE NEVER CONSENTED!!!!!\"\n\nThis shit law means nothing... it will just increase the rift between men and women.",
+                        "authorDisplayName": "Knlght0fZero",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngAtkWYnNdSZG1EhgL5m59Y7OL8fN9ukjxnBSew=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCq8gBWNvUJBct5zKXzKhflw",
+                        "authorChannelId": {
+                            "value": "UCq8gBWNvUJBct5zKXzKhflw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:38:42Z",
+                        "updatedAt": "2020-12-20T14:38:42Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "6A6u58EUkvMUVBWM1Yj_sVWYI8Y",
+            "id": "Ugwf5xscZuOapV9_xjF4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "eJ-_ML96L-DKWvF9hMK5xwmqz6I",
+                    "id": "Ugwf5xscZuOapV9_xjF4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "girl power, it's all about power, (everyone knows this but I just tell it for new guys here)",
+                        "textOriginal": "girl power, it's all about power, (everyone knows this but I just tell it for new guys here)",
+                        "authorDisplayName": "aoiouioa ioiiooa",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniOd6njC-CcMj3Rgl_dQPig-gzxpjam3bF78g=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCtGAqAI_WWDueXdLUQTfNFA",
+                        "authorChannelId": {
+                            "value": "UCtGAqAI_WWDueXdLUQTfNFA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:38:36Z",
+                        "updatedAt": "2020-12-20T14:38:36Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "G__N9TER0LC-YW322KIxtmaaa-s",
+            "id": "Ugz6fWB6h88OoqYRst94AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "hJMuapDX2kKUQ2uSIs-x2TelJPw",
+                    "id": "Ugz6fWB6h88OoqYRst94AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Good job Joker",
+                        "textOriginal": "Good job Joker",
+                        "authorDisplayName": "Drake Speed",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngfTl8b_63tjUNqzjR21GqZu0CSekJS6zLGzlWnrA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCVIrniz5oxJqPitK6Gyfrkg",
+                        "authorChannelId": {
+                            "value": "UCVIrniz5oxJqPitK6Gyfrkg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:38:00Z",
+                        "updatedAt": "2020-12-20T14:38:00Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "gVBKTSfx_OmFMX0ey865MGoAtHk",
+            "id": "UgzG-V2sJ33WlV2azlx4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "hnthtmQs84snimw44hrWWL8m8O0",
+                    "id": "UgzG-V2sJ33WlV2azlx4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "It's a really bad idea to believe someone in court based on their gender, instead of based on evidence.",
+                        "textOriginal": "It's a really bad idea to believe someone in court based on their gender, instead of based on evidence.",
+                        "authorDisplayName": "- David -",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhAAr7_q_Lbxc-A4qoOzNPNo8-yJRaXKefczA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCCA8mefWHpebNxkMp29y_bA",
+                        "authorChannelId": {
+                            "value": "UCCA8mefWHpebNxkMp29y_bA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:37:54Z",
+                        "updatedAt": "2020-12-20T14:37:54Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "XDPkADW4nzgnKiKF-9jT_KOAU9w",
+            "id": "UgzBVX_2Fg7OMKoJ6254AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "khqP6KAnj6rjMFjMMBksoI2nNqU",
+                    "id": "UgzBVX_2Fg7OMKoJ6254AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Since I am a swede I happen to know a lot of men nowadays who don\u00b4t even dare to talk to women in a pub or a bar, just to avoid any \raccusations. It is not worth it when prison is the cost. And so many women who complain no men are contacting us anymore, we just sit here and wait but no boys even look at us. Better safe than sorry or?",
+                        "textOriginal": "Since I am a swede I happen to know a lot of men nowadays who don\u00b4t even dare to talk to women in a pub or a bar, just to avoid any \raccusations. It is not worth it when prison is the cost. And so many women who complain no men are contacting us anymore, we just sit here and wait but no boys even look at us. Better safe than sorry or?",
+                        "authorDisplayName": "Stefan Lindstr\u00f6m",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhzJx2jXc-itzcBGe85Kr0m7H_n4sR2TNDh5vmR=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCP10DUQ8gAFhguT7WF1xJ1A",
+                        "authorChannelId": {
+                            "value": "UCP10DUQ8gAFhguT7WF1xJ1A"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T14:36:20Z",
+                        "updatedAt": "2020-12-20T14:36:20Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "zJwgOrdLJ4T2OpZaAQe0pLoUBMs",
+            "id": "Ugwu6Uea9Tog4S87EwF4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "BeAiQ9fTUL8LrboYYQMfkuR5CSs",
+                    "id": "Ugwu6Uea9Tog4S87EwF4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Morning Wood..... Giggity",
+                        "textOriginal": "Morning Wood..... Giggity",
+                        "authorDisplayName": "Mandalorian Monk",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniFNYVLx8sh2hlaNiRb2U6SGOdNZrPh_APShMaTOA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC4E3qT8m8DGYe5nEadoh2Pg",
+                        "authorChannelId": {
+                            "value": "UC4E3qT8m8DGYe5nEadoh2Pg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:35:43Z",
+                        "updatedAt": "2020-12-20T14:35:43Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 1,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "WnPTx-21IIOuSeI1Dm1_U1WE87U",
+            "id": "Ugz0gjBJ-iDrqlz23Kp4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "8FTICLhZEFruqYuqOYFg1qMMT2o",
+                    "id": "Ugz0gjBJ-iDrqlz23Kp4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Well at least those mentioned countries have plenty of immigrants to maintain their population.",
+                        "textOriginal": "Well at least those mentioned countries have plenty of immigrants to maintain their population.",
+                        "authorDisplayName": "john harris",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngtYjAeZittWuXGtri9yR0FoE4V9Wr8RISWCg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCj06qimVhujgDIJryCHFkrw",
+                        "authorChannelId": {
+                            "value": "UCj06qimVhujgDIJryCHFkrw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:35:33Z",
+                        "updatedAt": "2020-12-20T14:35:33Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "SXN7oQU6Btd7oyf4_p-JRJXdOAY",
+            "id": "UgysWGn5MDZljgRrU1p4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "kV_3NyKJQthY-Iv5nT2i0JkqmFk",
+                    "id": "UgysWGn5MDZljgRrU1p4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Sex dolls are the future.",
+                        "textOriginal": "Sex dolls are the future.",
+                        "authorDisplayName": "George Blair",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnh8GmWvF2ty1yOk6fxZuJtPllRUkOZ_qaWkdw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCm8Xhtx20gAYrsB8yWIqsxQ",
+                        "authorChannelId": {
+                            "value": "UCm8Xhtx20gAYrsB8yWIqsxQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 2,
+                        "publishedAt": "2020-12-20T14:34:34Z",
+                        "updatedAt": "2020-12-20T14:34:34Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "I9fS7j8WRVOA14t4Im0gRUWBvEo",
+            "id": "Ugw16CAeqlB3p9wT0o54AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "OzeQaEJNUA0fSJI999e-zXxQcmM",
+                    "id": "Ugw16CAeqlB3p9wT0o54AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "\u201cFor 2021 Guys, treat your women like the mountains I\u2019ve climbed by enveloping those mountains and making love to those mountains!\u201d-William Shatner",
+                        "textOriginal": "\u201cFor 2021 Guys, treat your women like the mountains I\u2019ve climbed by enveloping those mountains and making love to those mountains!\u201d-William Shatner",
+                        "authorDisplayName": "Nick Mattio",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjH0lFeQG2bLOCYwWDnRs6ohwlzFuVX054P_XGdbQ=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCZ6Xjue1Gc167qyuBbq_gIQ",
+                        "authorChannelId": {
+                            "value": "UCZ6Xjue1Gc167qyuBbq_gIQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:34:04Z",
+                        "updatedAt": "2020-12-20T14:34:04Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "PMftGgY0Z10PVENpXrzcUpJ2dIs",
+            "id": "Ugwyjmhs5pGE554ESJx4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "CHiJWBXl48ZP2698k6tPrj0xXoo",
+                    "id": "Ugwyjmhs5pGE554ESJx4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Europe is pushing men toward a pay to play format.  Pay your money, have your fun, and leave.",
+                        "textOriginal": "Europe is pushing men toward a pay to play format.  Pay your money, have your fun, and leave.",
+                        "authorDisplayName": "Powerplay1999",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjBK2DN9F5v6nP96RI9RWjforcqJPBr1cQK2Q=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCaAObEx9mLBrhC3GkhQMBsA",
+                        "authorChannelId": {
+                            "value": "UCaAObEx9mLBrhC3GkhQMBsA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:33:12Z",
+                        "updatedAt": "2020-12-20T14:33:12Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "uEyKVesTSla2t_W9twrNMIDdbdQ",
+            "id": "UgzURxapxu0Np-qyGIl4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "xMOZJUUKHJrekLkrwWr35AtayAY",
+                    "id": "UgzURxapxu0Np-qyGIl4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Do not forget the massive import of young men  from Africa into Western Europe. This is also to protect women from potential hormone bombs. I know about a case in France of a woman who get graped by a refugee, reported the guy to the police and then he get freed up by the judge with the reason that he did not know very well our western cultural values- no kidding! True story he get a free pass",
+                        "textOriginal": "Do not forget the massive import of young men  from Africa into Western Europe. This is also to protect women from potential hormone bombs. I know about a case in France of a woman who get graped by a refugee, reported the guy to the police and then he get freed up by the judge with the reason that he did not know very well our western cultural values- no kidding! True story he get a free pass",
+                        "authorDisplayName": "LOL",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhP_vp7afxHgJ5K-gnwyHpPqIJzjEY-ECFrNw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCFH-UfGNhSIyxzcr8Budxjw",
+                        "authorChannelId": {
+                            "value": "UCFH-UfGNhSIyxzcr8Budxjw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:32:07Z",
+                        "updatedAt": "2020-12-20T14:34:00Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "OuNOR7E0m3_itFzEm5YmbGqpGoA",
+            "id": "UgzIZAH4fU8nOn_9nsN4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "acDiJzQ1pQ9CVwi0jb-B49HYq2c",
+                    "id": "UgzIZAH4fU8nOn_9nsN4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "1980's - No means no.\n\n2020's - Please means no.",
+                        "textOriginal": "1980's - No means no.\n\n2020's - Please means no.",
+                        "authorDisplayName": "Chris Moore",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhHECU6TL3xCOTw_BRPhG8fLccs8UZixi_thee3=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCwnJ6m3RVQOKN-fOet0e5zg",
+                        "authorChannelId": {
+                            "value": "UCwnJ6m3RVQOKN-fOet0e5zg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 2,
+                        "publishedAt": "2020-12-20T14:31:42Z",
+                        "updatedAt": "2020-12-20T14:31:42Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "AtedPecmOxjmFvQ5Q_Wse6h4chw",
+            "id": "Ugyu5U0mDoaXHx9KNYd4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "c7dFiwMzbZr3JRv_0WI1Ope5bnY",
+                    "id": "Ugyu5U0mDoaXHx9KNYd4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "The register sound effects were awesome. Lol",
+                        "textOriginal": "The register sound effects were awesome. Lol",
+                        "authorDisplayName": "Earnest Amnesty",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngBWamjNU4bRhcnnbCMY4gNz6pfAnSSN5ughE61=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC_Q8QfWdZmdE7lvp-QAo-DA",
+                        "authorChannelId": {
+                            "value": "UC_Q8QfWdZmdE7lvp-QAo-DA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:29:13Z",
+                        "updatedAt": "2020-12-20T14:29:13Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "mQvscZWhHpT0uXKqZ6310Whfh5A",
+            "id": "UgxKI5poHimqvHEkJgV4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "Kru-lS4x8BetNRhMvsBksR1_q4g",
+                    "id": "UgxKI5poHimqvHEkJgV4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "lol, some women's dating profiles are the equivalent of \"show bobs and vegana\", as seen on Pewdiepie.",
+                        "textOriginal": "lol, some women's dating profiles are the equivalent of \"show bobs and vegana\", as seen on Pewdiepie.",
+                        "authorDisplayName": "Chaos Convergent",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnha8dgj7O_mQ1ZJRo7p8OIqzL_4Jg5vh-h6LdaOlw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCubVb4sqbDFmnUDudIUGADA",
+                        "authorChannelId": {
+                            "value": "UCubVb4sqbDFmnUDudIUGADA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:28:47Z",
+                        "updatedAt": "2020-12-20T14:28:47Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "wvtGh9CIbwYrCdbX-kKzuqHDjjY",
+            "id": "UgzNcxAN3cgfJ3in5e14AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "9S-UkafMVhEZEi_-LSOvYt6H7yE",
+                    "id": "UgzNcxAN3cgfJ3in5e14AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "They did that shit in turkey. Even if you get married and divorce after a week, you owe her life time alimony. Just few months ago, A teenager girl called the cops on her dad for sexual assault. It turns out she wanted his credit card to go spend money on dumb shit. And he said no. So she called the cops on him",
+                        "textOriginal": "They did that shit in turkey. Even if you get married and divorce after a week, you owe her life time alimony. Just few months ago, A teenager girl called the cops on her dad for sexual assault. It turns out she wanted his credit card to go spend money on dumb shit. And he said no. So she called the cops on him",
+                        "authorDisplayName": "Ottoman Beats",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhQoxI8gCAPkKlrDQJUxq4MKmA-fiVvbTg_n4eZxw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC_gCa6xFfuseweio6FqLQ7w",
+                        "authorChannelId": {
+                            "value": "UC_gCa6xFfuseweio6FqLQ7w"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:28:34Z",
+                        "updatedAt": "2020-12-20T14:28:34Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "7lL-iW-FWz8IBjqZRtM-6C5UA4M",
+            "id": "UgzWewE3I2UKRDPfluJ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "LzODsAI4UYT-S-fVI2X8IUvuxG8",
+                    "id": "UgzWewE3I2UKRDPfluJ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "\"Ambiguous signals.\" Well, that's literally every woman ever \ud83d\ude02.",
+                        "textOriginal": "\"Ambiguous signals.\" Well, that's literally every woman ever \ud83d\ude02.",
+                        "authorDisplayName": "Cosmic Prison",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngXn5Zl5jMwE4bsrdtqncsn2gjZsQvBDbCawdgg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC6wQ8FlI4nfxsxGql3u4FdQ",
+                        "authorChannelId": {
+                            "value": "UC6wQ8FlI4nfxsxGql3u4FdQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:28:21Z",
+                        "updatedAt": "2020-12-20T14:28:21Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "UqqAcPlpidP09OTtp2cu18BSBoA",
+            "id": "Ugzz1Yb_HLPpwstemv14AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "C4649iBqM0xZD0xqRsKJKf93rS8",
+                    "id": "Ugzz1Yb_HLPpwstemv14AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "This culture is very frustrating, makes relationships hard.",
+                        "textOriginal": "This culture is very frustrating, makes relationships hard.",
+                        "authorDisplayName": "Deathly Breeze",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjWyUBsqWCvTz_lqdxtxzFad8BYX_y6-npdI5pm=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCDOjvqNg9e1_iWvHOmowbtg",
+                        "authorChannelId": {
+                            "value": "UCDOjvqNg9e1_iWvHOmowbtg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:28:04Z",
+                        "updatedAt": "2020-12-20T14:28:04Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "Vvmo0jzD--cZQqTDohyvTe2FGgw",
+            "id": "UgxXObnsxl1aBZKzeTN4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "vgOtlPtSYL69xq0IVDDvF2QvnhA",
+                    "id": "UgxXObnsxl1aBZKzeTN4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Depopulation.. rather simple. \n\nIslam is needed for women",
+                        "textOriginal": "Depopulation.. rather simple. \n\nIslam is needed for women",
+                        "authorDisplayName": "Monk Farmer",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngQT31PEd2matLvyeJ-iRqxu31wBWhrp3BDKmynSw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCnN9VhiGlmjCz0JaZi3GnkQ",
+                        "authorChannelId": {
+                            "value": "UCnN9VhiGlmjCz0JaZi3GnkQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:27:40Z",
+                        "updatedAt": "2020-12-20T14:29:19Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "39FlUfAo4c4sTRT-6rK76UUOeuo",
+            "id": "UgwNPHrCHiGqyNsZbqJ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "8yO2JCIimYcfUP6jeb_5AQJuS0g",
+                    "id": "UgwNPHrCHiGqyNsZbqJ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "You did a great job on that bus. Respect!",
+                        "textOriginal": "You did a great job on that bus. Respect!",
+                        "authorDisplayName": "- David -",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnhAAr7_q_Lbxc-A4qoOzNPNo8-yJRaXKefczA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCCA8mefWHpebNxkMp29y_bA",
+                        "authorChannelId": {
+                            "value": "UCCA8mefWHpebNxkMp29y_bA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:26:58Z",
+                        "updatedAt": "2020-12-20T14:26:58Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "OekHBJFg78kKIFbixspiUGee0u8",
+            "id": "UgzqtEKlKkJtICnrD994AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "l0GGVwsq6Vrxb8wBLXWoapsJ4DU",
+                    "id": "UgzqtEKlKkJtICnrD994AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Damn that bus looks nicer than some houses. Good work dude!",
+                        "textOriginal": "Damn that bus looks nicer than some houses. Good work dude!",
+                        "authorDisplayName": "Kuuryo Two",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnj0vS9Db9vL0hiitGvFrECFW3Pj42AM6-cI3w=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCkKKf8Yd8H9lnfAP_eQkbEQ",
+                        "authorChannelId": {
+                            "value": "UCkKKf8Yd8H9lnfAP_eQkbEQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T14:26:18Z",
+                        "updatedAt": "2020-12-20T14:26:18Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "17VczBQMXka8Hson9X6sMjBiBC0",
+            "id": "UgxA_cINlwt30V9Hm-Z4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "z5ctBX9bjF8J-DGjpuLH2H_BifI",
+                    "id": "UgxA_cINlwt30V9Hm-Z4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "\"Guys can't have that happen to them.\" People who claim that do know that the song \"Summer Wine\" is a thing, don't they? \ud83d\ude02",
+                        "textOriginal": "\"Guys can't have that happen to them.\" People who claim that do know that the song \"Summer Wine\" is a thing, don't they? \ud83d\ude02",
+                        "authorDisplayName": "Cosmic Prison",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngXn5Zl5jMwE4bsrdtqncsn2gjZsQvBDbCawdgg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC6wQ8FlI4nfxsxGql3u4FdQ",
+                        "authorChannelId": {
+                            "value": "UC6wQ8FlI4nfxsxGql3u4FdQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:24:27Z",
+                        "updatedAt": "2020-12-20T14:24:27Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "23tW3obEYnBouXYwMP8uAalgmts",
+            "id": "Ugxf-XipxBPF_T0v8N94AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "edcp57plFc-T0Q0BJdPHIzN9VU0",
+                    "id": "Ugxf-XipxBPF_T0v8N94AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Great job on the bus !",
+                        "textOriginal": "Great job on the bus !",
+                        "authorDisplayName": "jason donnelly",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniLtuUFgcVusIYnTMl7nYlmVtC8ZKLZ1xVnVw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC4N-JQPbYONIOaH5rBtdBwA",
+                        "authorChannelId": {
+                            "value": "UC4N-JQPbYONIOaH5rBtdBwA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:24:16Z",
+                        "updatedAt": "2020-12-20T14:24:16Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "_2yHEo9lChN55AIRck3e6Uk05ug",
+            "id": "UgxazMReXnmFigXg-ad4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "PLzZLH79sK2rzgDSL8_jM68du-w",
+                    "id": "UgxazMReXnmFigXg-ad4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "The bus is fire man",
+                        "textOriginal": "The bus is fire man",
+                        "authorDisplayName": "VM Movies",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnja7p1VBXAgefKXbNuPSNS1LO5nmCMFegXkgAXm=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCO11YOIEthehRubaKUBDZ_g",
+                        "authorChannelId": {
+                            "value": "UCO11YOIEthehRubaKUBDZ_g"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:23:59Z",
+                        "updatedAt": "2020-12-20T14:23:59Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "3h6x1QOV5hakJ0HIaCv15Nu31DI",
+            "id": "UgxRZDBOt6d6EMT7L5l4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "IzYNim700h6tHz5gJo0jd2-82WM",
+                    "id": "UgxRZDBOt6d6EMT7L5l4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "first profile wtf........................!",
+                        "textOriginal": "first profile wtf........................!",
+                        "authorDisplayName": "John Weedon",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngrHr121bvGbVmheC0Ws35rfkto-CDqP4zRKpgnNw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCMG2hzJzBjtnh00NOG11vtQ",
+                        "authorChannelId": {
+                            "value": "UCMG2hzJzBjtnh00NOG11vtQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:23:54Z",
+                        "updatedAt": "2020-12-20T14:23:54Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "EAi7xW0z4zKBNcxWk0JL6GPx5ig",
+            "id": "Ugy_nX4wZH5bo3kDbaF4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "fw3xTq99MLsM95wkRRDqQWaSAUg",
+                    "id": "Ugy_nX4wZH5bo3kDbaF4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "lol who's that fattie asking for essays,  let's go troll her",
+                        "textOriginal": "lol who's that fattie asking for essays,  let's go troll her",
+                        "authorDisplayName": "Chaos Convergent",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnha8dgj7O_mQ1ZJRo7p8OIqzL_4Jg5vh-h6LdaOlw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCubVb4sqbDFmnUDudIUGADA",
+                        "authorChannelId": {
+                            "value": "UCubVb4sqbDFmnUDudIUGADA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:22:17Z",
+                        "updatedAt": "2020-12-20T14:22:26Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "w0-H1gNPYmCmbTsPWvBggsJLuxU",
+            "id": "Ugy-ETAYx1gpZJa32st4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "GRe0skdeOUhklxXWPNLJEyGNgTc",
+                    "id": "Ugy-ETAYx1gpZJa32st4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "There's an even darker potential side effect. Socialpathic guys may start to consider whamen disposable, use once and \"discard.\"  For those of us with daughters, this just adds to the worries.",
+                        "textOriginal": "There's an even darker potential side effect. Socialpathic guys may start to consider whamen disposable, use once and \"discard.\"  For those of us with daughters, this just adds to the worries.",
+                        "authorDisplayName": "Chris Bay",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjDIs401FrVmHXfgCycf6Bx-SbsDa1-FFG-Z0OMRg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCvI0SgR70SQi99PTOkY2XjQ",
+                        "authorChannelId": {
+                            "value": "UCvI0SgR70SQi99PTOkY2XjQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:19:33Z",
+                        "updatedAt": "2020-12-20T14:19:33Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "cpRlEYaEIKS3eyY9ngTqcHAktlw",
+            "id": "UgzCGMZN7XSMWaPDYtF4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "ChbfMsZqKFYtWcv2NaJg5Ldzehg",
+                    "id": "UgzCGMZN7XSMWaPDYtF4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Perhaps it is in response to all the snuggle struggle from Muslims?",
+                        "textOriginal": "Perhaps it is in response to all the snuggle struggle from Muslims?",
+                        "authorDisplayName": "Nancy Pelosi",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniOg64vpkfph88sR0YZ_SqqZodvOz7fDEs6Sw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC2m4zjeUgu5SMPAhoXTaNZA",
+                        "authorChannelId": {
+                            "value": "UC2m4zjeUgu5SMPAhoXTaNZA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:19:11Z",
+                        "updatedAt": "2020-12-20T14:19:11Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "r1hKwJWI50a8H2O_t_wvxt_SVYE",
+            "id": "UgxBUkmXOK-38EZyUAJ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "ZI6aLjK0hneQmLWTGHTRiFjXA1c",
+                    "id": "UgxBUkmXOK-38EZyUAJ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "This is getting too complicated tbh. I'm just gonna buy a frick doll and stay with that",
+                        "textOriginal": "This is getting too complicated tbh. I'm just gonna buy a frick doll and stay with that",
+                        "authorDisplayName": "TheViP",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwni__xPDB2jR0LGkwQ4Z9m8eThDlYV0ky2-QF8ar=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCi623ziqJ1EZgwtNAZEMdOA",
+                        "authorChannelId": {
+                            "value": "UCi623ziqJ1EZgwtNAZEMdOA"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:18:49Z",
+                        "updatedAt": "2020-12-20T14:18:49Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "atE0uWDZTokRxJyoB3ksk-qKZko",
+            "id": "UgwIL3TgvRe05teGEo94AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "2sf2Nj4FMkT-vEes-9M0JwDVes0",
+                    "id": "UgwIL3TgvRe05teGEo94AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "...or, if you need a camera, l think the launch of accidental home porn stars with flood the net, .infact filming the act will soon be as much as a necessity and a rubber.",
+                        "textOriginal": "...or, if you need a camera, l think the launch of accidental home porn stars with flood the net, .infact filming the act will soon be as much as a necessity and a rubber.",
+                        "authorDisplayName": "John Weedon",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngrHr121bvGbVmheC0Ws35rfkto-CDqP4zRKpgnNw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCMG2hzJzBjtnh00NOG11vtQ",
+                        "authorChannelId": {
+                            "value": "UCMG2hzJzBjtnh00NOG11vtQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:18:34Z",
+                        "updatedAt": "2020-12-20T14:18:34Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "Ds6XYjf7WYC3gTxbZQaTp_VI7HM",
+            "id": "UgyTXz0vAQkneBahthZ4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "E_c1GccPo0e-PGk4sraF5AMoh4M",
+                    "id": "UgyTXz0vAQkneBahthZ4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Video proof required? In other words, we now have the civic duty to make amateur porn \ud83d\ude0a.",
+                        "textOriginal": "Video proof required? In other words, we now have the civic duty to make amateur porn \ud83d\ude0a.",
+                        "authorDisplayName": "Cosmic Prison",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngXn5Zl5jMwE4bsrdtqncsn2gjZsQvBDbCawdgg=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UC6wQ8FlI4nfxsxGql3u4FdQ",
+                        "authorChannelId": {
+                            "value": "UC6wQ8FlI4nfxsxGql3u4FdQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:17:50Z",
+                        "updatedAt": "2020-12-20T14:27:08Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "NbM6b2OQx86l0yYYZAxE9NF0aJc",
+            "id": "UgwYYIXSO4ZtfY6R64t4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "sCkxFHy_z7NYl1JUG5bgZITqsY4",
+                    "id": "UgwYYIXSO4ZtfY6R64t4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": ".... and imagine if the girl asked you to choke her a little, and slap and tickle............boy is fucked the day after too!",
+                        "textOriginal": ".... and imagine if the girl asked you to choke her a little, and slap and tickle............boy is fucked the day after too!",
+                        "authorDisplayName": "John Weedon",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngrHr121bvGbVmheC0Ws35rfkto-CDqP4zRKpgnNw=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCMG2hzJzBjtnh00NOG11vtQ",
+                        "authorChannelId": {
+                            "value": "UCMG2hzJzBjtnh00NOG11vtQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:15:55Z",
+                        "updatedAt": "2020-12-20T14:15:55Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "VRbPhxfgOC6cZFxYMNjTpnqJPbo",
+            "id": "Ugz23-JqMkl4bgUpFWB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "bXAzvde3aDLLmk7_uurpl_ZU730",
+                    "id": "Ugz23-JqMkl4bgUpFWB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "Don't you understand guys, if brainless people drive governments this will always happen\n\n\nEdit: I live in the South East Asia, the things which happen there almost never happens here, of course the women might have some quality issues in our country but trust for men who wants a date in the east, it's gonna be breath of fresh air, the east gives huge advantages to men, especially if you are a foreigner.",
+                        "textOriginal": "Don't you understand guys, if brainless people drive governments this will always happen\n\n\nEdit: I live in the South East Asia, the things which happen there almost never happens here, of course the women might have some quality issues in our country but trust for men who wants a date in the east, it's gonna be breath of fresh air, the east gives huge advantages to men, especially if you are a foreigner.",
+                        "authorDisplayName": "mahdi islam",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwniZL7EcKjvYv5hI23aV0Dv9lw67wk3248hKEA=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCoWbkqtAsspzvqXAXiAHhZw",
+                        "authorChannelId": {
+                            "value": "UCoWbkqtAsspzvqXAXiAHhZw"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:15:37Z",
+                        "updatedAt": "2020-12-20T14:25:46Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "zDPcuACbJXBDu697SVwe6esTK8o",
+            "id": "Ugy9wOKkw00ycyNmgtB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "auJyuQ9iwCpuGlx9zM-ll121Br4",
+                    "id": "Ugy9wOKkw00ycyNmgtB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "This is why birth rates are plummeting.",
+                        "textOriginal": "This is why birth rates are plummeting.",
+                        "authorDisplayName": "FILIP HEDMAN",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwngYZ0U5xhquPdlrKMeyB_dYwp-NKnPJ6vBViyxZ_w=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCQQ6Nx6EnoESzHE30LPDBrg",
+                        "authorChannelId": {
+                            "value": "UCQQ6Nx6EnoESzHE30LPDBrg"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 1,
+                        "publishedAt": "2020-12-20T14:15:35Z",
+                        "updatedAt": "2020-12-20T14:15:35Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        },
+        {
+            "kind": "youtube#commentThread",
+            "etag": "qzlP2efBngjhwPqUOj0DWGW5RcI",
+            "id": "UgzJ06dKfD7hE9KE4hB4AaABAg",
+            "snippet": {
+                "videoId": "oieNTzEeeX0",
+                "topLevelComment": {
+                    "kind": "youtube#comment",
+                    "etag": "KYhkyGvm2d9P5_u9jolcd8fuOHM",
+                    "id": "UgzJ06dKfD7hE9KE4hB4AaABAg",
+                    "snippet": {
+                        "videoId": "oieNTzEeeX0",
+                        "textDisplay": "All that in a regular school bus, damm that's impressive",
+                        "textOriginal": "All that in a regular school bus, damm that's impressive",
+                        "authorDisplayName": "ShadowFoxChibi 6",
+                        "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/AAUvwnjZomaP7BYiVkAr7EYCRk9ORHL2MBMRrpLYSg0b=s48-c-k-c0xffffffff-no-rj-mo",
+                        "authorChannelUrl": "http://www.youtube.com/channel/UCG-5sVd-a2qciWD1oJ_GDxQ",
+                        "authorChannelId": {
+                            "value": "UCG-5sVd-a2qciWD1oJ_GDxQ"
+                        },
+                        "canRate": true,
+                        "viewerRating": "none",
+                        "likeCount": 0,
+                        "publishedAt": "2020-12-20T14:14:59Z",
+                        "updatedAt": "2020-12-20T14:14:59Z"
+                    }
+                },
+                "canReply": true,
+                "totalReplyCount": 0,
+                "isPublic": true
+            }
+        }
+    ]
+}
