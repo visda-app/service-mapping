@@ -1,3 +1,4 @@
+import json
 from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TextEmbeddingSchema
 
@@ -7,50 +8,39 @@ from configs.app import (
     PulsarConf,
 )
 from models.text import TextEmbedding
-from models.job import Job, JobStatus
+from models.job import JobTextRelation
 from models.db import create_all_tables
-from clusterer import load_and_cluster_and_save
 
 
 create_all_tables()
 
 
-def start_clustering_task(text_embedding):
-    """
-    Start the next task, dimension reduction and clustering.
-    """
-    sequence_id = text_embedding.get_sequence_id()
-    logger.debug(f"Starting clustering for Sequence_id={sequence_id}")
-    Job.log_status(sequence_id, JobStatus.mapping_started)
-    load_and_cluster_and_save([sequence_id])
-    Job.log_status(sequence_id, JobStatus.mapping_done)
-
-
 def consumer_loop(message_broker):
     """
-    Infinite loop. Consume message, write to DB, and
-    trigger next action if all records have been received.
+    Infinite loop. Consume message and write to DB.
     """
     mb = message_broker
     while True:
         msg = mb.consumer_receive()
+        mb.consumer_acknowledge(msg)
         try:
+            text_id = msg.value().uuid
             logger.debug(
-                f"uuid={msg.value().uuid}, "
+                f"uuid={text_id}, "
                 f"text='{text_tip(msg.value().text)}' "
                 f"embedding='{msg.value().embedding}'"
                 "Received! 🤓"
             )
 
-            mb.consumer_acknowledge(msg)
-
             txt_emb = TextEmbedding(
-                uuid=msg.value().uuid,
+                uuid=text_id,
                 embedding=msg.value().embedding
             )
             txt_emb.save_to_db()
-            if txt_emb.has_same_or_more_seq_count_than_rawtext():
-                start_clustering_task(txt_emb)
+            JobTextRelation.update_status_by_text_id(text_id)
+
+            # if txt_emb.has_same_or_more_seq_count_than_rawtext():
+            #     publish_clustering_task(txt_emb)
 
         except Exception as e:
             # Message failed to be processed

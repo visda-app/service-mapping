@@ -74,14 +74,14 @@ class TestTextModel(unittest.TestCase):
         # Check if the record is in DB
         assert len(q.all()) == 1
 
-    def test_text_embedding_get_count_by_sequence_id(self):
-        """
-        Test TextEmbedding model to have the right count by sequence_id
-        """
-        TextEmbedding(uuid=self.uuid1, embedding=[]).save_to_db()
-        assert TextEmbedding.get_count_by_sequence_id(self.sequence_id) == 1
-        TextEmbedding(uuid=self.uuid2, embedding=[]).save_to_db()
-        assert TextEmbedding.get_count_by_sequence_id(self.sequence_id) == 2
+    # def test_text_embedding_get_count_by_sequence_id(self):
+    #     """
+    #     Test TextEmbedding model to have the right count by sequence_id
+    #     """
+    #     TextEmbedding(uuid=self.uuid1, embedding=[]).save_to_db()
+    #     assert TextEmbedding.get_count_by_sequence_id(self.sequence_id) == 1
+    #     TextEmbedding(uuid=self.uuid2, embedding=[]).save_to_db()
+    #     assert TextEmbedding.get_count_by_sequence_id(self.sequence_id) == 2
 
     def test_text_embedding_has_same_or_more_items_than_raw_text(self):
         """

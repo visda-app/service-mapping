@@ -1,3 +1,4 @@
+import json
 from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TaskSchema
 
@@ -6,25 +7,37 @@ from lib.utils import get_module_from_string
 from configs.app import (
     PulsarConf,
 )
-from models.job import Job, JobStatus
-from models.db import create_all_tables
-
-
-create_all_tables()
 
 
 def _execute_task(
     task_class,
+    job_id,
     task_id,
     args,
     kwargs
 ):
     logger.debug(
-        f"executing task_class={task_class}, "
+        f"🏃‍♀️ executing task_class={task_class}, "
+        f"job_id={job_id}, "
         f"task_id={task_id}, "
         f"args={args}, "
         f"kwargs={kwargs}, "
     )
+    task_class_name = task_class.split('.')[-1]
+    task_class_path = '.'.join(task_class.split('.')[:-1])
+    task_module = get_module_from_string(task_class_path)
+    if not args:
+        args = '[]'
+    if not kwargs:
+        kwargs = "{}"
+    args = json.loads(args)
+    kwargs = json.loads(kwargs)
+    if job_id:
+        kwargs['job_id'] = job_id
+    if task_id:
+        kwargs['task_id'] = task_id
+
+    getattr(task_module, task_class_name)().execute(*args, **kwargs)
 
 
 def consumer_loop(message_broker):
@@ -38,6 +51,7 @@ def consumer_loop(message_broker):
         logger.debug(
             f"task_class={msg.value().task_class}, "
             f"task_id={msg.value().task_id}, "
+            f"task_id={msg.value().job_id}, "
             f"args={msg.value().args}, "
             f"kwargs='{msg.value().kwargs}'"
             "Received! 🤓"
@@ -45,6 +59,7 @@ def consumer_loop(message_broker):
         try:
             _execute_task(
                 msg.value().task_class,
+                msg.value().job_id,
                 msg.value().task_id,
                 msg.value().args,
                 msg.value().kwargs

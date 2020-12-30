@@ -13,6 +13,8 @@ from models.text import (
 )
 from models.job import JobStatus
 from models.job import Job as JobModel
+from tasks.base import Base
+
 
 MAX_CLUSTER_SIZE = 10
 # To calculate radius for each bubble
@@ -491,40 +493,41 @@ def log_status(sequence_ids, status):
         JobModel.log_status(sequence_ids, status)
 
 
-def load_and_cluster_and_save(sequence_ids):
-    """
-    load all the texts and embeddings for a sequence id,
-    performs dimension reduction and clustering, and saves
-    the results to database
+class ClusterTexts(Base):
+    def execute(self, sequence_ids=[]):
+        """
+        Loads all the texts and embeddings for a sequence id,
+        performs dimension reduction and clustering, and saves
+        the results to database
 
-    Args:
-        sequence_ids (list[str]): A list of ids for all
-            the texts in the sequence that will be processed
-    """
-    logger.debug("Loading data from DB...")
-    embedding_data = []
-    for i in sequence_ids:
-        embedding_data.extend(load_embeddings_from_db(i))
+        Args:
+            sequence_ids (list[str]): A list of ids for all
+                the texts in the sequence that will be processed
+        """
+        logger.debug("Loading data from DB...")
+        embedding_data = []
+        for i in sequence_ids:
+            embedding_data.extend(load_embeddings_from_db(i))
 
-    logger.debug("Reducing dimension...")
-    log_status(sequence_ids, JobStatus.dimension_reduction_started)
-    data_w_low_dim = reduce_dimension(embedding_data)
+        logger.debug("Reducing dimension...")
+        log_status(sequence_ids, JobStatus.dimension_reduction_started)
+        data_w_low_dim = reduce_dimension(embedding_data)
 
-    logger.debug("Partition by seqence_id...")
-    partitioned_data = partition_by_sequence_id(data_w_low_dim)
+        logger.debug("Partition by seqence_id...")
+        partitioned_data = partition_by_sequence_id(data_w_low_dim)
 
-    logger.debug("Start clustering for all sequence id's...")
-    for sequence_id in partitioned_data:
-        clustered_data = cluster_hierarchically_add_meta_data(
-            sequence_id, partitioned_data[sequence_id]
-        )
+        logger.debug("Start clustering for all sequence id's...")
+        for sequence_id in partitioned_data:
+            clustered_data = cluster_hierarchically_add_meta_data(
+                sequence_id, partitioned_data[sequence_id]
+            )
 
-        logger.debug(f"Saving sequence_id={sequence_id} to DB...")
-        log_status(sequence_ids, JobStatus.saving_to_db)
+            logger.debug(f"Saving sequence_id={sequence_id} to DB...")
+            log_status(sequence_ids, JobStatus.saving_to_db)
 
-        save_clusterings_to_db(
-            sequence_id, clustered_data
-        )
+            save_clusterings_to_db(
+                sequence_id, clustered_data
+            )
 
-    logger.debug("Done!")
-    log_status(sequence_ids, JobStatus.done)
+        logger.debug("Done!")
+        log_status(sequence_ids, JobStatus.done)

@@ -26,82 +26,86 @@ from models.db import (
 from lib.logger import logger
 
 
-class RawText(Base):
-    __tablename__ = 'raw_texts'
-
-    uuid = Column(String, primary_key=True)
-    text = Column(Text)
-    sequence_id = Column(String)
-
-    def __repr__(self):
-        return "<RawText(uuid='%s', text='%s', sequence_id='%s')>" % (
-            self.uuid, self.text, self.sequence_id
-        )
-
-    def save_to_db(self):
-        session.add(self)
-        session.commit()
-
-    @classmethod
-    def get_count_by_sequence_id(cls, sequence_id):
-        return session.query(cls).filter(
-            cls.sequence_id == sequence_id
-        ).count()
-
-
-class TextEmbedding(Base):
-    __tablename__ = 'text_embeddings'
+class Text(Base):
+    __tablename__ = 'texts'
 
     id = Column(Integer, primary_key=True)
-    uuid = Column(String, ForeignKey('raw_texts.uuid'))
-    # embedding is a list of floats
+    text_id = Column(String)
+    text = Column(Text)
     embedding = Column(JSON)
 
     def __repr__(self):
-        return "<TextEmbedding(uuid='%s', embedding='%s')>" % (
-            self.uuid, self.embedding
+        return "<Text(uuid='%s', text='%s', embedding='%s')>" % (
+            self.text_id, self.text, self.embedding
         )
 
-    def save_to_db(self):
+    def save_or_update(self):
+        # check if the record exits
+        records = session.query(self).all()
         session.add(self)
         session.commit()
+    
+    # @classmethod
+    # def get_count_by_sequence_id(cls, sequence_id):
+    #     return session.query(cls).filter(
+    #         cls.sequence_id == sequence_id
+    #     ).count()
 
-    @classmethod
-    def get_count_by_sequence_id(cls, sequence_id):
-        """
-        Check if TextEmbedding has same or more entires than RawText
-        when compared for the same sequence_id
-        """
-        text_emb_count = session.query(cls).join(RawText).filter(
-            RawText.sequence_id == sequence_id
-        ).count()
-        return text_emb_count
 
-    def has_same_or_more_seq_count_than_rawtext(self):
-        """
-        Check if TextEmbedding has same or more entires than RawText
-        when compared for the same sequence_id
-        """
-        q = session.query(RawText).filter(
-            RawText.uuid == self.uuid)
-        if q.count() > 1:
-            raise Exception("More than one record for a uuid!")
-        sequence_id = q.first().sequence_id
-        if not sequence_id:
-            raise Exception('Expected a sequence id!')
+# class TextEmbedding(Base):
+#     __tablename__ = 'text_embeddings'
 
-        raw_text_count = RawText.get_count_by_sequence_id(sequence_id)
-        text_emb_count = self.get_count_by_sequence_id(sequence_id)
+#     id = Column(Integer, primary_key=True)
+#     uuid = Column(String)
+#     # uuid = Column(String, ForeignKey('raw_texts.uuid'))
+#     # embedding is a list of floats
+#     embedding = Column(JSON)
 
-        return text_emb_count >= raw_text_count
+#     def __repr__(self):
+#         return "<TextEmbedding(uuid='%s', embedding='%s')>" % (
+#             self.uuid, self.embedding
+#         )
 
-    def get_sequence_id(self):
-        """
-        Get sequence id by joining tables
-        """
-        return session.query(RawText).filter(
-            RawText.uuid == self.uuid
-        ).first().sequence_id
+#     def save_to_db(self):
+#         session.add(self)
+#         session.commit()
+
+    # @classmethod
+    # def get_count_by_sequence_id(cls, sequence_id):
+    #     """
+    #     Check if TextEmbedding has same or more entires than RawText
+    #     when compared for the same sequence_id
+    #     """
+    #     text_emb_count = session.query(cls).join(RawText).filter(
+    #         RawText.sequence_id == sequence_id
+    #     ).count()
+    #     return text_emb_count
+
+    # def has_same_or_more_seq_count_than_rawtext(self):
+    #     """
+    #     Check if TextEmbedding has same or more entires than RawText
+    #     when compared for the same sequence_id
+    #     """
+    #     q = session.query(RawText).filter(
+    #         RawText.uuid == self.uuid)
+    #     if q.count() > 1:
+    #         raise Exception("More than one record for a uuid!")
+    #     sequence_id = q.first().sequence_id
+    #     if not sequence_id:
+    #         raise Exception('Expected a sequence id!')
+
+    #     raw_text_count = RawText.get_count_by_sequence_id(sequence_id)
+    #     text_emb_count = self.get_count_by_sequence_id(sequence_id)
+
+    #     return text_emb_count >= raw_text_count
+
+    # def get_sequence_id(self):
+    #     """
+    #     Get sequence id by joining tables
+    #     """
+    #     return session.query(RawText).filter(
+    #         RawText.uuid == self.uuid
+    #     ).first().sequence_id
 
 
 class ClusteredText(Base):

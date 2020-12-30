@@ -59,8 +59,8 @@ class Job(Resource):
 
             status = {
               'total_texts': RawText.get_count_by_sequence_id(sequence_id),
-              'vectorized_texts': TextEmbedding.get_count_by_sequence_id(
-                sequence_id),
+              'vectorized_texts': 'TODO',
+                # TextEmbedding.get_count_by_sequence_id(sequence_id),
               'latest_status': JobModel.get_latest_status(sequence_id)
             }
 
