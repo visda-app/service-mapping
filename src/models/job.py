@@ -15,6 +15,7 @@ from models.db import (
     Base,
     session
 )
+from models.text import Text as TextModel
 
 
 class JobStatus(enum.Enum):
@@ -133,3 +134,12 @@ class JobTextRelation(Base):
         for entry in records:
             entry.status = TextTaskStatus.embedded
             entry.save_to_db()
+
+    @classmethod
+    def get_unprocessed_texts_by_job_id(cls, job_id):
+        count = session.query(cls).outerjoin(
+            TextModel, cls.text_id == TextModel.text_id
+        ).filter(
+            not TextModel.embedding
+        ).count()
+        return count

@@ -6,7 +6,7 @@ from lib.logger import logger
 from configs.app import (
     PulsarConf,
 )
-from models.text import RawText
+from models.text import Text as TextModel
 from models.db import create_all_tables
 
 
@@ -27,6 +27,7 @@ logger.info("✅ Connection to the message broker established.")
 logger.info("🔁 Starting the infinite loop ... ")
 while True:
     msg = mb.consumer_receive()
+    mb.consumer_acknowledge(msg)
     try:
         logger.debug(
             f"uuid={msg.value().uuid}, "
@@ -34,16 +35,19 @@ while True:
             f"sequence_id='{msg.value().sequence_id}'"
             "Received! 🤓"
         )
-        RawText(
-            uuid=msg.value().uuid,
+
+        TextModel(
+            text_id=msg.value().uuid,
             text=msg.value().text,
-            sequence_id=msg.value().sequence_id
-        ).save_to_db()
-        mb.consumer_acknowledge(msg)
+        ).save_or_update()
+
     except Exception as e:
         # Message failed to be processed
-        logger.error('❌ message "{}" failed 👎'.format(msg.value().text))
+        logger.error(
+            "❌ message failed 👎"
+            f"uuid={msg.value().uuid}, "
+            f"text='{text_tip(msg.value().text)}' "
+        )
         logger.exception(e)
-        mb.consumer_negative_acknowledge(msg)
 
 mb.close()

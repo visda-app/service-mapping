@@ -1,4 +1,5 @@
 import random
+import time
 from chapar.message_broker import MessageBroker, Consumer, Producer
 from chapar.schema_repo import TextSchema, TextEmbeddingSchema
 
@@ -26,6 +27,7 @@ while True:
     msg = mb.consumer_receive()
     try:
         embedding = [random.random() for i in range(3)]
+        time.sleep(0.05)
         logger.debug(
             f"uuid={msg.value().uuid}, "
             f"text='{msg.value().text}' "

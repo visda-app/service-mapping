@@ -114,7 +114,7 @@ class Get3rdPartyData(Base):
     def _extract_comments(self, youtube_data):
         results = []
         for item in youtube_data.get('items', []):
-            text = item['snippet']['topLevelComment']['snippet']['textOriginal']
+            text = item['snippet']['topLevelComment']['snippet']['textDisplay']
             id = item['snippet']['topLevelComment']['id']
             results.append({
                 "text": text,

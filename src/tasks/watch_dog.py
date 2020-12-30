@@ -6,6 +6,7 @@ to see when it is finished for a job
 from tasks.base import Base
 from lib.logger import logger
 from lib.messaging import publish_task
+from models.job import JobTextRelation
 
 
 def _publish_clustering_task(text_embedding):
@@ -30,5 +31,8 @@ def _publish_clustering_task(text_embedding):
 
 
 class WatchDog(Base):
-    def execute(self, *args, **kwrgs):
+    def execute(self, *args, **kwargs):
         logger.debug("👀 Watch Dog is checking...")
+        job_id = kwargs['job_id']
+        JobTextRelation.get_unprocessed_texts_by_job_id(job_id)
+        import pdb; pdb.set_trace()

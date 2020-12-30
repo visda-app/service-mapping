@@ -65,12 +65,13 @@ def consumer_loop(message_broker):
                 msg.value().kwargs
             )
         except Exception as e:
-            logger.error(
+            logger.exception(
                 f"❌ Task failed 👎 "
                 f"task_class={msg.value().task_class}, "
                 f"task_id={msg.value().task_id}, "
                 f"args={msg.value().args}, "
-                f"kwargs='{msg.value().kwargs}'"
+                f"kwargs='{msg.value().kwargs}' "
+                f"error_msg= {str(e)}"
             )
             logger.exception(e)
             # TODO: Should it retry the task?

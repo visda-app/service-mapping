@@ -28,13 +28,19 @@ def publish_task(
     # task_id = String()
     # args = String()
     # kwargs = String()
+    params = {
+        "task_class": task_class,
+    }
+    if task_args:
+        params['args'] = task_args
+    if task_id:
+        params['task_id'] = task_id
+    if task_args:
+        params['args'] = task_args
+    if task_kwargs:
+        params['kwargs'] = task_kwargs
 
-    msg = TaskSchema(
-        task_class=task_class,
-        task_id=task_id,
-        args=task_args,
-        kwargs=task_kwargs
-    )
+    msg = TaskSchema(**params)
 
     mb.producer_send(msg)
 

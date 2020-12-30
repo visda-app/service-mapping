@@ -29,9 +29,8 @@ from lib.logger import logger
 class Text(Base):
     __tablename__ = 'texts'
 
-    id = Column(Integer, primary_key=True)
-    text_id = Column(String)
-    text = Column(Text)
+    text_id = Column(String, primary_key=True)
+    text = Column(Text, nullable=False)
     embedding = Column(JSON)
 
     def __repr__(self):
@@ -40,11 +39,42 @@ class Text(Base):
         )
 
     def save_or_update(self):
+        """
+        First search for a record with the given text_id
+        if the record exists, it updates the record
+        """
         # check if the record exits
-        records = session.query(self).all()
-        session.add(self)
-        session.commit()
-    
+        text_id = self.text_id
+        record = session.query(self.__class__).filter(
+            self.__class__.text_id == text_id
+        ).first()
+
+        if record:
+            if self.embedding:
+                record.embedding = self.embedding
+            if self.text:
+                record.text = self.text
+        else:
+            session.add(self)
+
+        try:
+            session.commit()
+        except Exception as e:
+            logger.exception(str(e))
+            session.rollback()
+            raise(ValueError(f"Invalid record for Text model. {self}"))
+
+    @classmethod
+    def get_by_id(cls, text_id):
+        record = session.query(cls).filter(cls.text_id == text_id).first()
+        return record
+
+    @classmethod
+    def delete_by_id(cls, text_id):
+        session.query(cls).filter(
+            cls.text_id == text_id
+        ).delete(synchronize_session=False)
+
     # @classmethod
     # def get_count_by_sequence_id(cls, sequence_id):
     #     return session.query(cls).filter(

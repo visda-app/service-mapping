@@ -1,4 +1,3 @@
-import json
 from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TextEmbeddingSchema
 
@@ -7,8 +6,7 @@ from lib.logger import logger
 from configs.app import (
     PulsarConf,
 )
-from models.text import TextEmbedding
-from models.job import JobTextRelation
+from models.text import Text as TextModel
 from models.db import create_all_tables
 
 
@@ -32,21 +30,16 @@ def consumer_loop(message_broker):
                 "Received! 🤓"
             )
 
-            txt_emb = TextEmbedding(
-                uuid=text_id,
+            TextModel(
+                text_id=text_id,
+                text=msg.value().text,
                 embedding=msg.value().embedding
-            )
-            txt_emb.save_to_db()
-            JobTextRelation.update_status_by_text_id(text_id)
-
-            # if txt_emb.has_same_or_more_seq_count_than_rawtext():
-            #     publish_clustering_task(txt_emb)
+            ).save_or_update()
 
         except Exception as e:
             # Message failed to be processed
             logger.error('❌ message "{}" failed 👎'.format(msg.value().text))
             logger.exception(e)
-            mb.consumer_negative_acknowledge(msg)
 
 
 def main():
