@@ -8,23 +8,15 @@ from models.db import (
     Base,
     session
 )
-from models.text import (
-    TextEmbedding,
-    RawText,
-    ClusteredText
-)
+from models.text import Text, ClusteredText
 
 
 # Base.metadata.create_all(engine)
 
 logger.info('Deleting entries...')
-session.query(TextEmbedding).delete(synchronize_session=False)
-# session.query(ClusteredText).delete(synchronize_session=False)
-session.query(RawText).delete(synchronize_session=False)
+session.query(Text).delete(synchronize_session=False)
 
-print(session.query(RawText).count())
-print(session.query(TextEmbedding).count())
-# print(session.query(ClusteredText).count())
+print(session.query(Text).count())
 
 
 # logger.info('Dropping tables...')

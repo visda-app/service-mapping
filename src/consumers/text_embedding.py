@@ -31,7 +31,7 @@ def consumer_loop(message_broker):
             )
 
             TextModel(
-                text_id=text_id,
+                id=text_id,
                 text=msg.value().text,
                 embedding=msg.value().embedding
             ).save_or_update()

@@ -1,3 +1,4 @@
+import json
 from chapar.message_broker import MessageBroker, Producer
 from chapar.schema_repo import TaskSchema
 
@@ -14,6 +15,9 @@ def publish_task(
     """
     Publish a task on the message bus
 
+    Args:
+        task_args (list): a list of args for task
+        task_kwargs (dict): a dictionary of args for the task
     """
     mb = MessageBroker(
         broker_service_url=PulsarConf.client,
@@ -31,14 +35,16 @@ def publish_task(
     params = {
         "task_class": task_class,
     }
-    if task_args:
-        params['args'] = task_args
     if task_id:
         params['task_id'] = task_id
     if task_args:
-        params['args'] = task_args
+        if type(task_args) not in [list, tuple]:
+            raise ValueError('Args must be a list.')
+        params['args'] = json.dumps(task_args)
     if task_kwargs:
-        params['kwargs'] = task_kwargs
+        if type(task_kwargs) is not dict:
+            raise ValueError('kwargs must a be a dict.')
+        params['kwargs'] = json.dumps(task_kwargs)
 
     msg = TaskSchema(**params)
 

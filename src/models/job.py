@@ -108,8 +108,20 @@ class JobTextRelation(Base):
     status = Column(String)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
 
+    def __repr__(self):
+        return "<JobTextRelation(job_id='%s', text_id='%s', status='%s')>" % (
+            self.job_id, self.text_id, self.status
+        )
+
     def save_to_db(self):
         session.add(self)
+        session.commit()
+        return self
+
+    def delete_from_db(self):
+        session.query(self.__class__).filter(
+            self.__class__.id == self.id
+        ).delete()
         session.commit()
 
     @classmethod
@@ -132,14 +144,21 @@ class JobTextRelation(Base):
         ).all()
 
         for entry in records:
-            entry.status = TextTaskStatus.embedded
+            entry.status = TextTaskStatus.embedded.name
             entry.save_to_db()
 
     @classmethod
-    def get_unprocessed_texts_by_job_id(cls, job_id):
-        count = session.query(cls).outerjoin(
-            TextModel, cls.text_id == TextModel.text_id
+    def _get_unprocessed_texts_query(cls, job_id):
+        return session.query(
+            cls, TextModel
         ).filter(
-            not TextModel.embedding
-        ).count()
-        return count
+            cls.text_id == TextModel.id
+        ).filter(
+            TextModel.embedding == None
+        )
+
+    @classmethod
+    def get_unprocessed_texts_count_by_job_id(cls, job_id):
+        qu = cls._get_unprocessed_texts_query(job_id)
+        result = qu.count()
+        return result

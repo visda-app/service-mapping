@@ -37,7 +37,7 @@ while True:
         )
 
         TextModel(
-            text_id=msg.value().uuid,
+            id=msg.value().uuid,
             text=msg.value().text,
         ).save_or_update()
 

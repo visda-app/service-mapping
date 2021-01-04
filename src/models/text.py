@@ -23,19 +23,20 @@ from models.db import (
     Base,
     session
 )
+from models.job import JobTextRelation
 from lib.logger import logger
 
 
 class Text(Base):
     __tablename__ = 'texts'
 
-    text_id = Column(String, primary_key=True)
+    id = Column(String, primary_key=True)
     text = Column(Text, nullable=False)
     embedding = Column(JSON)
 
     def __repr__(self):
-        return "<Text(uuid='%s', text='%s', embedding='%s')>" % (
-            self.text_id, self.text, self.embedding
+        return "<Text(id='%s', text='%s', embedding='%s')>" % (
+            self.id, self.text, self.embedding
         )
 
     def save_or_update(self):
@@ -44,9 +45,9 @@ class Text(Base):
         if the record exists, it updates the record
         """
         # check if the record exits
-        text_id = self.text_id
+        text_id = self.id
         record = session.query(self.__class__).filter(
-            self.__class__.text_id == text_id
+            self.__class__.id == text_id
         ).first()
 
         if record:
@@ -59,20 +60,27 @@ class Text(Base):
 
         try:
             session.commit()
+            return self
         except Exception as e:
             logger.exception(str(e))
             session.rollback()
             raise(ValueError(f"Invalid record for Text model. {self}"))
 
+    def delete_from_db(self):
+        session.query(self.__class__).filter(
+            self.__class__.id == self.id
+        ).delete()
+        session.commit()
+
     @classmethod
     def get_by_id(cls, text_id):
-        record = session.query(cls).filter(cls.text_id == text_id).first()
+        record = session.query(cls).filter(cls.id == text_id).first()
         return record
 
     @classmethod
     def delete_by_id(cls, text_id):
         session.query(cls).filter(
-            cls.text_id == text_id
+            cls.id == text_id
         ).delete(synchronize_session=False)
 
     # @classmethod
@@ -154,6 +162,7 @@ class ClusteredText(Base):
     def save_to_db(self):
         session.add(self)
         session.commit()
+        return self
 
     @classmethod
     def get_last_by_sequence_id(cls, sequence_id):
@@ -166,44 +175,42 @@ class ClusteredText(Base):
         return results
 
 
-def load_embeddings_from_db(sequence_id):
+def load_embeddings_from_db(job_id):
     """
     Load text embeddings by joining tables
     """
-    q = session.query(TextEmbedding, RawText).join(
-        RawText
+    q = session.query(Text, JobTextRelation).filter(
+        Text.id == JobTextRelation.text_id
     ).filter(
-        RawText.sequence_id == sequence_id
+        JobTextRelation.job_id == job_id
     )
     db_vals = q.all()
 
     results = []
 
-    for (text_embedding, raw_text) in db_vals:
+    for (text, job_text_relation) in db_vals:
         results.append({
-            'embedding': text_embedding.embedding,
-            'text': raw_text.text,
-            'uuid': text_embedding.uuid,
-            'sequence_id': raw_text.sequence_id
+            'embedding': text.embedding,
+            'text': text.text,
+            'uuid': text.id,
+            'sequence_id': job_id
         })
 
     return results
 
 
-def get_query_clustering(sequence_id):
-    q = session.query(
-        ClusteredText, RawText
-    ).join(
-        RawText
+def _get_query_clustering(job_id):
+    q = session.query(Text, JobTextRelation).filter(
+        Text.id == JobTextRelation.text_id
     ).filter(
-        RawText.sequence_id == sequence_id
+        JobTextRelation.job_id == job_id
     )
     logger.debug(q)
     return q
 
 
 def get_clustering_count(sequence_id):
-    q = get_query_clustering(sequence_id)
+    q = _get_query_clustering(sequence_id)
     return q.count()
 
 

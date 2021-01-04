@@ -6,27 +6,18 @@ from models.db import (
     session
 )
 # Import all the models you want to create tables for
-from models.text import (
-    TextEmbedding,
-    RawText,
-)
+from models.text import Text as TextModel
 from models.job import Job
 
 
 def session_add(session, d, sequence_id):
     uuid = d['uuid']
     # logger.debug(f"Writing data for uuid={uuid}")
-    RawText(
-        uuid=uuid,
+    TextModel(
+        id=uuid,
         text=d['text'],
-        sequence_id=sequence_id,
-    ).save_to_db()
-
-    TextEmbedding(
-        uuid=uuid,
         embedding=d['embedding'],
-    ).save_to_db()
-
+    ).save_or_update()
 
 
 logger.debug('Creating tables...')

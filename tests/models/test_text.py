@@ -1,13 +1,7 @@
 import unittest
 from uuid import uuid4
-import time
 
 from models.text import Text as TextModel
-from models.text import session
-from models.job import (
-    Job,
-    JobStatus
-)
 from lib.logger import logger
 from models.db import create_all_tables
 
@@ -50,7 +44,7 @@ class TestTextModel(unittest.TestCase):
 
         # Create a record in the DB
         TextModel(
-            text_id=uuid1,
+            id=uuid1,
             text='some text',
             embedding=[0.1, 0.2, 0.3],
         ).save_or_update()
@@ -61,7 +55,7 @@ class TestTextModel(unittest.TestCase):
         # Update the record
         second_embedding = [0.7, 0.8, 0.9]
         TextModel(
-            text_id=uuid1,
+            id=uuid1,
             embedding=second_embedding,
         ).save_or_update()
 
@@ -81,7 +75,7 @@ class TestTextModel(unittest.TestCase):
         # Create a record in the DB
         with self.assertRaises(ValueError):
             TextModel(
-                text_id=uuid1,
+                id=uuid1,
                 embedding=[0.1, 0.2, 0.3],
             ).save_or_update()
 
@@ -160,48 +154,3 @@ class TestTextModel(unittest.TestCase):
     #     te.save_to_db()
 
     #     assert te.get_sequence_id() == self.sequence_id
-
-
-class TestJobModel(unittest.TestCase):
-    def test_create_job(self):
-        """
-        Test creating a job entry in the table
-        """
-        uuid = str(uuid4())
-        Job.log_status(uuid, JobStatus.started)
-
-        q = session.query(Job).filter(
-            Job.job_id == uuid
-        )
-        assert len(q.all()) == 1
-
-        assert q.first().status == 'started'
-
-        q.delete()
-        assert len(q.all()) == 0
-
-    def test_set_status(self):
-        """
-        Test creating a job entry in the table
-        """
-        uuid = str(uuid4())
-
-        ret_status = Job.get_latest_status(uuid)
-        assert ret_status is None
-
-        for status in JobStatus:
-            Job.log_status(uuid, status)
-            ret_status = Job.get_latest_status(uuid)
-            assert ret_status == status.name
-
-        ret_status = Job.get_latest_status(uuid)
-        assert ret_status == JobStatus.done.name
-
-    def test_set_status_type_check(self):
-        """
-        Test set_status only accepts the right type of status
-        """
-        uuid = str(uuid4())
-
-        with self.assertRaises(ValueError) as e:
-            Job.log_status(uuid, "A_dummy_status")

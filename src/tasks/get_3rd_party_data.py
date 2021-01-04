@@ -97,18 +97,16 @@ class Get3rdPartyData(Base):
         texts for a job_id
         """
         task_class = 'tasks.watch_dog.WatchDog'
-        kwargs = json.dumps({
+        kwargs = {
             "job_id": job_id,
             "next_task": "tasks.cluster_texts.ClusterTexts",
             "next_task_kwargs": {
                 "sequence_ids": [job_id]
             }
-        })
+        }
         publish_task(
             task_class,
-            task_args=None,
             task_kwargs=kwargs,
-            task_id=None
         )
 
     def _extract_comments(self, youtube_data):
