@@ -2,7 +2,7 @@
 The database models that deal with
 text segments.
 """
-import enum
+from enum import Enum
 from sqlalchemy.sql import func
 from sqlalchemy import (
     Column,
@@ -18,89 +18,16 @@ from models.db import (
 from models.text import Text as TextModel
 
 
-class JobStatus(enum.Enum):
+class TaskStatus(Enum):
     """
     An enum to keep the stage of a job
     """
     started = 10
-    raw_text_received = 20
-    third_party_data_acquired = 25
-    embeddings_done = 30
-    mapping_started = 40
-    dimension_reduction_started = 50
-    clustering_started = 60
-    clustering_done = 70
-    breaking_down_large_clusters = 80
-    formatting_data = 90
-    mapping_done = 100
-    saving_to_db = 110
-    done = 120
+    done = 20
 
 
-class TextTaskStatus(enum.Enum):
-    """
-    An enum to keep the progress on a particular text
-    """
-    embedded = 10
-
-
-class Job(Base):
-    __tablename__ = 'jobs'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    job_id = Column(String)  # same as sequence_id
-    status = Column(String)
-    num_items = Column(String)
-    time_created = Column(DateTime(timezone=True), server_default=func.now())
-
-    def __repr__(self):
-        return "<Job(job_id='%s', status='%s')>" % (
-            self.job_id, self.status
-        )
-
-    def _save_to_db(self):
-        session.add(self)
-        session.commit()
-
-    @classmethod
-    def get_latest_status(cls, job_id):
-        latest_status = session.query(cls).filter(
-            cls.job_id == job_id
-        ).order_by(cls.time_created.desc()).first()
-        if latest_status:
-            return latest_status.status
-
-    @classmethod
-    def log_status(cls, job_id, status, num_items=None):
-        """
-        Add an entry to the table with the latest
-        job status
-
-        Parameters
-        ----------
-            job_id : str
-                A unique identifier for the job or sequence id
-            status : JobStatus
-                A status structure
-            num_items: int
-                The number of items or tasks in the job
-
-        Returns
-        -------
-            self
-        """
-        if type(status) is not JobStatus:
-            raise ValueError('status must be of type JobStatus')
-
-        return cls(
-            job_id=job_id,
-            status=status.name,
-            num_items=num_items
-        )._save_to_db()
-
-
-class JobTextRelation(Base):
-    __tablename__ = 'job_text_relations'
+class JobTextMapping(Base):
+    __tablename__ = 'job_text_mappings'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     job_id = Column(String)

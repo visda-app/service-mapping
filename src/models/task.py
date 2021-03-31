@@ -1,0 +1,122 @@
+"""
+The database models that deal with
+text segments.
+"""
+from enum import Enum
+from sqlalchemy.sql import func
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    DateTime,
+)
+from sqlalchemy.dialects.postgresql import JSON
+
+from models.db import (
+    Base,
+    session
+)
+# from models.text import Text as TextModel
+
+
+class TaskStatus(Enum):
+    """
+    An enum to keep the stage of a job
+    """
+    started = 10
+    done = 20
+
+
+class Task(Base):
+    __tablename__ = 'tasks'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    job_id = Column(String)
+    task_class = Column(String)
+    kwargs = Column(JSON)
+    next_task_id = Column(Integer)
+    created = Column(DateTime(timezone=True), server_default=func.now())
+    started = Column(DateTime(timezone=True))
+    finished = Column(DateTime(timezone=True))
+    progress = Column(Integer)
+
+    def __repr__(self):
+        return (
+            "<Task("
+            f"id={self.id}, "
+            f"job_id={self.job_id}"
+            f"task_class={self.task_class}, "
+            f"kwargs={self.kwargs}, "
+            f"next_task_id={self.next_task_id}, "
+            f"created={self.created}, "
+            f"started={self.started}, "
+            f"finished={self.finished}, "
+            f"progress={self.progress}, "
+            ")>"
+        )
+
+    def save_to_db(self):
+        session.add(self)
+        session.commit()
+        return self
+
+    @classmethod
+    def find_by_id(cls, id):
+        q = session.query(cls).filter(cls.id == id)
+        return q.first()
+
+    @classmethod
+    def delete_by_id(cls, id):
+        session.query(cls).filter(
+            cls.id == id
+        ).delete(synchronize_session=False)
+        session.commit()
+
+    def load_self_from_db(self):
+        record = session.query(self).filter(
+            self.__class__.id == self.id
+        ).first()
+        return record
+
+    def record_start_time(self):
+        time = func.now()
+        record = self.load_self_from_db()
+        record.started = time
+        record.save_to_db()
+
+    def record_finish_time(self):
+        time = func.now()
+        record = self.load_self_from_db()
+        record.finished = time
+        record.save_to_db()
+
+    def get_progress():
+        pass
+
+    @classmethod
+    def log_status(cls, job_id, status, num_items=None):
+        """
+        Add an entry to the table with the latest
+        job status
+
+        Parameters
+        ----------
+            job_id : str
+                A unique identifier for the job or sequence id
+            status : JobStatus
+                A status structure
+            num_items: int
+                The number of items or tasks in the job
+
+        Returns
+        -------
+            self
+        """
+        if type(status) is not JobStatus:
+            raise ValueError('status must be of type JobStatus')
+
+        return cls(
+            job_id=job_id,
+            status=status.name,
+            num_items=num_items
+        ).save_to_db()

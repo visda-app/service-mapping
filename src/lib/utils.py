@@ -2,6 +2,7 @@ import time
 import functools
 from lib.logger import logger
 import importlib
+from uuid import uuid4
 
 
 def timerD(func):
@@ -27,3 +28,7 @@ def text_tip(s):
 
 def get_module_from_string(module_path):
     return importlib.import_module(module_path)
+
+
+def generate_random_job_id():
+    return str(uuid4())

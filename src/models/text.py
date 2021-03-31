@@ -83,68 +83,6 @@ class Text(Base):
             cls.id == text_id
         ).delete(synchronize_session=False)
 
-    # @classmethod
-    # def get_count_by_sequence_id(cls, sequence_id):
-    #     return session.query(cls).filter(
-    #         cls.sequence_id == sequence_id
-    #     ).count()
-
-
-# class TextEmbedding(Base):
-#     __tablename__ = 'text_embeddings'
-
-#     id = Column(Integer, primary_key=True)
-#     uuid = Column(String)
-#     # uuid = Column(String, ForeignKey('raw_texts.uuid'))
-#     # embedding is a list of floats
-#     embedding = Column(JSON)
-
-#     def __repr__(self):
-#         return "<TextEmbedding(uuid='%s', embedding='%s')>" % (
-#             self.uuid, self.embedding
-#         )
-
-#     def save_to_db(self):
-#         session.add(self)
-#         session.commit()
-
-    # @classmethod
-    # def get_count_by_sequence_id(cls, sequence_id):
-    #     """
-    #     Check if TextEmbedding has same or more entires than RawText
-    #     when compared for the same sequence_id
-    #     """
-    #     text_emb_count = session.query(cls).join(RawText).filter(
-    #         RawText.sequence_id == sequence_id
-    #     ).count()
-    #     return text_emb_count
-
-    # def has_same_or_more_seq_count_than_rawtext(self):
-    #     """
-    #     Check if TextEmbedding has same or more entires than RawText
-    #     when compared for the same sequence_id
-    #     """
-    #     q = session.query(RawText).filter(
-    #         RawText.uuid == self.uuid)
-    #     if q.count() > 1:
-    #         raise Exception("More than one record for a uuid!")
-    #     sequence_id = q.first().sequence_id
-    #     if not sequence_id:
-    #         raise Exception('Expected a sequence id!')
-
-    #     raw_text_count = RawText.get_count_by_sequence_id(sequence_id)
-    #     text_emb_count = self.get_count_by_sequence_id(sequence_id)
-
-    #     return text_emb_count >= raw_text_count
-
-    # def get_sequence_id(self):
-    #     """
-    #     Get sequence id by joining tables
-    #     """
-    #     return session.query(RawText).filter(
-    #         RawText.uuid == self.uuid
-    #     ).first().sequence_id
-
 
 class ClusteredText(Base):
     __tablename__ = 'clustered_texts'
@@ -176,9 +114,6 @@ class ClusteredText(Base):
 
 
 def load_embeddings_from_db(job_id):
-    """
-    Load text embeddings by joining tables
-    """
     q = session.query(Text, JobTextRelation).filter(
         Text.id == JobTextRelation.text_id
     ).filter(
