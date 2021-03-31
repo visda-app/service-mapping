@@ -26,8 +26,15 @@ def text_tip(s):
         return s
 
 
-def get_module_from_string(module_path):
+def _get_module_from_string(module_path):
     return importlib.import_module(module_path)
+
+
+def get_module_and_class_from_string(class_path):
+    class_name = class_path.split('.')[-1]
+    class_path = '.'.join(class_path.split('.')[:-1])
+    module = _get_module_from_string(class_path)
+    return module, class_name
 
 
 def generate_random_job_id():

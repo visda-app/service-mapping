@@ -10,16 +10,11 @@ from configs.app import (
     PulsarConf,
     ThirdParty
 )
-from tasks.base import Base
-from models.job import Job as JobModel
-from models.job import (
-    JobStatus,
-    JobTextRelation
-)
+from tasks.base_task import BaseTask
 from lib.messaging import publish_task
 
 
-class Get3rdPartyData(Base):
+class Get3rdPartyData(BaseTask):
     """
     Get third party data such as YouTube.
     """

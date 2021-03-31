@@ -3,7 +3,7 @@ from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TaskSchema
 
 from lib.logger import logger
-from lib.utils import get_module_from_string
+from lib.utils import get_module_and_class_from_string
 from configs.app import (
     PulsarConf,
 )
@@ -23,9 +23,6 @@ def _execute_task(
         f"args={args}, "
         f"kwargs={kwargs}, "
     )
-    task_class_name = task_class.split('.')[-1]
-    task_class_path = '.'.join(task_class.split('.')[:-1])
-    task_module = get_module_from_string(task_class_path)
     if not args:
         args = '[]'
     if not kwargs:
@@ -36,6 +33,8 @@ def _execute_task(
         kwargs['job_id'] = job_id
     if task_id:
         kwargs['task_id'] = task_id
+
+    task_module, task_class_name = get_module_and_class_from_string(task_class)
 
     getattr(task_module, task_class_name)().execute(*args, **kwargs)
 

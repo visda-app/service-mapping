@@ -7,5 +7,6 @@ from models.db import (
 logger.debug('Creating tables...')
 create_all_tables()
 
+
 def init_tables():
     pass

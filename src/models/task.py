@@ -2,6 +2,7 @@
 The database models that deal with
 text segments.
 """
+import json
 from enum import Enum
 from sqlalchemy.sql import func
 from sqlalchemy import (
@@ -40,18 +41,23 @@ class Task(Base):
     finished = Column(DateTime(timezone=True))
     progress = Column(Integer)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "job_id": self.job_id,
+            "task_class": self.task_class,
+            "kwargs": self.kwargs,
+            "next_task_id": self.next_task_id,
+            "created": self.created,
+            "started": self.started,
+            "finished": self.finished,
+            "progress": self.progress,
+        }
+
     def __repr__(self):
         return (
             "<Task("
-            f"id={self.id}, "
-            f"job_id={self.job_id}"
-            f"task_class={self.task_class}, "
-            f"kwargs={self.kwargs}, "
-            f"next_task_id={self.next_task_id}, "
-            f"created={self.created}, "
-            f"started={self.started}, "
-            f"finished={self.finished}, "
-            f"progress={self.progress}, "
+            f"{json.dumps(self.to_dict())}"
             ")>"
         )
 
@@ -67,10 +73,18 @@ class Task(Base):
 
     @classmethod
     def delete_by_id(cls, id):
-        session.query(cls).filter(
+        q = session.query(cls).filter(
             cls.id == id
-        ).delete(synchronize_session=False)
+        )
+        ret_val = [e.to_dict() for e in q.all()]
+        q.delete(synchronize_session=False)
         session.commit()
+        return ret_val
+
+    def upsert_next_task(self, next_task_obj):
+        next_task = self.__class__.find_by_id(next_task_obj.id)
+        self.next_task_id = next_task.id
+        self.save_to_db()
 
     def load_self_from_db(self):
         record = session.query(self).filter(
