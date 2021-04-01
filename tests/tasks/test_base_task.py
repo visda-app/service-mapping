@@ -83,32 +83,32 @@ class TestBaseTasks(unittest.TestCase):
         t.submit_to_queue()
         mock_publish_task.assert_called_with(
             'tasks.base_task.BaseTask',
-            [],
-            kwargs,
-            task_id,
+            task_kwargs=kwargs,
+            task_id=task_id,
+            job_id=t.job_id,
             deliver_after_ms=0,
         )
 
     @patch('tasks.base_task.publish_task')
     def test_submit_next_to_queue(self, mock_publish_task):
-        job_id = 123
+        job_id = '123'
         t1 = self.create_task(
             BaseTask,
             {'arg1': 1, '2': 'two'},
             job_id
         )
         t2 = self.create_task(
-            BaseTask,
+            DummyTask,
             {'arg2': 2, '3': 'three'},
             job_id
         )
         t1.add_next(t2)
         t1.submit_next_to_queue()
         mock_publish_task.assert_called_with(
-            'tasks.base_task.BaseTask',
-            [],
-            {'arg2': 2, '3': 'three'},
-            t2.id,
+            'tasks.dummy_task.DummyTask',
+            task_kwargs={'arg2': 2, '3': 'three'},
+            task_id=t2.id,
+            job_id=job_id,
             deliver_after_ms=0,
         )
 
@@ -122,6 +122,20 @@ class TestBaseTasks(unittest.TestCase):
         )
         t1.submit_next_to_queue()
         mock_publish_task.assert_not_called()
+
+    @patch('tasks.base_task.publish_task')
+    def test_retry_with_delay(self, mock_publish_task):
+        kwargs = {"pub1": "sub2"}
+        t = self.create_task(BaseTask, kwargs)
+        task_id = t.id
+        t.retry_with_delay()
+        mock_publish_task.assert_called_with(
+            'tasks.base_task.BaseTask',
+            task_kwargs=kwargs,
+            task_id=task_id,
+            job_id=t.job_id,
+            deliver_after_ms=TASK_RETRY_DELAY_MS,
+        )
 
     def test_get_by_id(self):
         job_id = '345'

@@ -75,6 +75,15 @@ class Task(Base):
         return q.first()
 
     @classmethod
+    def get_by_job_id(cls, job_id):
+        tasks = session.query(cls).filter(
+            cls.job_id == job_id
+        ).all()
+        return [
+            t.to_dict() for t in tasks
+        ]
+
+    @classmethod
     def delete_by_id(cls, id):
         q = session.query(cls).filter(
             cls.id == id
@@ -107,7 +116,7 @@ class Task(Base):
         record.finished = time
         record.save_to_db()
 
-    def get_progress():
+    def get_progress(self):
         pass
 
     @classmethod

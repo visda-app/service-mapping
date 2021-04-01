@@ -61,44 +61,44 @@ class BaseTask:
     def get_by_id(cls, task_id):
         task = TaskModel.find_by_id(task_id)
         if task:
-            return cls(task_id=task.id)
+            m, c = get_module_and_class_from_string(task.task_class)
+            task_class = getattr(m, c)
+            return task_class(task_id=task.id)
 
     def add_next(self, next_task_obj):
-        if not isinstance(next_task_obj, self.__class__):
-            raise TypeError('Wrong type for task class.')
-
+        # if not isinstance(next_task_obj, self.__class__):
+        #     raise TypeError('Wrong type for task class.')
         current_task = TaskModel.find_by_id(self.id)
         current_task.upsert_next_task(next_task_obj)
 
-    def submit_next_to_queue(self):
-        """
-        submit next task for execution
-        """
+    def _submit_to_queue(self, deliver_after_ms=0):
         task = TaskModel.find_by_id(self.id)
-        next_task_id = task.next_task_id
-        if next_task_id:
-            self._submit_to_queue_by_id(next_task_id)
-
-    def _submit_to_queue_by_id(self, id, deliver_after_ms=0):
-        task = TaskModel.find_by_id(id)
         publish_task(
             task.task_class,
-            [],
-            json.loads(task.kwargs),
-            task.id,
+            task_kwargs=json.loads(task.kwargs),
+            task_id=task.id,
+            job_id=task.job_id,
             deliver_after_ms=deliver_after_ms,
         )
 
     def submit_to_queue(self):
-        self._submit_to_queue_by_id(self.id)
+        self._submit_to_queue()
 
     def retry_with_delay(self):
         """
         submit self with a delay to be retried
         """
-        self._submit_to_queue_by_id(
-            self.id, deliver_after_ms=TASK_RETRY_DELAY_MS
-        )
+        self._submit_to_queue(deliver_after_ms=TASK_RETRY_DELAY_MS)
+
+    def submit_next_to_queue(self):
+        """
+        submit next task for execution
+        """
+        task = self.get_by_id(self.id)
+        next_task_id = task.next_task_id
+        next_task = self.get_by_id(next_task_id)
+        if next_task:
+            next_task._submit_to_queue()
 
     def execute(self, *args, **kwargs):
         raise NotImplementedError(

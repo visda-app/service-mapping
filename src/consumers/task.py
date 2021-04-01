@@ -31,12 +31,12 @@ def _execute_task(
     # kwargs = json.loads(kwargs)
     # if job_id:
     #     kwargs['job_id'] = job_id
-    if task_id:
-        kwargs['task_id'] = task_id
+    # if task_id:
+    #     kwargs['task_id'] = task_id
 
     module, class_name = get_module_and_class_from_string(task_class)
-
     task_class = getattr(module, class_name)
+
     task = task_class(task_id=task_id)
     result = task.execute()
     if not result:
@@ -56,7 +56,7 @@ def consumer_loop(message_broker):
         logger.debug(
             f"task_class={msg.value().task_class}, "
             f"task_id={msg.value().task_id}, "
-            f"task_id={msg.value().job_id}, "
+            f"job_id={msg.value().job_id}, "
             f"args={msg.value().args}, "
             f"kwargs='{msg.value().kwargs}'"
             "Received! 🤓"

@@ -11,6 +11,7 @@ def publish_task(
     task_args=None,
     task_kwargs=None,
     task_id=None,
+    job_id=None,
     deliver_after_ms=0,
 ):
     """
@@ -38,6 +39,8 @@ def publish_task(
     }
     if task_id:
         params['task_id'] = task_id
+    if job_id:
+        params['job_id'] = job_id
     if task_args:
         if type(task_args) not in [list, tuple]:
             raise ValueError('Args must be a list.')
