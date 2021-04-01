@@ -10,7 +10,8 @@ def publish_task(
     task_class,
     task_args=None,
     task_kwargs=None,
-    task_id=None
+    task_id=None,
+    deliver_after_ms=0,
 ):
     """
     Publish a task on the message bus
@@ -48,6 +49,6 @@ def publish_task(
 
     msg = TaskSchema(**params)
 
-    mb.producer_send(msg)
+    mb.producer_send(msg, deliver_after_ms=deliver_after_ms)
 
     mb.close()

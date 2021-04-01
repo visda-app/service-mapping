@@ -3,6 +3,7 @@ The database models that deal with
 text segments.
 """
 import json
+from uuid import uuid4
 from enum import Enum
 from sqlalchemy.sql import func
 from sqlalchemy import (
@@ -31,11 +32,11 @@ class TaskStatus(Enum):
 class Task(Base):
     __tablename__ = 'tasks'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(String, primary_key=True)
     job_id = Column(String)
     task_class = Column(String)
     kwargs = Column(JSON)
-    next_task_id = Column(Integer)
+    next_task_id = Column(String)
     created = Column(DateTime(timezone=True), server_default=func.now())
     started = Column(DateTime(timezone=True))
     finished = Column(DateTime(timezone=True))
@@ -57,11 +58,13 @@ class Task(Base):
     def __repr__(self):
         return (
             "<Task("
-            f"{json.dumps(self.to_dict())}"
+            f"{json.dumps(self.to_dict(), default=str)}"
             ")>"
         )
 
     def save_to_db(self):
+        if not self.id:
+            self.id = str(uuid4())
         session.add(self)
         session.commit()
         return self

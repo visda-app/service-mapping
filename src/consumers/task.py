@@ -23,20 +23,26 @@ def _execute_task(
         f"args={args}, "
         f"kwargs={kwargs}, "
     )
-    if not args:
-        args = '[]'
-    if not kwargs:
-        kwargs = "{}"
-    args = json.loads(args)
-    kwargs = json.loads(kwargs)
-    if job_id:
-        kwargs['job_id'] = job_id
+    # if not args:
+    #     args = '[]'
+    # if not kwargs:
+    #     kwargs = "{}"
+    # args = json.loads(args)
+    # kwargs = json.loads(kwargs)
+    # if job_id:
+    #     kwargs['job_id'] = job_id
     if task_id:
         kwargs['task_id'] = task_id
 
-    task_module, task_class_name = get_module_and_class_from_string(task_class)
+    module, class_name = get_module_and_class_from_string(task_class)
 
-    getattr(task_module, task_class_name)().execute(*args, **kwargs)
+    task_class = getattr(module, class_name)
+    task = task_class(task_id=task_id)
+    result = task.execute()
+    if not result:
+        task.retry_with_delay()
+    else:
+        task.submit_next_to_queue()
 
 
 def consumer_loop(message_broker):
