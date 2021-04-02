@@ -1,0 +1,2 @@
+class ExternalDependencyNotCompleted(Exception):
+    pass

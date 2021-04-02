@@ -3,46 +3,34 @@ from chapar.message_broker import MessageBroker, Consumer
 from chapar.schema_repo import TaskSchema
 
 from lib.logger import logger
-from lib.utils import get_module_and_class_from_string
+from lib.exceptions import ExternalDependencyNotCompleted
+from lib.utils import get_class_from_string
 from configs.app import (
     PulsarConf,
 )
 
 
 def _execute_task(
-    task_class,
+    task_class_string,
     job_id,
     task_id,
     args,
     kwargs
 ):
     logger.debug(
-        f"🏃‍♀️ executing task_class={task_class}, "
+        f"🏃‍♀️ executing task_class_string={task_class_string}, "
         f"job_id={job_id}, "
         f"task_id={task_id}, "
         f"args={args}, "
         f"kwargs={kwargs}, "
     )
-    # if not args:
-    #     args = '[]'
-    # if not kwargs:
-    #     kwargs = "{}"
-    # args = json.loads(args)
-    # kwargs = json.loads(kwargs)
-    # if job_id:
-    #     kwargs['job_id'] = job_id
-    # if task_id:
-    #     kwargs['task_id'] = task_id
-
-    module, class_name = get_module_and_class_from_string(task_class)
-    task_class = getattr(module, class_name)
-
+    task_class = get_class_from_string(task_class_string)
     task = task_class(task_id=task_id)
-    result = task.execute()
-    if not result:
-        task.retry_with_delay()
-    else:
+    try:
+        task.execute()
         task.submit_next_to_queue()
+    except ExternalDependencyNotCompleted:
+        task.retry_with_delay()
 
 
 def consumer_loop(message_broker):
@@ -59,7 +47,7 @@ def consumer_loop(message_broker):
             f"job_id={msg.value().job_id}, "
             f"args={msg.value().args}, "
             f"kwargs='{msg.value().kwargs}'"
-            "Received! 🤓"
+            "  Received! 🤓"
         )
         try:
             _execute_task(

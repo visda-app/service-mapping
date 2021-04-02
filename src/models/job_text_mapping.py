@@ -2,7 +2,7 @@
 The database models that deal with
 text segments.
 """
-from enum import Enum
+import json
 from sqlalchemy.sql import func
 from sqlalchemy import (
     Column,
@@ -18,26 +18,27 @@ from models.db import (
 from models.text import Text as TextModel
 
 
-class TaskStatus(Enum):
-    """
-    An enum to keep the stage of a job
-    """
-    started = 10
-    done = 20
-
-
 class JobTextMapping(Base):
     __tablename__ = 'job_text_mappings'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     job_id = Column(String)
     text_id = Column(String)
-    status = Column(String)
-    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    created = Column(DateTime(timezone=True), server_default=func.now())
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'job_id': self.job_id,
+            'text_id': self.text_id,
+            'created': self.created,
+        }
 
     def __repr__(self):
-        return "<JobTextRelation(job_id='%s', text_id='%s', status='%s')>" % (
-            self.job_id, self.text_id, self.status
+        return (
+            "<Task("
+            f"{json.dumps(self.to_dict(), default=str)}"
+            ")>"
         )
 
     def save_to_db(self):
@@ -58,21 +59,6 @@ class JobTextMapping(Base):
             and cls.job_id == job_id
         ).all()
         return list(records)
-
-    @classmethod
-    def update_status_by_text_id(cls, text_id):
-        """
-        Find the records with a particular text_id and
-        update the status for all of them to processed
-        aka embedded
-        """
-        records = session.query(cls).filter(
-            cls.text_id == text_id
-        ).all()
-
-        for entry in records:
-            entry.status = TextTaskStatus.embedded.name
-            entry.save_to_db()
 
     @classmethod
     def _get_unprocessed_texts_query(cls, job_id):

@@ -18,15 +18,6 @@ from models.db import (
     Base,
     session
 )
-# from models.text import Text as TextModel
-
-
-class TaskStatus(Enum):
-    """
-    An enum to keep the stage of a job
-    """
-    started = 10
-    done = 20
 
 
 class Task(Base):
@@ -40,7 +31,7 @@ class Task(Base):
     created = Column(DateTime(timezone=True), server_default=func.now())
     started = Column(DateTime(timezone=True))
     finished = Column(DateTime(timezone=True))
-    progress = Column(Integer)
+    progress = Column(String)
 
     def to_dict(self):
         return {
@@ -52,7 +43,7 @@ class Task(Base):
             "created": self.created,
             "started": self.started,
             "finished": self.finished,
-            "progress": self.progress,
+            "progress": self.get_progress(),
         }
 
     def __repr__(self):
@@ -70,7 +61,7 @@ class Task(Base):
         return self
 
     @classmethod
-    def find_by_id(cls, id):
+    def get_by_id(cls, id):
         q = session.query(cls).filter(cls.id == id)
         return q.first()
 
@@ -94,55 +85,35 @@ class Task(Base):
         return ret_val
 
     def upsert_next_task(self, next_task_obj):
-        next_task = self.__class__.find_by_id(next_task_obj.id)
+        next_task = self.__class__.get_by_id(next_task_obj.id)
         self.next_task_id = next_task.id
         self.save_to_db()
 
-    def load_self_from_db(self):
-        record = session.query(self).filter(
-            self.__class__.id == self.id
-        ).first()
-        return record
+    # def load_self_from_db(self):
+    #     record = session.query(self).filter(
+    #         self.__class__.id == self.id
+    #     ).first()
+    #     return record
 
-    def record_start_time(self):
-        time = func.now()
-        record = self.load_self_from_db()
-        record.started = time
-        record.save_to_db()
+    def save_start_time(self, utc_time):
+        if self.started is None:
+            self.started = utc_time
+            self.save_to_db()
 
-    def record_finish_time(self):
-        time = func.now()
-        record = self.load_self_from_db()
-        record.finished = time
-        record.save_to_db()
+    def save_finish_time(self, utc_time):
+        self.finished = utc_time
+        self.save_to_db()
+
+    def save_progress(self, done, total):
+        self.progress = str(int(done)) + '/' + str(int(total))
+        self.save_to_db()
 
     def get_progress(self):
-        pass
-
-    @classmethod
-    def log_status(cls, job_id, status, num_items=None):
-        """
-        Add an entry to the table with the latest
-        job status
-
-        Parameters
-        ----------
-            job_id : str
-                A unique identifier for the job or sequence id
-            status : JobStatus
-                A status structure
-            num_items: int
-                The number of items or tasks in the job
-
-        Returns
-        -------
-            self
-        """
-        if type(status) is not JobStatus:
-            raise ValueError('status must be of type JobStatus')
-
-        return cls(
-            job_id=job_id,
-            status=status.name,
-            num_items=num_items
-        ).save_to_db()
+        progress = self.progress
+        if progress:
+            done = int(progress.split('/')[0])
+            total = int(progress.split('/')[1])
+        else:
+            done = 0
+            total = 0
+        return {'done': done, 'total': total}

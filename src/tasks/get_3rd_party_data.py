@@ -1,7 +1,5 @@
 import os
-import json
 import googleapiclient.discovery
-from uuid import uuid4
 
 from chapar.message_broker import MessageBroker, Producer
 from chapar.schema_repo import TextSchema
@@ -11,7 +9,8 @@ from configs.app import (
     ThirdParty
 )
 from tasks.base_task import BaseTask
-from lib.messaging import publish_task
+from tasks.base_task import record_start_finish_time_in_db
+from models.job_text_mapping import JobTextMapping
 
 
 class Get3rdPartyData(BaseTask):
@@ -20,7 +19,7 @@ class Get3rdPartyData(BaseTask):
     """
     def _download_youtube_data(self, video_id):
         # Disable OAuthlib's HTTPS verification when running locally.
-        # *DO NOT* leave this option enabled in production.
+        # TODO: *DO NOT* leave this option enabled in production.
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
         api_service_name = "youtube"
@@ -34,7 +33,7 @@ class Get3rdPartyData(BaseTask):
 
         params = {
             'part': 'snippet',
-            'maxResults': 1000,
+            'maxResults': 10,
             'textFormat': 'plainText',
             'videoId': video_id
         }
@@ -81,28 +80,10 @@ class Get3rdPartyData(BaseTask):
         the db
         """
         for snippet in snippets:
-            JobTextRelation(
+            JobTextMapping(
                 job_id=job_id,
                 text_id=snippet['id']
             ).save_to_db()
-
-    def _submit_watch_dog_task(self, job_id):
-        """
-        Submits a task to watch when the embedding is done for all
-        texts for a job_id
-        """
-        task_class = 'tasks.watch_dog.WatchDog'
-        kwargs = {
-            "job_id": job_id,
-            "next_task": "tasks.cluster_texts.ClusterTexts",
-            "next_task_kwargs": {
-                "sequence_ids": [job_id]
-            }
-        }
-        publish_task(
-            task_class,
-            task_kwargs=kwargs,
-        )
 
     def _extract_comments(self, youtube_data):
         results = []
@@ -115,23 +96,17 @@ class Get3rdPartyData(BaseTask):
             })
         return results
 
-    def execute(self, *args, **kwargs):
-        video_id = kwargs['video_id']
-        job_id = str(uuid4())
+    @record_start_finish_time_in_db
+    def execute(self):
+        video_id = self.kwargs['video_id']
 
         result = self._download_youtube_data(video_id)
         comments = self._extract_comments(result)
 
-        JobModel.log_status(
-            job_id,
-            JobStatus.third_party_data_acquired,
-        )
+        self._publish_texts_on_message_bus(comments, self.job_id)
+        self._record_job_text_relationship(comments, self.job_id)
 
-        self._publish_texts_on_message_bus(comments, job_id)
-        self._record_job_text_relationship(comments, job_id)
-        self._submit_watch_dog_task(job_id)
-
-        # if kwargs.get('test'):
+        # if self.kwargs.get('test'):
         #     with open('tests/data/youtube_comments.json', 'w') as f:
         #         f.write(json.dumps(result, indent=4))
 

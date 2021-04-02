@@ -1,7 +1,6 @@
 import unittest
-import pytest
+from random import random
 
-from tasks.base_task import BaseTask
 from tasks.dummy_task import DummyTask
 from tasks.dummy_await_task import DummyAwaitTask
 from lib.utils import generate_random_job_id
@@ -13,20 +12,8 @@ create_all_tables()
 
 class TestTaskConsumer(unittest.TestCase):
 
-    task_ids = []
-
-    def setUp(self):
-        pass
-
-    def create_task(self, task_class, kwargs, job_id=None):
-        if job_id is None:
-            job_id = generate_random_job_id()
-        t = task_class(job_id=job_id, kwargs=kwargs)
-        self.task_ids.append(t.id)
-        return t
-
     def test_submit_to_queue(self):
-        job_id = 123
+        job_id = str(int(100 * random()))  # generate_random_job_id()
 
         t1 = DummyTask(
             job_id=job_id,

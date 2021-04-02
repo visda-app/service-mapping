@@ -2,10 +2,12 @@ import json
 from uuid import uuid4
 import unittest
 from unittest.mock import patch
+from datetime import timedelta
 
 from tasks.base_task import BaseTask
 from tasks.base_task import TASK_RETRY_DELAY_MS
 from tasks.dummy_task import DummyTask
+from tasks.dummy_task import DUMMY_TASK_EXEC_TIME
 from lib.utils import generate_random_job_id
 from models.db import create_all_tables
 from models.task import Task as TaskModel
@@ -38,10 +40,10 @@ class TestBaseTasks(unittest.TestCase):
         t1 = self.create_task(BaseTask, kwargs)
         t2 = self.create_task(DummyTask, kwargs)
 
-        t1model = TaskModel.find_by_id(t1.id)
+        t1model = TaskModel.get_by_id(t1.id)
         assert t1model.task_class == 'tasks.base_task.BaseTask'
 
-        t2model = TaskModel.find_by_id(t2.id)
+        t2model = TaskModel.get_by_id(t2.id)
         assert t2model.task_class == 'tasks.dummy_task.DummyTask'
 
     def test___init___load_task(self):
@@ -62,7 +64,8 @@ class TestBaseTasks(unittest.TestCase):
         with self.assertRaises(ValueError):
             BaseTask(task_id=task_id)
 
-    def _test_add_task__checks_for_execute_function(self):
+    @unittest.skip('')
+    def test_add_task__checks_for_execute_function(self):
         kwargs = {"a": 1}
         with self.assertRaises(ImportError):
             t1 = self.create_task(InvalidTask, kwargs)
@@ -72,7 +75,7 @@ class TestBaseTasks(unittest.TestCase):
         t1 = self.create_task(BaseTask, {'w': 'word'})
         t2 = self.create_task(BaseTask, {'count': 1})
         t1.add_next(t2)
-        t1model = TaskModel.find_by_id(t1.id)
+        t1model = TaskModel.get_by_id(t1.id)
         assert t1model.next_task_id == t2.id
 
     @patch('tasks.base_task.publish_task')
@@ -146,8 +149,58 @@ class TestBaseTasks(unittest.TestCase):
         )
         task_id = t1.id
 
-        t = BaseTask.get_by_id(task_id)
+        t = BaseTask.load_by_id(task_id)
 
         assert t.id == task_id
         assert t.kwargs == {'arg1': 1, '2': 'two'}
         assert t.job_id == job_id
+
+    def test_record_start_finish_time(self):
+        job_id = '002'
+        t1 = self.create_task(
+            DummyTask,
+            {'a': 1},
+            job_id
+        )
+        from datetime import datetime
+        from datetime import timedelta
+        import pytz
+
+        utc_time = (
+            datetime.utcnow().replace(tzinfo=pytz.utc)
+            + timedelta(minutes=3, seconds=11)
+        )
+        t1.record_start_time(utc_time)
+        t1model = TaskModel.get_by_id(t1.id)
+        assert t1model.started == utc_time
+
+        utc_time = (
+            datetime.utcnow().replace(tzinfo=pytz.utc)
+            + timedelta(minutes=7, seconds=34)
+        )
+        t1.record_finish_time(utc_time)
+        t1model = TaskModel.get_by_id(t1.id)
+        assert t1model.finished == utc_time
+
+    def test_record_time(self):
+        job_id = '001'
+        t1 = self.create_task(
+            DummyTask,
+            {'a': 1},
+            job_id
+        )
+        t1.execute()
+        assert (
+            t1.finished - t1.started
+            > timedelta(seconds=DUMMY_TASK_EXEC_TIME)
+        )
+
+    def test_record_progress(self):
+        job_id = '234'
+        t1 = self.create_task(
+            DummyTask,
+            {'b': 2},
+            job_id
+        )
+        t1.record_progress(4, 5)
+        assert t1.progress == {'done': 4, 'total': 5}

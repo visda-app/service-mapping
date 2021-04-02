@@ -37,5 +37,11 @@ def get_module_and_class_from_string(class_path):
     return module, class_name
 
 
+def get_class_from_string(class_path_string):
+    module, class_name = get_module_and_class_from_string(class_path_string)
+    python_class = getattr(module, class_name)
+    return python_class
+
+
 def generate_random_job_id():
     return str(uuid4())
