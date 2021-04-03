@@ -1,0 +1,2 @@
+SELECT * FROM tasks ORDER BY created DESC LIMIT 4;
+

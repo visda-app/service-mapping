@@ -7,7 +7,7 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
 
 from lib.logger import logger
-from models.text import (
+from models.clustering_helper import (
     load_embeddings_from_db,
     save_clusterings_to_db
 )

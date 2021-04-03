@@ -53,6 +53,13 @@ class JobTextMapping(Base):
         session.commit()
 
     @classmethod
+    def delete_by_job_id(self, job_id):
+        session.query(self).filter(
+            self.job_id == job_id
+        ).delete()
+        session.commit()
+
+    @classmethod
     def find_by_id(cls, job_id, text_id):
         records = session.query(cls).filter(
             cls.text_id == text_id
@@ -67,7 +74,19 @@ class JobTextMapping(Base):
         ).filter(
             cls.text_id == TextModel.id
         ).filter(
+            cls.job_id == job_id
+        ).filter(
             TextModel.embedding == None
+        )
+
+    @classmethod
+    def _get_total_texts_query(cls, job_id):
+        return session.query(
+            cls, TextModel
+        ).filter(
+            cls.text_id == TextModel.id
+        ).filter(
+            cls.job_id == job_id
         )
 
     @classmethod
@@ -75,3 +94,27 @@ class JobTextMapping(Base):
         qu = cls._get_unprocessed_texts_query(job_id)
         result = qu.count()
         return result
+
+    @classmethod
+    def get_total_texts_count_by_job_id(cls, job_id):
+        qu = cls._get_total_texts_query(job_id)
+        result = qu.count()
+        return result
+
+    @classmethod
+    def delete_texts_by_job_id(cls, job_id):
+        """
+        Only for test clean ups.
+        Should NOT be used in prod.
+        """
+        tjs = session.query(cls).filter(
+            cls.job_id == job_id
+        ).all()
+        text_ids = [
+            item.to_dict()['text_id'] for item in tjs
+        ]
+        in_expression = TextModel.id.in_(text_ids)
+        session.query(TextModel).filter(
+            in_expression
+        ).delete(synchronize_session=False)
+        session.commit()

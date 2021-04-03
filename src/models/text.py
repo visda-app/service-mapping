@@ -9,9 +9,6 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
-    Boolean,
-    Float,
-    ForeignKey,
     DateTime
 )
 from sqlalchemy.dialects.postgresql import (
@@ -23,7 +20,6 @@ from models.db import (
     Base,
     session
 )
-from models.job import JobTextRelation
 from lib.logger import logger
 
 
@@ -32,11 +28,21 @@ class Text(Base):
 
     id = Column(String, primary_key=True)
     text = Column(Text, nullable=False)
-    embedding = Column(JSON)
+    embedding = Column(Text)
+    created = Column(DateTime(timezone=True), server_default=func.now())
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "text": self.text,
+            "embedding": self.embedding,
+        }
 
     def __repr__(self):
-        return "<Text(id='%s', text='%s', embedding='%s')>" % (
-            self.id, self.text, self.embedding
+        return (
+            "<Text("
+            f"{json.dumps(self.to_dict(), default=str)}"
+            ")>"
         )
 
     def save_or_update(self):
@@ -47,20 +53,22 @@ class Text(Base):
         # check if the record exits
         text_id = self.id
         record = session.query(self.__class__).filter(
-            self.__class__.id == text_id
-        ).first()
+            self.__class__.id == text_id).first()
 
+        if self.embedding:
+            self.embedding = json.dumps(self.embedding)
         if record:
             if self.embedding:
                 record.embedding = self.embedding
             if self.text:
                 record.text = self.text
         else:
-            session.add(self)
+            record = self
 
         try:
+            session.add(record)
             session.commit()
-            return self
+            return record
         except Exception as e:
             logger.exception(str(e))
             session.rollback()
@@ -69,12 +77,14 @@ class Text(Base):
     def delete_from_db(self):
         session.query(self.__class__).filter(
             self.__class__.id == self.id
-        ).delete()
+        ).delete(synchronize_session=False)
         session.commit()
 
     @classmethod
     def get_by_id(cls, text_id):
         record = session.query(cls).filter(cls.id == text_id).first()
+        if record and record.embedding:
+            record.embedding = json.loads(record.embedding)
         return record
 
     @classmethod
@@ -82,6 +92,7 @@ class Text(Base):
         session.query(cls).filter(
             cls.id == text_id
         ).delete(synchronize_session=False)
+        session.commit()
 
 
 class ClusteredText(Base):
@@ -111,46 +122,3 @@ class ClusteredText(Base):
         )
         results = q.first()
         return results
-
-
-def load_embeddings_from_db(job_id):
-    q = session.query(Text, JobTextRelation).filter(
-        Text.id == JobTextRelation.text_id
-    ).filter(
-        JobTextRelation.job_id == job_id
-    )
-    db_vals = q.all()
-
-    results = []
-
-    for (text, job_text_relation) in db_vals:
-        results.append({
-            'embedding': text.embedding,
-            'text': text.text,
-            'uuid': text.id,
-            'sequence_id': job_id
-        })
-
-    return results
-
-
-def _get_query_clustering(job_id):
-    q = session.query(Text, JobTextRelation).filter(
-        Text.id == JobTextRelation.text_id
-    ).filter(
-        JobTextRelation.job_id == job_id
-    )
-    logger.debug(q)
-    return q
-
-
-def get_clustering_count(sequence_id):
-    q = _get_query_clustering(sequence_id)
-    return q.count()
-
-
-def save_clusterings_to_db(sequence_id, clustering):
-    ClusteredText(
-        sequence_id=sequence_id,
-        clustering=clustering
-    ).save_to_db()

@@ -35,6 +35,32 @@ class TestTextModel(unittest.TestCase):
     #         RawText.uuid.in_([self.uuid1, self.uuid2])
     #     ).delete(synchronize_session=False)
 
+    def test_save_to_db(self):
+        uuid1 = str(uuid4())
+
+        # Check no record exist in the beginning
+        results = TextModel.get_by_id(uuid1)
+        assert results is None
+
+        # Create a record in the DB
+        # embedding = [0.11, 0.22, 0.3]
+        TextModel(
+            id=uuid1,
+            text='some text',
+            # embedding=embedding,
+        ).save_or_update()
+
+        results = TextModel.get_by_id(uuid1)
+        assert results is not None
+
+        breakpoint()
+
+        # Delete the record
+        TextModel.delete_by_id(uuid1)
+
+        results = TextModel.get_by_id(uuid1)
+        assert results is None
+
     def test_save_or_update(self):
         uuid1 = str(uuid4())
 
@@ -43,10 +69,11 @@ class TestTextModel(unittest.TestCase):
         assert results is None
 
         # Create a record in the DB
+        first_embedding = [0.1, 0.2, 0.3]
         TextModel(
             id=uuid1,
             text='some text',
-            embedding=[0.1, 0.2, 0.3],
+            embedding=first_embedding,
         ).save_or_update()
 
         results = TextModel.get_by_id(uuid1)

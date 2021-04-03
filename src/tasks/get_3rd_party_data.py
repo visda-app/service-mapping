@@ -17,6 +17,12 @@ class Get3rdPartyData(BaseTask):
     """
     Get third party data such as YouTube.
     """
+    def __init__(self, *args, **kwargs):
+        logger.debug(kwargs)
+        if 'kwargs' in kwargs and 'video_id' not in kwargs['kwargs']:
+                raise ValueError('Missing video_id in params.')
+        super().__init__(*args, **kwargs)
+
     def _download_youtube_data(self, video_id):
         # Disable OAuthlib's HTTPS verification when running locally.
         # TODO: *DO NOT* leave this option enabled in production.
@@ -33,7 +39,7 @@ class Get3rdPartyData(BaseTask):
 
         params = {
             'part': 'snippet',
-            'maxResults': 10,
+            'maxResults': 87,
             'textFormat': 'plainText',
             'videoId': video_id
         }

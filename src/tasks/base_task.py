@@ -10,7 +10,7 @@ from lib.logger import logger
 from lib.messaging import publish_task
 
 
-TASK_RETRY_DELAY_MS = 2000
+TASK_RETRY_DELAY_MS = 1250
 
 
 class BaseTask:
@@ -24,6 +24,8 @@ class BaseTask:
         Args:
             kwargs: (dict)
         """
+        if type(kwargs) is not dict:
+            raise TypeError('Argument `kwargs` must be a dictionary.')
         task = self._get_or_create_task_in_db(
             task_id, job_id, kwargs
         )
