@@ -3,6 +3,7 @@ from flask_restful import Resource
 from flask import request
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
+from werkzeug.exceptions import BadRequest
 
 from lib.logger import logger
 from tasks.get_3rd_party_data import Get3rdPartyData
@@ -36,7 +37,10 @@ class TextMap(Resource):
         """
         # form_data = request.form.to_dict()
         data = json.loads(request.get_data())
-        validate(data, SCHEMA)
+        try:
+            validate(data, SCHEMA)
+        except ValidationError as e:
+            raise BadRequest(e)
         youtube_video_id = data['youtube_video_id']
 
         job_id = data.get('sequence_id')

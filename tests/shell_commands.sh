@@ -12,8 +12,8 @@ curl localhost:5001/textmap/sequence_id/2e14bcab-c66b-4fef-bb39-628ed847e12c
 
 # export visda_url=https://visda.app
 # export visda_url=$(minikube service web-proxy-service --url)
-# export visda_url=localhost:5001
 
+export visda_url=localhost:5001
 curl -X POST \
     $visda_url/textmap \
     -H "Content-Type: application/json"  \
@@ -27,3 +27,7 @@ export SEQ_ID=$(cat _temp.txt)
 echo sequence_id=$SEQ_ID
 curl -X GET "$visda_url/textmap/sequence_id/$SEQ_ID?include_clustering=true" \
     | python -m json.tool
+
+
+
+export SEQ_ID=ca4000d4-3a7e-4cff-967e-7bae604b511a

@@ -37,19 +37,11 @@ spec:
                 envFrom:
                     - configMapRef:
                         name: db-config
-                # env:
-                # -   name: DB_DRIVER
-                #     value: "{{ .Values.db.driver }}"
-                # -   name: DB_USER
-                #     value: "{{ .Values.db.user }}"
-                # -   name: DB_PASSWORD
-                #     value: "{{ .Values.secrets.db.password }}"
-                # -   name: DB_HOST
-                #     value: "{{ .Values.db.host }}"
-                # -   name: DB_PORT
-                #     value: "{{ .Values.db.port }}"
-                # -   name: DB_DATABASENAME
-                #     value: "{{ .Values.db.databasename }}"
+                env:
+                -   name: BROKER_SERVICE_URL
+                    value: {{ .Values.brokerServiceUrl }}
+                -   name: PULSAR_TASK_TOPIC
+                    value: {{ .Values.pulsarTaskTopic }}
 
 ---
 
@@ -84,18 +76,9 @@ spec:
                     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 -   name: SUBSCRIPTION_NAME
                     value: {{ .Values.subscriptionName }}
-                -   name: DB_DRIVER
-                    value: "{{ .Values.db.driver }}"
-                -   name: DB_USER
-                    value: "{{ .Values.db.user }}"
-                -   name: DB_PASSWORD
-                    value: "{{ .Values.secrets.db.password }}"
-                -   name: DB_HOST
-                    value: "{{ .Values.db.host }}"
-                -   name: DB_PORT
-                    value: "{{ .Values.db.port }}"
-                -   name: DB_DATABASENAME
-                    value: "{{ .Values.db.databasename }}"
+                envFrom:
+                    - configMapRef:
+                        name: db-config
             -   name: {{ .Values.podContainerName }}-consumer-text-embedding
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
@@ -110,18 +93,9 @@ spec:
                     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 -   name: SUBSCRIPTION_NAME
                     value: {{ .Values.subscriptionName }}
-                -   name: DB_DRIVER
-                    value: "{{ .Values.db.driver }}"
-                -   name: DB_USER
-                    value: "{{ .Values.db.user }}"
-                -   name: DB_PASSWORD
-                    value: "{{ .Values.secrets.db.password }}"
-                -   name: DB_HOST
-                    value: "{{ .Values.db.host }}"
-                -   name: DB_PORT
-                    value: "{{ .Values.db.port }}"
-                -   name: DB_DATABASENAME
-                    value: "{{ .Values.db.databasename }}"
+                envFrom:
+                    - configMapRef:
+                        name: db-config
             -   name: {{ .Values.podContainerName }}-consumer-task
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
@@ -132,22 +106,15 @@ spec:
                     value: {{ .Values.brokerServiceUrl }}
                 -   name: PULSAR_TASK_TOPIC
                     value: {{ .Values.pulsarTaskTopic }}
+                -   name: PULSAR_TEXT_TOPIC
+                    value: {{ .Values.pulsarTextTopic }}
                 -   name: SUBSCRIPTION_NAME
                     value: {{ .Values.subscriptionName }}
-                -   name: DB_DRIVER
-                    value: "{{ .Values.db.driver }}"
-                -   name: DB_USER
-                    value: "{{ .Values.db.user }}"
-                -   name: DB_PASSWORD
-                    value: "{{ .Values.secrets.db.password }}"
-                -   name: DB_HOST
-                    value: "{{ .Values.db.host }}"
-                -   name: DB_PORT
-                    value: "{{ .Values.db.port }}"
-                -   name: DB_DATABASENAME
-                    value: "{{ .Values.db.databasename }}"
                 -   name: GOOGLE_API_KEY
                     value: "{{ .Values.secrets.google.api_key }}"
+                envFrom:
+                    - configMapRef:
+                        name: db-config
 
 ---
 
