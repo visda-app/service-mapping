@@ -35,7 +35,7 @@ class TextMap(Resource):
         """
         """
         # form_data = request.form.to_dict()
-        data = json.loads(request.data.decode('utf-8'))
+        data = json.loads(request.get_data())
         validate(data, SCHEMA)
         youtube_video_id = data['youtube_video_id']
 

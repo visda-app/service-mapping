@@ -27,12 +27,13 @@ class TextMapResult(Resource):
                 }
             )
 
+        clustering = None
         if include_clustering:
             clustering = ClusteredText.get_last_by_sequence_id(sequence_id)
 
         return {
             'status': res,
-            'data': clustering
+            'clustering': clustering
         }, 200
 
     def put(self):

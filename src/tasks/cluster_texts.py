@@ -497,6 +497,8 @@ class ClusterTexts(BaseTask):
                 the texts in the sequence that will be processed
         """
         TOTAL_NUMBER_OF_STEPS = 4
+        self.record_progress(0, TOTAL_NUMBER_OF_STEPS)
+
         sequence_ids = self.kwargs['sequence_ids']
 
         logger.debug("Loading data from DB...")

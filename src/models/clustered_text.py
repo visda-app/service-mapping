@@ -61,4 +61,5 @@ class ClusteredText(Base):
     @classmethod
     def get_last_by_sequence_id(cls, sequence_id):
         results = cls._get_last_by_sequence_id(sequence_id)
-        return results.clustering
+        if results:
+            return results.clustering

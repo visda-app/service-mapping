@@ -102,6 +102,7 @@ ht:  ## Shows the Helm template
 		-f ./deployment/${SERVICE_NAME}/values.yaml \
 		-f ../_secrets/secret-values.yaml \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
+		--debug \
 		${HELM_RELEASE} \
 		./deployment/${SERVICE_NAME}/
 

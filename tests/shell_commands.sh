@@ -25,5 +25,5 @@ curl -X POST \
     | tee _temp.txt
 export SEQ_ID=$(cat _temp.txt)
 echo sequence_id=$SEQ_ID
-curl -X GET "$visda_url/textmap/sequence_id/$SEQ_ID" \
+curl -X GET "$visda_url/textmap/sequence_id/$SEQ_ID?include_clustering=true" \
     | python -m json.tool

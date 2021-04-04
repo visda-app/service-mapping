@@ -1,5 +1,6 @@
 import os
 import googleapiclient.discovery
+import pprint
 
 from chapar.message_broker import MessageBroker, Producer
 from chapar.schema_repo import TextSchema
@@ -11,6 +12,9 @@ from configs.app import (
 from tasks.base_task import BaseTask
 from tasks.base_task import record_start_finish_time_in_db
 from models.job_text_mapping import JobTextMapping
+
+
+pp = pprint.PrettyPrinter().pprint
 
 
 class Get3rdPartyData(BaseTask):
@@ -26,10 +30,11 @@ class Get3rdPartyData(BaseTask):
                 raise ValueError('Missing video_id in params.')
         super().__init__(*args, **kwargs)
 
-    def _download_youtube_data(self, video_id):
+    def _download_youtube_data_page(self, video_id, page_token=None):
         # Disable OAuthlib's HTTPS verification when running locally.
         # TODO: *DO NOT* leave this option enabled in production.
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+        aggregated_data = []
 
         api_service_name = "youtube"
         api_version = "v3"
@@ -42,15 +47,16 @@ class Get3rdPartyData(BaseTask):
 
         params = {
             'part': 'snippet',
-            'maxResults': 87,
+            'maxResults': 1000,
             'textFormat': 'plainText',
             'videoId': video_id
         }
-        # if kwargs.get('page_token'):
-        #     params['pageToken'] = kwargs['page_token']
+        if page_token:
+            params['pageToken'] = page_token
 
         request = youtube.commentThreads().list(**params)
         response = request.execute()
+
         return response
 
     def _publish_texts_on_message_bus(self, snippets, sequence_id):
@@ -105,6 +111,18 @@ class Get3rdPartyData(BaseTask):
             })
         return results
 
+    def _get_comments_from_video(self, video_id):
+        result = self._download_youtube_data_page(video_id)
+        comments = self._extract_comments(result)
+        while result.get('nextPageToken'):
+            result = self._download_youtube_data_page(
+                video_id,
+                result.get('nextPageToken')
+            )
+            comments.extend(self._extract_comments(result))
+        return comments
+
+
     @record_start_finish_time_in_db
     def execute(self):
         video_id = self.kwargs['video_id']
@@ -112,10 +130,8 @@ class Get3rdPartyData(BaseTask):
         TOTAL_STEPS = 3
         self.record_progress(0, TOTAL_STEPS)
 
-        result = self._download_youtube_data(video_id)
+        comments = self._get_comments_from_video(video_id)
         self.record_progress(1, TOTAL_STEPS)
-
-        comments = self._extract_comments(result)
 
         self._publish_texts_on_message_bus(comments, self.job_id)
         self.record_progress(2, TOTAL_STEPS)
