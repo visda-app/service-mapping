@@ -1,4 +1,3 @@
-import json
 from uuid import uuid4
 from copy import copy, deepcopy
 import numpy as np
@@ -9,11 +8,11 @@ from sklearn.cluster import AffinityPropagation
 from lib.logger import logger
 from models.clustering_helper import (
     load_embeddings_from_db,
-    save_clusterings_to_db
+    save_clustering_to_db
 )
-from models.job import JobStatus
-from models.job import Job as JobModel
-from tasks.base import Base
+from tasks.base_task import BaseTask
+from tasks.base_task import record_start_finish_time_in_db
+
 
 
 MAX_CLUSTER_SIZE = 10
@@ -459,13 +458,11 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
         data_w_low_dim (list): list of dicts
     """
     logger.debug("Clustering...")
-    log_status(sequence_id, JobStatus.clustering_started)
     nested_clusters = cluster_hierarchically(
         data_w_low_dim, include_original_cluster_label=True
     )
 
     logger.debug("Further breaking down clusters...")
-    log_status(sequence_id, JobStatus.breaking_down_large_clusters)
     head = {}
     head['children'] = nested_clusters
     bfs_break_down(head)
@@ -479,22 +476,17 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
     insert_meta_data(head)
 
     logger.debug("Formatting data...")
-    log_status(sequence_id, JobStatus.formatting_data)
     reshaped_data = get_reshaped_data(copy(head))
     reshaped_data['metadata'] = head['metadata']
     return reshaped_data
 
 
-def log_status(sequence_ids, status):
-    if type(sequence_ids) is list:
-        for seq_id in sequence_ids:
-            JobModel.log_status(seq_id, status)
-    elif type(sequence_ids) is str:
-        JobModel.log_status(sequence_ids, status)
+class ClusterTexts(BaseTask):
 
+    public_description = "Creating the text maps and clusters."
 
-class ClusterTexts(Base):
-    def execute(self, sequence_ids=[]):
+    @record_start_finish_time_in_db
+    def execute(self):
         """
         Loads all the texts and embeddings for a sequence id,
         performs dimension reduction and clustering, and saves
@@ -504,17 +496,25 @@ class ClusterTexts(Base):
             sequence_ids (list[str]): A list of ids for all
                 the texts in the sequence that will be processed
         """
+        TOTAL_NUMBER_OF_STEPS = 4
+        sequence_ids = self.kwargs['sequence_ids']
+
         logger.debug("Loading data from DB...")
         embedding_data = []
         for i in sequence_ids:
             embedding_data.extend(load_embeddings_from_db(i))
+        self.record_progress(1, TOTAL_NUMBER_OF_STEPS)
+
+        if not embedding_data or type(embedding_data) is not list:
+            raise ValueError('Invalid embedding data')
 
         logger.debug("Reducing dimension...")
-        log_status(sequence_ids, JobStatus.dimension_reduction_started)
         data_w_low_dim = reduce_dimension(embedding_data)
+        self.record_progress(2, TOTAL_NUMBER_OF_STEPS)
 
         logger.debug("Partition by seqence_id...")
         partitioned_data = partition_by_sequence_id(data_w_low_dim)
+        self.record_progress(3, TOTAL_NUMBER_OF_STEPS)
 
         logger.debug("Start clustering for all sequence id's...")
         for sequence_id in partitioned_data:
@@ -523,11 +523,10 @@ class ClusterTexts(Base):
             )
 
             logger.debug(f"Saving sequence_id={sequence_id} to DB...")
-            log_status(sequence_ids, JobStatus.saving_to_db)
 
-            save_clusterings_to_db(
+            save_clustering_to_db(
                 sequence_id, clustered_data
             )
+        self.record_progress(4, TOTAL_NUMBER_OF_STEPS)
 
         logger.debug("Done!")
-        log_status(sequence_ids, JobStatus.done)

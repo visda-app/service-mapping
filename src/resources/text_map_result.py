@@ -5,24 +5,8 @@ from jsonschema.exceptions import ValidationError
 from asbool import asbool
 
 from lib.logger import logger
-
-
-SCHEMA = {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Mapping",
-    "description": "A mapping job identifier",
-    "type": "object",
-    "properties": {
-        "job_id": {
-            "type": "string"
-        },
-        "youtube_video_id": {
-            "description": "",
-            "type": "string"
-        }
-    },
-    "required": ["youtube_video_id"]
-}
+from tasks.job_auditor import JobAuditor
+from models.clustered_text import ClusteredText
 
 
 class TextMapResult(Resource):
@@ -31,26 +15,25 @@ class TextMapResult(Resource):
         Return the status of a job
         """
         data = request.args.to_dict()
-        data['include_payload'] = asbool(data.get('include_payload'))
-        logger.debug(data)
-        validate(data, SCHEMA)
+        include_clustering = asbool(data.get('include_clustering'))
 
-        sequence_id = data['sequence_id']
-        include_payload = data.get('include_payload')
-        payload = ''
+        ordered_tasks = JobAuditor.get_job_details(sequence_id)
+        res = []
+        for task in ordered_tasks:
+            res.append(
+                {
+                    'task': task['description'],
+                    'progress': task['progress'],
+                }
+            )
 
-        try:
-            return {
-                'sequence_id': '',
-                'status': '',
-                'data': '',
-            }, 200
-        except ValidationError as e:
-            logger.exception(str(e))
-            return {'message': 'Invalid input parameters'}, 400
-        except Exception as e:
-            logger.exception(str(e))
-            return {'message': 'Something went wrong'}, 500
+        if include_clustering:
+            clustering = ClusteredText.get_last_by_sequence_id(sequence_id)
+
+        return {
+            'status': res,
+            'data': clustering
+        }, 200
 
     def put(self):
         """

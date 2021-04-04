@@ -1,7 +1,8 @@
 import json
 
 from models.job_text_mapping import JobTextMapping
-from models.text import Text, ClusteredText
+from models.text import Text
+from models.clustered_text import ClusteredText
 from models.db import session
 from lib.logger import logger
 
@@ -18,7 +19,7 @@ def load_embeddings_from_db(job_id):
 
     for (text, job_text_relation) in db_vals:
         results.append({
-            'embedding': text.embedding,
+            'embedding': json.loads(text.embedding),
             'text': text.text,
             'uuid': text.id,
             'sequence_id': job_id
@@ -42,9 +43,8 @@ def get_clustering_count(sequence_id):
     return q.count()
 
 
-def save_clusterings_to_db(sequence_id, clustering):
+def save_clustering_to_db(sequence_id, clustering):
     ClusteredText(
         sequence_id=sequence_id,
         clustering=clustering
     ).save_to_db()
-

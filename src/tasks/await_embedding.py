@@ -14,6 +14,8 @@ class AwaitEmbedding(BaseTask):
     Awaits the embedding task to finish.
     """
 
+    public_description = "Embedding texts."
+
     @record_start_finish_time_in_db
     def execute(self):
         logger.debug("👀 watching for embeddings to finish...")

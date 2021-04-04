@@ -7,6 +7,7 @@ from jsonschema.exceptions import ValidationError
 from lib.logger import logger
 from tasks.get_3rd_party_data import Get3rdPartyData
 from tasks.await_embedding import AwaitEmbedding
+from tasks.cluster_texts import ClusterTexts
 from lib.utils import generate_random_job_id
 
 
@@ -49,10 +50,15 @@ class TextMap(Resource):
             }
         )
         task_2 = AwaitEmbedding(job_id=job_id)
+        task_3 = ClusterTexts(
+            job_id=job_id, kwargs={
+                'sequence_ids': [job_id]
+            }
+        )
 
-        task_1.add_next(task_2)
+        task_1 >> task_2 >> task_3
 
-        task_1.submit_to_queue()
+        task_1.start()
 
         return {
             'message': f"Job job_id={job_id} submitted.",

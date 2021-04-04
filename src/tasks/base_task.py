@@ -81,6 +81,10 @@ class BaseTask:
         current_task = TaskModel.get_by_id(self.id)
         current_task.upsert_next_task(next_task_obj)
 
+    def __rshift__(self, other):
+        self.add_next(other)
+        return other
+
     def _submit_to_queue(self, deliver_after_ms=0):
         task = TaskModel.get_by_id(self.id)
         publish_task(
@@ -92,6 +96,9 @@ class BaseTask:
         )
 
     def submit_to_queue(self):
+        self._submit_to_queue()
+
+    def start(self):
         self._submit_to_queue()
 
     def retry_with_delay(self):

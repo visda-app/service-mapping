@@ -178,7 +178,6 @@ class TestJob(unittest.TestCase):
         # t1.submit_to_queue()
 
         res = JobAuditor.get_job_details(job_id)
-        breakpoint()
 
         assert res[0]['id'] == t1.id
         assert res[1]['id'] == t2.id

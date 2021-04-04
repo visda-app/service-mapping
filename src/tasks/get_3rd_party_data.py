@@ -17,6 +17,9 @@ class Get3rdPartyData(BaseTask):
     """
     Get third party data such as YouTube.
     """
+
+    public_description = "Getting YouTube comments."
+
     def __init__(self, *args, **kwargs):
         logger.debug(kwargs)
         if 'kwargs' in kwargs and 'video_id' not in kwargs['kwargs']:
@@ -106,11 +109,19 @@ class Get3rdPartyData(BaseTask):
     def execute(self):
         video_id = self.kwargs['video_id']
 
+        TOTAL_STEPS = 3
+        self.record_progress(0, TOTAL_STEPS)
+
         result = self._download_youtube_data(video_id)
+        self.record_progress(1, TOTAL_STEPS)
+
         comments = self._extract_comments(result)
 
         self._publish_texts_on_message_bus(comments, self.job_id)
+        self.record_progress(2, TOTAL_STEPS)
+
         self._record_job_text_relationship(comments, self.job_id)
+        self.record_progress(3, TOTAL_STEPS)
 
         # if self.kwargs.get('test'):
         #     with open('tests/data/youtube_comments.json', 'w') as f:

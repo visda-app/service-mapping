@@ -36,6 +36,7 @@ class Text(Base):
             "id": self.id,
             "text": self.text,
             "embedding": self.embedding,
+            "created": self.created,
         }
 
     def __repr__(self):
@@ -93,32 +94,3 @@ class Text(Base):
             cls.id == text_id
         ).delete(synchronize_session=False)
         session.commit()
-
-
-class ClusteredText(Base):
-    __tablename__ = 'clustered_texts'
-
-    id = Column(Integer, primary_key=True)
-    # a list of sequence id's
-    sequence_id = Column(String)
-    clustering = Column(JSONB)
-    time_created = Column(DateTime(timezone=True), server_default=func.now())
-
-    def __repr__(self):
-        return "<ClusteredText(sequence_id='%s', clustering='%s')>" % (  # noqa
-                self.sequence_id, self.clustering)
-
-    def save_to_db(self):
-        session.add(self)
-        session.commit()
-        return self
-
-    @classmethod
-    def get_last_by_sequence_id(cls, sequence_id):
-        q = session.query(cls).filter(
-            cls.sequence_id == sequence_id
-        ).order_by(
-            cls.time_created.desc()
-        )
-        results = q.first()
-        return results
