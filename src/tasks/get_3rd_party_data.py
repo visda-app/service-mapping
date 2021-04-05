@@ -79,13 +79,22 @@ class Get3rdPartyData(BaseTask):
         )
         logger.info("Producer created.")
 
-        for snippet in snippets:
+        sync_async_divider = 100
+        for snippet in snippets[:sync_async_divider]:
             msg = TextSchema(
                 uuid=snippet['id'],
                 text=snippet['text'],
                 sequence_id=sequence_id
             )
             mb.producer_send_async(msg)
+
+        for snippet in snippets[sync_async_divider:]:
+            msg = TextSchema(
+                uuid=snippet['id'],
+                text=snippet['text'],
+                sequence_id=sequence_id
+            )
+            mb.producer_send(msg)
 
         mb.close()
 
