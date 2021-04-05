@@ -232,11 +232,11 @@ def insert_children_count(head):
                         ]
                     }
     """
-    if not head['children']:
+    if not head.get('children', []):
         head['children_count'] = 0
         return 0
     sum = 0
-    for node in head['children']:
+    for node in head.get('children', []):
         sum += 1 + node.get(
             'children_count', insert_children_count(node)
         )
