@@ -86,7 +86,7 @@ class Get3rdPartyData(BaseTask):
                 text=snippet['text'],
                 sequence_id=sequence_id
             )
-            mb.producer_send_async(msg)
+            mb.producer_send(msg)
 
         for snippet in snippets[sync_async_divider:]:
             msg = TextSchema(
@@ -94,7 +94,7 @@ class Get3rdPartyData(BaseTask):
                 text=snippet['text'],
                 sequence_id=sequence_id
             )
-            mb.producer_send(msg)
+            mb.producer_send_async(msg)
 
         mb.close()
 
