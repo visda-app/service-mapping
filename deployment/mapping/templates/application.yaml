@@ -68,14 +68,14 @@ spec:
                 command: ["python"]
                 args: ["consumers/raw_text.py"]
                 env:
+                -   name: SUBSCRIPTION_NAME
+                    value: {{ .Values.subscriptionName }}
                 -   name: BROKER_SERVICE_URL
                     value: {{ .Values.brokerServiceUrl }}
                 -   name: PULSAR_TEXT_TOPIC
                     value: {{ .Values.pulsarTextTopic }}
-                -   name: PULSAR_TEXT_EMBEDDING_TOPIC
-                    value: {{ .Values.pulsarTextEmbeddingTopic }}
-                -   name: SUBSCRIPTION_NAME
-                    value: {{ .Values.subscriptionName }}
+                # -   name: PULSAR_TEXT_EMBEDDING_TOPIC
+                #     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 envFrom:
                     - configMapRef:
                         name: db-config
@@ -85,14 +85,14 @@ spec:
                 command: ["python"]
                 args: ["consumers/text_embedding.py"]
                 env:
-                -   name: BROKER_SERVICE_URL
-                    value: {{ .Values.brokerServiceUrl }}
-                -   name: PULSAR_TEXT_TOPIC
-                    value: {{ .Values.pulsarTextTopic }}
-                -   name: PULSAR_TEXT_EMBEDDING_TOPIC
-                    value: {{ .Values.pulsarTextEmbeddingTopic }}
                 -   name: SUBSCRIPTION_NAME
                     value: {{ .Values.subscriptionName }}
+                -   name: BROKER_SERVICE_URL
+                    value: {{ .Values.brokerServiceUrl }}
+                # -   name: PULSAR_TEXT_TOPIC
+                #     value: {{ .Values.pulsarTextTopic }}
+                -   name: PULSAR_TEXT_EMBEDDING_TOPIC
+                    value: {{ .Values.pulsarTextEmbeddingTopic }}
                 envFrom:
                     - configMapRef:
                         name: db-config
@@ -102,14 +102,14 @@ spec:
                 command: ["python"]
                 args: ["consumers/task.py"]
                 env:
-                -   name: BROKER_SERVICE_URL
-                    value: {{ .Values.brokerServiceUrl }}
-                -   name: PULSAR_TASK_TOPIC
-                    value: {{ .Values.pulsarTaskTopic }}
-                -   name: PULSAR_TEXT_TOPIC
-                    value: {{ .Values.pulsarTextTopic }}
                 -   name: SUBSCRIPTION_NAME
                     value: {{ .Values.subscriptionName }}
+                -   name: BROKER_SERVICE_URL
+                    value: {{ .Values.brokerServiceUrl }}
+                -   name: PULSAR_TEXT_TOPIC
+                    value: {{ .Values.pulsarTextTopic }}
+                -   name: PULSAR_TASK_TOPIC
+                    value: {{ .Values.pulsarTaskTopic }}
                 -   name: GOOGLE_API_KEY
                     value: "{{ .Values.secrets.google.api_key }}"
                 envFrom:

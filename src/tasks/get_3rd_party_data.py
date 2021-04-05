@@ -85,20 +85,20 @@ class Get3rdPartyData(BaseTask):
                 text=snippet['text'],
                 sequence_id=sequence_id
             )
-            mb.producer_send(msg)
+            mb.producer_send_async(msg)
 
         mb.close()
 
-    def _record_job_text_relationship(self, snippets, job_id):
-        """
-        Save the relationship between a job and its texts in
-        the db
-        """
-        for snippet in snippets:
-            JobTextMapping(
-                job_id=job_id,
-                text_id=snippet['id']
-            ).save_to_db()
+    # def _record_job_text_relationship(self, snippets, job_id):
+    #     """
+    #     Save the relationship between a job and its texts in
+    #     the db
+    #     """
+    #     for snippet in snippets:
+    #         JobTextMapping(
+    #             job_id=job_id,
+    #             text_id=snippet['id']
+    #         ).save_to_db()
 
     def _extract_comments(self, youtube_data):
         results = []
@@ -127,7 +127,7 @@ class Get3rdPartyData(BaseTask):
     def execute(self):
         video_id = self.kwargs['video_id']
 
-        TOTAL_STEPS = 3
+        TOTAL_STEPS = 2
         self.record_progress(0, TOTAL_STEPS)
 
         comments = self._get_comments_from_video(video_id)
@@ -136,8 +136,8 @@ class Get3rdPartyData(BaseTask):
         self._publish_texts_on_message_bus(comments, self.job_id)
         self.record_progress(2, TOTAL_STEPS)
 
-        self._record_job_text_relationship(comments, self.job_id)
-        self.record_progress(3, TOTAL_STEPS)
+        # self._record_job_text_relationship(comments, self.job_id)
+        # self.record_progress(3, TOTAL_STEPS)
 
         # if self.kwargs.get('test'):
         #     with open('tests/data/youtube_comments.json', 'w') as f:

@@ -7,6 +7,7 @@ from configs.app import (
     PulsarConf,
 )
 from models.text import Text as TextModel
+from models.job_text_mapping import JobTextMapping
 from models.db import create_all_tables
 
 
@@ -36,10 +37,16 @@ while True:
             "Received! 🤓"
         )
 
-        TextModel(
+        text_record = TextModel(
             id=msg.value().uuid,
             text=msg.value().text,
         ).save_or_update()
+
+        job_id = msg.value().sequence_id
+        JobTextMapping(
+            job_id=job_id,
+            text_id=text_record.id
+        ).save_to_db()
 
     except Exception as e:
         # Message failed to be processed
