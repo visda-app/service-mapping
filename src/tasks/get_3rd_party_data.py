@@ -141,6 +141,7 @@ class Get3rdPartyData(BaseTask):
 
         comments = self._get_comments_from_video(video_id)
         self.record_progress(1, TOTAL_STEPS)
+        logger.info(f"Number of comments={len(comments)}, job_id={self.job_id}")
 
         self._publish_texts_on_message_bus(comments, self.job_id)
         self.record_progress(2, TOTAL_STEPS)
