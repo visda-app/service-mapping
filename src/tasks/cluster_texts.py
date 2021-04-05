@@ -209,8 +209,10 @@ def bfs_break_down(head, max_cluster_size=MAX_CLUSTER_SIZE):
     while frontiers:
         next = frontiers.pop(0)
         if len(next.get('children', [])) > max_cluster_size:
-            next['children'] = cluster_hierarchically(next['children'])
-        frontiers.extend(next['children'])
+            next['children'] = cluster_hierarchically(
+                next.get('children', [])
+            )
+        frontiers.extend(next.get('children', []))
 
 
 def insert_children_count(head):
