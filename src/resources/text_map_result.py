@@ -12,7 +12,13 @@ from models.clustered_text import ClusteredText
 class TextMapResult(Resource):
     def get(self, sequence_id):
         """
-        Return the status of a job
+        Return the status of a job        
+        
+        curl \
+            -X GET \
+            "$(minikube service mapping-service --url)/textmap/sequence_id/$SEQ_ID?include_clustering=true" \
+            | python -m json.tool
+
         """
         data = request.args.to_dict()
         include_clustering = asbool(data.get('include_clustering'))

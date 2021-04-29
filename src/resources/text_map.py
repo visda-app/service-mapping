@@ -34,12 +34,25 @@ SCHEMA = {
 class TextMap(Resource):
     def post(self):
         """
+        Example call:
+
+        curl -X POST \
+            $(minikube service mapping-service --url)/textmap \
+            -H "Content-Type: application/json"  \
+            -d '{
+                "youtube_video_id": "CLiic14t2YQ"
+            }' \
+            | python -m json.tool \
+            | python -c "import sys, json; print(json.load(sys.stdin)['job_id'])" \
+            | tee _temp.txt
+        export SEQ_ID=$(cat _temp.txt)
+        echo sequence_id=$SEQ_ID
         """
         # form_data = request.form.to_dict()
-        data = json.loads(request.get_data())
         try:
+            data = json.loads(request.get_data())
             validate(data, SCHEMA)
-        except ValidationError as e:
+        except (ValidationError, json.decoder.JSONDecodeError) as e:
             raise BadRequest(e)
         youtube_video_id = data['youtube_video_id']
 
