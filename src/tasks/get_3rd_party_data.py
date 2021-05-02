@@ -55,9 +55,12 @@ class Get3rdPartyData(BaseTask):
             params['pageToken'] = page_token
 
         request = youtube.commentThreads().list(**params)
-        response = request.execute()
-
-        return response
+        try:
+            response = request.execute()
+            return response
+        except Exception as e:
+            logger.exception(e)
+            return {}
 
     def _publish_texts_on_message_bus(self, snippets, sequence_id):
         """

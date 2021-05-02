@@ -55,6 +55,7 @@ class TextMap(Resource):
         except (ValidationError, json.decoder.JSONDecodeError) as e:
             raise BadRequest(e)
         youtube_video_id = data['youtube_video_id']
+        logger.info(f"Request received for youtube_video_id={youtube_video_id}")
 
         job_id = data.get('sequence_id')
         if not job_id:
