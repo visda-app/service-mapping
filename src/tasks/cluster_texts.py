@@ -255,7 +255,7 @@ def insert_d3uuid(head):
     while frontiers:
         next = frontiers.pop(0)
         next['d3uuid'] = str(uuid4())
-        frontiers.extend(next['children'])
+        frontiers.extend(next.get('children', []))
 
 
 def insert_parents_info(head):
