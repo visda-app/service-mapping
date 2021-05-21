@@ -286,7 +286,7 @@ def insert_parents_info(head):
                 'radius': next.get('radius'),
                 'd3uuid': next.get('d3uuid')
             }
-        frontiers.extend(next['children'])
+        frontiers.extend(next.get('children', []))
     return
 
 
@@ -348,7 +348,7 @@ def insert_radius(head, radius_multiplier_factor):
             ])
         else:
             next['radius'] = MIN_RADIUS
-        frontiers.extend(next['children'])
+        frontiers.extend(next.get('children', []))
 
 
 def insert_meta_data(head):
@@ -369,7 +369,7 @@ def insert_meta_data(head):
         min_y = min(next['low_dim_embedding'][1] - next['radius'], min_y)
         max_x = max(next['low_dim_embedding'][0] + next['radius'], max_x)
         max_y = max(next['low_dim_embedding'][1] + next['radius'], max_y)
-        frontiers.extend(next['children'])
+        frontiers.extend(next.get('children', []))
     head['metadata'] = {
         'x': {
             'max': max_x,
