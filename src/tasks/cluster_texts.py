@@ -341,7 +341,7 @@ def insert_radius(head, radius_multiplier_factor):
     frontiers = copy(head['children'])
     while frontiers:
         next = frontiers.pop(0)
-        if next['children']:
+        if next.get('children'):
             next['radius'] = max([
                 np.sqrt(next['children_count']) * radius_multiplier_factor,
                 MIN_RADIUS
