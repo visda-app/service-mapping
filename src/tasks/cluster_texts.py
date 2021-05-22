@@ -149,13 +149,13 @@ def format_to_nested_clustering(clustered_data):
             # Add cluster head to the tree and also add it as the first child
             result.append(item)
             if not item.get('children'):
-                result[-1]['children'].append(deepcopy(item))
+                result[-1].get('children', []).append(deepcopy(item))
         else:
-            result[-1]['children'].append(item)
+            result[-1].get('children', []).append(item)
     # Prune nodes with only one child.
     # which would be the parent that is just repeated
     for item in result:
-        if len(item['children']) == 1:
+        if len(item.get('children', [])) <= 1:
             item['children'] = []
     return result
 
@@ -338,7 +338,7 @@ def insert_radius(head, radius_multiplier_factor):
                         ]
                     }
     """
-    frontiers = copy(head['children'])
+    frontiers = copy(head.get('children', []))
     while frontiers:
         next = frontiers.pop(0)
         if next.get('children'):
@@ -362,7 +362,7 @@ def insert_meta_data(head):
     max_x = float("-inf")
     min_y = float("inf")
     max_y = float("-inf")
-    frontiers = deepcopy(head['children'])
+    frontiers = deepcopy(head.get('children', []))
     while frontiers:
         next = frontiers.pop(0)
         min_x = min(next['low_dim_embedding'][0] - next['radius'], min_x)
@@ -430,7 +430,7 @@ def get_reshaped_data(node):
     if 'low_dim_embedding' in node:
         new_node = get_formatted_item(node)
     new_node['children'] = [
-        get_reshaped_data(c) for c in node['children']
+        get_reshaped_data(c) for c in node.get('children', [])
     ]
     return new_node
 
@@ -473,7 +473,7 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
     insert_children_count(head)
     insert_d3uuid(head)
     insert_parents_info(head)
-    radius_multiplier_factor = get_radius_multiplier(head['children'])
+    radius_multiplier_factor = get_radius_multiplier(head.get('children', []))
     insert_radius(head, radius_multiplier_factor)
     insert_meta_data(head)
 
