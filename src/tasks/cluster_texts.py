@@ -472,9 +472,9 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
     logger.debug("Insert Stuff...")
     insert_children_count(head)
     insert_d3uuid(head)
-    insert_parents_info(head)
     radius_multiplier_factor = get_radius_multiplier(head.get('children', []))
     insert_radius(head, radius_multiplier_factor)
+    insert_parents_info(head)
     insert_meta_data(head)
 
     logger.debug("Formatting data...")

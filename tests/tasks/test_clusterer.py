@@ -3,8 +3,8 @@ import json
 import numpy as np
 from copy import deepcopy
 
-import clusterer
-from data.fixtures import (
+import tasks.cluster_texts as clusterer
+from tests.data.fixtures import (
     CLUSTERED_DATA,
     NESTED_DATA,
     MULTI_NESTED_DATA,
@@ -167,6 +167,15 @@ def test_partition_by_sequence_id():
         ]
     }
     assert actual_results == expected_result
+
+
+def test_cluster_hierarchically_add_meta_data(low_dim_embedding):
+    res = clusterer.cluster_hierarchically_add_meta_data("-", low_dim_embedding)
+    import pprint, json
+    pp = pprint.PrettyPrinter().pprint
+    # pp(res)
+    with open("_temp.txt", "w") as f:
+        f.write(json.dumps(res, indent=4))
 
 
 def test_main():

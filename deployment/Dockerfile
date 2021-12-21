@@ -86,5 +86,5 @@ RUN chown -R app:app /var/log
 USER app
 WORKDIR /code
 COPY . .
-ENV PYTHONPATH=/code/src/
+ENV PYTHONPATH=/code:/code/src
 CMD [ "python", "src/main.py" ]
