@@ -25,6 +25,8 @@ spec:
         metadata:
             labels:
                 app: {{ template "helm-chart.fullname" . }}-web-pod
+            annotations:
+                timestamp: "{{ date "20060102150405" .Release.Time }}"
         spec:
             imagePullSecrets:
             -   name: {{ template "helm-chart.fullname" . }}-registrykey
@@ -58,6 +60,8 @@ spec:
         metadata:
             labels:
                 app: {{ template "helm-chart.fullname" . }}-pod
+            annotations:
+                timestamp: "{{ date "20060102150405" .Release.Time }}"
         spec:
             imagePullSecrets:
             -   name: {{ template "helm-chart.fullname" . }}-registrykey
