@@ -37,7 +37,7 @@ spec:
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
                 command: ["gunicorn"]
-                args: ["route:app", "-c", "configs/gunicorn_configs.py"]
+                args: ["route:app", "-c", "configs/gunicorn_configs.py", "--preload"]
                 envFrom:
                     - configMapRef:
                         name: storage-config

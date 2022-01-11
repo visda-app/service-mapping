@@ -38,14 +38,14 @@ class Get3rdPartyData(BaseTask):
     def __init__(self, *args, **kwargs):
         logger.debug(kwargs)
         # validate the kwargs:
-        params = kwargs.get('kwargs')
-        schema = Schema(KWARGS_SCHEMA)
-        try:
-            schema.validate(params)
-        except Exception as e:
-            logger.exception(str(e))
-            raise
-        self._limit_cache_key = params['limit_cache_key']
+        # params = self.('kwargs')
+        # schema = Schema(KWARGS_SCHEMA)
+        # try:
+        #     schema.validate(params)
+        # except Exception as e:
+        #     logger.exception(str(e))
+        #     raise
+        # self._limit_cache_key = params['limit_cache_key']
 
         super().__init__(*args, **kwargs)
 
@@ -148,7 +148,7 @@ class Get3rdPartyData(BaseTask):
         # TODO: Save comments to DB
         pass
 
-    def _get_comments_for_source_url(self, source_url, limit):
+    def _get_comments_for_source_url(self, source_url, limit_cache_key):
         num_downloaded_comments = 0
 
         comments = []
@@ -156,7 +156,7 @@ class Get3rdPartyData(BaseTask):
         if not video_id:
             return comments
 
-        remaining_allowed_limit = limit
+        remaining_allowed_limit = int(cache_region.get(limit_cache_key))
 
         is_first_run = True
         result = {}
@@ -169,7 +169,8 @@ class Get3rdPartyData(BaseTask):
                 result.get('nextPageToken')
             )
             num_downloaded_comments += int(result.get("pageInfo", {}).get("totalResults", 0))
-            remaining_allowed_limit = int(cache_region.get(self._limit_cache_key)) - num_downloaded_comments
+            remaining_allowed_limit = int(cache_region.get(limit_cache_key)) - num_downloaded_comments
+            cache_region.set(limit_cache_key, remaining_allowed_limit)
             self._save_youtube_response_to_db(result)
             comments.extend(self._extract_comments(result))
 
@@ -179,13 +180,21 @@ class Get3rdPartyData(BaseTask):
 
     @record_start_finish_time_in_db
     def execute(self):
+        # Validate schema
+        schema = Schema(KWARGS_SCHEMA)
+        try:
+            schema.validate(self.kwargs)
+        except Exception as e:
+            logger.exception(str(e))
+            raise
+
         source_url = self.kwargs['source_url']
-        limit = int(cache_region.get(self.kwargs['limit_cache_key']))
+        limit_cache_key = self.kwargs['limit_cache_key']
 
         total_steps = 2
         self.record_progress(0, total_steps)
 
-        comments = self._get_comments_for_source_url(source_url, limit)
+        comments = self._get_comments_for_source_url(source_url, limit_cache_key)
         self.record_progress(1, total_steps)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
 

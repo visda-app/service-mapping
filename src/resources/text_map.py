@@ -53,7 +53,7 @@ class TextMap(Resource):
             -H "Content-Type: application/json"  \
             -d '{
                 "source_urls": [
-                    "https://youtu.be/Gjnup-PuquQ"
+                    "https://www.youtube.com/watch?v=Z3eNE4Gk-tA"
                 ],
                 "user_id": "a_user_id",
                 "limit": 100
@@ -91,7 +91,7 @@ class TextMap(Resource):
                     job_id=job_id,
                     kwargs={
                         'source_url': url,
-                        'limit_cahce_key': limit_key,
+                        'limit_cache_key': limit_key,
                     }
                 )
             )
