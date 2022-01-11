@@ -39,7 +39,7 @@ SCHEMA = {
         },
     },
     "additionalProperties": False,
-    "required": ["source_urls"]
+    "required": ["source_urls", "limit", "user_id"]
 }
 
 

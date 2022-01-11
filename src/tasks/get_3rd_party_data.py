@@ -37,16 +37,6 @@ class Get3rdPartyData(BaseTask):
 
     def __init__(self, *args, **kwargs):
         logger.debug(kwargs)
-        # validate the kwargs:
-        # params = self.('kwargs')
-        # schema = Schema(KWARGS_SCHEMA)
-        # try:
-        #     schema.validate(params)
-        # except Exception as e:
-        #     logger.exception(str(e))
-        #     raise
-        # self._limit_cache_key = params['limit_cache_key']
-
         super().__init__(*args, **kwargs)
 
     def _download_youtube_data_page(self, video_id, page_token=None):
