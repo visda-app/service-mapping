@@ -14,9 +14,17 @@ gunicorn
 flask
 Flask-RESTful
 
+requests 
+
 jsonschema
 asbool
 
 google-api-python-client
 
 oauth2client
+
+#cache
+dogpile.cache
+redis
+
+schema

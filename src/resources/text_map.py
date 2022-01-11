@@ -9,7 +9,8 @@ from lib.logger import logger
 from tasks.get_3rd_party_data import Get3rdPartyData
 from tasks.await_embedding import AwaitEmbedding
 from tasks.cluster_texts import ClusterTexts
-from lib.utils import generate_random_job_id
+from lib.utils import generate_random_id
+from lib.cache import cache_region as cache
 
 
 
@@ -22,12 +23,23 @@ SCHEMA = {
         "sequence_id": {
             "type": "string"
         },
-        "youtube_video_id": {
-            "description": "",
+        "user_id": {
             "type": "string"
-        }
+        },
+        "limit": {
+            "type": "integer",
+            "description": "A limit on the number of texts that are allowed to be mapped."
+        },
+        "source_urls": {
+            "description": "The URL of source data such as YouTube or TikTak urls",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
     },
-    "required": ["youtube_video_id"]
+    "additionalProperties": False,
+    "required": ["source_urls"]
 }
 
 
@@ -40,7 +52,11 @@ class TextMap(Resource):
             $(minikube service mapping-service --url)/textmap \
             -H "Content-Type: application/json"  \
             -d '{
-                "youtube_video_id": "CLiic14t2YQ"
+                "source_urls": [
+                    "https://youtu.be/Gjnup-PuquQ"
+                ],
+                "user_id": "a_user_id",
+                "limit": 100
             }' \
             | python -m json.tool \
             | python -c "import sys, json; print(json.load(sys.stdin)['job_id'])" \
@@ -54,29 +70,45 @@ class TextMap(Resource):
             validate(data, SCHEMA)
         except (ValidationError, json.decoder.JSONDecodeError) as e:
             raise BadRequest(e)
-        youtube_video_id = data['youtube_video_id']
-        logger.info(f"Request received for youtube_video_id={youtube_video_id}")
+
+        limit = data['limit']
+
+        if limit is None:
+            limit = 2**128
+        limit_key = generate_random_id()
+        cache.set(limit_key, limit)
+        
+        logger.debug(f"Request received data={data}")
 
         job_id = data.get('sequence_id')
         if not job_id:
-            job_id = generate_random_job_id()
-
-        task_1 = Get3rdPartyData(
-            job_id=job_id,
-            kwargs={
-                'video_id': youtube_video_id
-            }
+            job_id = generate_random_id()
+        
+        tasks = []
+        for url in data['source_urls']:
+            tasks.append(
+                Get3rdPartyData(
+                    job_id=job_id,
+                    kwargs={
+                        'source_url': url,
+                        'limit_cahce_key': limit_key,
+                    }
+                )
+            )
+        tasks.append(AwaitEmbedding(job_id=job_id))
+        tasks.append(
+            ClusterTexts(
+                job_id=job_id, kwargs={
+                    'sequence_ids': [job_id]
+                }
+            )
         )
-        task_2 = AwaitEmbedding(job_id=job_id)
-        task_3 = ClusterTexts(
-            job_id=job_id, kwargs={
-                'sequence_ids': [job_id]
-            }
-        )
 
-        task_1 >> task_2 >> task_3
+        task_chain = tasks[0]
+        for task in tasks[1:]:
+            task_chain = task_chain >> task
 
-        task_1.start()
+        tasks[0].start()
 
         return {
             'message': f"Job job_id={job_id} submitted.",

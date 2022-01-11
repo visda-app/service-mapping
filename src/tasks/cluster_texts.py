@@ -109,7 +109,6 @@ def cluster_data(data, coordinates_key=None):
         cluster_info['is_cluster_head'] = item[coordinates_key] in cluster_centers
         cluster_info['cluster_label'] = cluster_labels[i]
         item['cluster_info'] = cluster_info
-        # TODO: remove this lines
         # item['embedding'] = ''
         # item['text'] = ''
 

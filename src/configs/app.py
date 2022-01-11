@@ -33,6 +33,16 @@ class DB:
         SQLALCHEMY_DATABASE_URI = f"{DB_DRIVER}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"  # noqa
 
 
+class Cache:
+    cache_uri = os.environ.get('CACHE_URI')  # e.g., 192.168.59.105:30311
+    if cache_uri:
+        host = cache_uri.split(':')[0]
+        port = cache_uri.split(':')[1]
+    else:
+        host = os.environ.get('CACHE_HOST')
+        port = os.environ.get('CACHE_PORT')
+
+
 class ThirdParty:
     """
     configurations for the third party apps

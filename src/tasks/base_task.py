@@ -17,7 +17,7 @@ class BaseTask:
     """
     The base class for tasks.
     """
-    public_description = "Base task."
+    public_description = "Base task"
 
     def __init__(self, job_id=None, kwargs={}, task_id=None):
         """

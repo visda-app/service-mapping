@@ -7,7 +7,7 @@ from random import random
 
 from tasks.dummy_task import DummyTask
 from tasks.dummy_await_task import DummyAwaitTask
-from lib.utils import generate_random_job_id
+from lib.utils import generate_random_id
 from models.db import create_all_tables
 from models.task import Task as TaskModel
 from tasks.job_auditor import JobAuditor
@@ -73,7 +73,7 @@ class TestJob(unittest.TestCase):
 
     def create_task(self, task_class, job_id=None, kwargs={}):
         if job_id is None:
-            job_id = generate_random_job_id()
+            job_id = generate_random_id()
         t = task_class(job_id=job_id, kwargs=kwargs)
         self.task_ids.append(t.id)
         return t

@@ -8,7 +8,7 @@ from tasks.base_task import BaseTask
 from tasks.base_task import TASK_RETRY_DELAY_MS
 from tasks.dummy_task import DummyTask
 from tasks.dummy_task import DUMMY_TASK_EXEC_TIME
-from lib.utils import generate_random_job_id
+from lib.utils import generate_random_id
 from models.db import create_all_tables
 from models.task import Task as TaskModel
 from invalid_task import InvalidTask
@@ -30,7 +30,7 @@ class TestBaseTasks(unittest.TestCase):
 
     def create_task(self, task_class, kwargs, job_id=None):
         if job_id is None:
-            job_id = generate_random_job_id()
+            job_id = generate_random_id()
         t = task_class(job_id=job_id, kwargs=kwargs)
         self.task_ids.append(t.id)
         return t

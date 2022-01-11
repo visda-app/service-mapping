@@ -1,10 +1,10 @@
 from flask import Flask, request
 from flask_restful import Api
 
-from models.db import create_all_tables
 from lib.logger import logger
 from resources.text_map import TextMap
 from resources.text_map_result import TextMapResult
+from models.db import create_all_tables
 
 
 app = Flask(__name__)

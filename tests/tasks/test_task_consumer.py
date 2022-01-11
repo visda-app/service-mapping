@@ -3,7 +3,7 @@ from random import random
 
 from tasks.dummy_task import DummyTask
 from tasks.dummy_await_task import DummyAwaitTask
-from lib.utils import generate_random_job_id
+from lib.utils import generate_random_id
 from models.db import create_all_tables
 
 
@@ -13,7 +13,7 @@ create_all_tables()
 class TestTaskConsumer(unittest.TestCase):
 
     def test_submit_to_queue(self):
-        job_id = str(int(100 * random()))  # generate_random_job_id()
+        job_id = str(int(100 * random()))  # generate_random_id()
 
         t1 = DummyTask(
             job_id=job_id,

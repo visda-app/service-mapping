@@ -35,3 +35,7 @@ db:
     host: postgresql.db
     port: 5432
     databasename: aabgoosht
+
+cache:
+    host: cache-redis-master
+    port: 6379

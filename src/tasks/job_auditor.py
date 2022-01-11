@@ -41,7 +41,7 @@ class JobAuditor:
     def _insert_task_public_description(self, tasks):
         for task in tasks:
             task_class = get_class_from_string(task['task_class'])
-            if task_class and 'public_description' in dir(task_class):
+            if task_class and hasattr(task_class, 'public_description'):
                 task['description'] = task_class.public_description
 
     @classmethod

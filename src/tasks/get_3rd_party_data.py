@@ -1,6 +1,8 @@
 import os
 import googleapiclient.discovery
 import pprint
+from schema import Schema
+import requests
 
 from chapar.message_broker import MessageBroker, Producer
 from chapar.schema_repo import TextSchema
@@ -9,25 +11,42 @@ from configs.app import (
     PulsarConf,
     ThirdParty
 )
+from lib import utils
+from lib.cache import cache_region
 from tasks.base_task import BaseTask
 from tasks.base_task import record_start_finish_time_in_db
 from models.job_text_mapping import JobTextMapping
+from lib.cache import cache_region
 
 
 pp = pprint.PrettyPrinter().pprint
+DEVELOPER_KEY = ThirdParty.GOOGLE_API_KEY
+MAX_RESULTS_PER_REQUEST = 100
 
+
+KWARGS_SCHEMA = {
+    'source_url': str,
+    'limit_cache_key': str,  # keeps the limit on the number of comments to be downloaded 
+}
 
 class Get3rdPartyData(BaseTask):
     """
     Get third party data such as YouTube.
     """
-
-    public_description = "Getting YouTube comments."
+    public_description = "Downloading data from external source"
 
     def __init__(self, *args, **kwargs):
         logger.debug(kwargs)
-        if 'kwargs' in kwargs and 'video_id' not in kwargs['kwargs']:
-                raise ValueError('Missing video_id in params.')
+        # validate the kwargs:
+        params = kwargs.get('kwargs')
+        schema = Schema(KWARGS_SCHEMA)
+        try:
+            schema.validate(params)
+        except Exception as e:
+            logger.exception(str(e))
+            raise
+        self._limit_cache_key = params['limit_cache_key']
+
         super().__init__(*args, **kwargs)
 
     def _download_youtube_data_page(self, video_id, page_token=None):
@@ -38,7 +57,6 @@ class Get3rdPartyData(BaseTask):
 
         api_service_name = "youtube"
         api_version = "v3"
-        DEVELOPER_KEY = ThirdParty.GOOGLE_API_KEY
 
         youtube = googleapiclient.discovery.build(
             api_service_name, api_version,
@@ -47,7 +65,7 @@ class Get3rdPartyData(BaseTask):
 
         params = {
             'part': 'snippet',
-            'maxResults': 1000,
+            'maxResults': MAX_RESULTS_PER_REQUEST,
             'textFormat': 'plainText',
             'videoId': video_id
         }
@@ -123,34 +141,59 @@ class Get3rdPartyData(BaseTask):
             })
         return results
 
-    def _get_comments_from_video(self, video_id):
-        result = self._download_youtube_data_page(video_id)
-        comments = self._extract_comments(result)
-        while result.get('nextPageToken'):
+    def _save_youtube_response_to_db(self, yt_resp):
+        """
+        Save youtube comment objects to DB
+        """
+        # TODO: Save comments to DB
+        pass
+
+    def _get_comments_for_source_url(self, source_url, limit):
+        num_downloaded_comments = 0
+
+        comments = []
+        video_id = utils.get_youtube_video_id(source_url)
+        if not video_id:
+            return comments
+
+        remaining_allowed_limit = limit
+
+        is_first_run = True
+        result = {}
+        while (
+            is_first_run
+            or (result.get('nextPageToken') and remaining_allowed_limit > 0)
+        ):
             result = self._download_youtube_data_page(
                 video_id,
                 result.get('nextPageToken')
             )
+            num_downloaded_comments += int(result.get("pageInfo", {}).get("totalResults", 0))
+            remaining_allowed_limit = int(cache_region.get(self._limit_cache_key)) - num_downloaded_comments
+            self._save_youtube_response_to_db(result)
             comments.extend(self._extract_comments(result))
+
+            is_first_run = False
         return comments
 
 
     @record_start_finish_time_in_db
     def execute(self):
-        video_id = self.kwargs['video_id']
+        source_url = self.kwargs['source_url']
+        limit = int(cache_region.get(self.kwargs['limit_cache_key']))
 
-        TOTAL_STEPS = 2
-        self.record_progress(0, TOTAL_STEPS)
+        total_steps = 2
+        self.record_progress(0, total_steps)
 
-        comments = self._get_comments_from_video(video_id)
-        self.record_progress(1, TOTAL_STEPS)
+        comments = self._get_comments_for_source_url(source_url, limit)
+        self.record_progress(1, total_steps)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
 
         self._publish_texts_on_message_bus(comments, self.job_id)
-        self.record_progress(2, TOTAL_STEPS)
+        self.record_progress(total_steps, total_steps)
 
         # self._record_job_text_relationship(comments, self.job_id)
-        # self.record_progress(3, TOTAL_STEPS)
+        # self.record_progress(3, total_steps)
 
         # if self.kwargs.get('test'):
         #     with open('tests/data/youtube_comments.json', 'w') as f:

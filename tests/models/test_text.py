@@ -53,8 +53,6 @@ class TestTextModel(unittest.TestCase):
         results = TextModel.get_by_id(uuid1)
         assert results is not None
 
-        breakpoint()
-
         # Delete the record
         TextModel.delete_by_id(uuid1)
 
