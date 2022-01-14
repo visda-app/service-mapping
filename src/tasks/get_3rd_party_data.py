@@ -163,6 +163,9 @@ class Get3rdPartyData(BaseTask):
             cache_region.set(limit_cache_key, remaining_allowed_limit)
             self._save_youtube_response_to_db(result)
             comments.extend(self._extract_comments(result))
+            
+            self._progress += 1
+            self.record_progress(self._progress, self._total_steps)
 
             is_first_run = False
         return comments
@@ -180,19 +183,20 @@ class Get3rdPartyData(BaseTask):
 
         source_url = self.kwargs['source_url']
         limit_cache_key = self.kwargs['limit_cache_key']
+        limit = float(cache_region.get(limit_cache_key))
 
-        total_steps = 2
-        self.record_progress(0, total_steps)
+        self._total_steps = min(limit / MAX_RESULTS_PER_REQUEST, 100)
+        self._progress = 0
+        self.record_progress(self._progress, self._total_steps)
 
         comments = self._get_comments_for_source_url(source_url, limit_cache_key)
-        self.record_progress(1, total_steps)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
 
         self._publish_texts_on_message_bus(comments, self.job_id)
-        self.record_progress(total_steps, total_steps)
+        self.record_progress(self._total_steps, self._total_steps)
 
         # self._record_job_text_relationship(comments, self.job_id)
-        # self.record_progress(3, total_steps)
+        # self.record_progress(3, self._total_steps)
 
         # if self.kwargs.get('test'):
         #     with open('tests/data/youtube_comments.json', 'w') as f:

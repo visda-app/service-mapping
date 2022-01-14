@@ -204,3 +204,12 @@ class TestBaseTasks(unittest.TestCase):
         )
         t1.record_progress(4, 5)
         assert t1.progress == {'done': 4, 'total': 5}
+
+    def test_append_event_id(self):
+        job_id = "345"
+        t = self.create_task(
+            DummyTask,
+            {'b': 3},
+            job_id,
+        )
+        t.append_event_ids([])

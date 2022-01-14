@@ -1,5 +1,4 @@
 import json
-from flask_restful import Resource
 from flask import request
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
@@ -11,7 +10,7 @@ from tasks.await_embedding import AwaitEmbedding
 from tasks.cluster_texts import ClusterTexts
 from lib.utils import generate_random_id
 from lib.cache import cache_region as cache
-
+from resources.resource import Resource
 
 
 SCHEMA = {
@@ -28,7 +27,7 @@ SCHEMA = {
         },
         "limit": {
             "type": "integer",
-            "description": "A limit on the number of texts that are allowed to be mapped."
+            "description": "A limit on the number of texts that are allowed to be mapped. Only this limit or slightly higher number of texts would be mapped."
         },
         "source_urls": {
             "description": "The URL of source data such as YouTube or TikTak urls",
@@ -41,6 +40,10 @@ SCHEMA = {
     "additionalProperties": False,
     "required": ["source_urls", "limit", "user_id"]
 }
+
+
+def url_to_get_data_class_mapper(url):
+    return Get3rdPartyData
 
 
 class TextMap(Resource):
@@ -77,8 +80,6 @@ class TextMap(Resource):
             limit = 2**128
         limit_key = generate_random_id()
         cache.set(limit_key, limit)
-        
-        logger.debug(f"Request received data={data}")
 
         job_id = data.get('sequence_id')
         if not job_id:
@@ -87,7 +88,7 @@ class TextMap(Resource):
         tasks = []
         for url in data['source_urls']:
             tasks.append(
-                Get3rdPartyData(
+                url_to_get_data_class_mapper(url)(
                     job_id=job_id,
                     kwargs={
                         'source_url': url,

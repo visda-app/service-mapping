@@ -4,6 +4,7 @@ from lib.utils import get_class_from_string
 
 class JobAuditor:
     """
+    Get the status of the tasks in a particular job
     """
     def _find_head(self, tasks):
         heads = []

@@ -20,6 +20,14 @@ from models.db import (
 )
 
 
+EVENT_MAPPER = {
+    1: {
+        "name": "",
+        "description": "",
+    },
+}
+
+
 class Task(Base):
     __tablename__ = 'tasks'
 
@@ -28,6 +36,7 @@ class Task(Base):
     task_class = Column(String)
     kwargs = Column(JSON)
     next_task_id = Column(String)
+    events = Column(JSON)
     created = Column(DateTime(timezone=True), server_default=func.now())
     started = Column(DateTime(timezone=True))
     finished = Column(DateTime(timezone=True))
@@ -40,6 +49,7 @@ class Task(Base):
             "task_class": self.task_class,
             "kwargs": self.kwargs,
             "next_task_id": self.next_task_id,
+            "events": self.events,
             "created": self.created,
             "started": self.started,
             "finished": self.finished,
@@ -117,3 +127,6 @@ class Task(Base):
             done = 0
             total = 0
         return {'done': done, 'total': total}
+
+    def add_event(self, event_id):
+        self.events
