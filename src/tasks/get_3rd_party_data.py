@@ -27,7 +27,9 @@ MAX_RESULTS_PER_REQUEST = 100
 KWARGS_SCHEMA = {
     'source_url': str,
     'limit_cache_key': str,  # keeps the limit on the number of comments to be downloaded 
+    'total_num_texts_cache_key': str,  # After the download, this gets set to the total downloaded texts
 }
+
 
 class Get3rdPartyData(BaseTask):
     """
@@ -154,11 +156,17 @@ class Get3rdPartyData(BaseTask):
             is_first_run
             or (result.get('nextPageToken') and remaining_allowed_limit > 0)
         ):
+            
+            logger.debug(f"remaining_allowed_limit={remaining_allowed_limit} ")
+            
             result = self._download_youtube_data_page(
                 video_id,
                 result.get('nextPageToken')
             )
-            num_downloaded_comments += int(result.get("pageInfo", {}).get("totalResults", 0))
+            num_downloaded_comments = int(result.get("pageInfo", {}).get("resultsPerPage", 0))
+
+            logger.debug(f"num_downloaded_comments={num_downloaded_comments} ")
+
             remaining_allowed_limit = int(cache_region.get(limit_cache_key)) - num_downloaded_comments
             cache_region.set(limit_cache_key, remaining_allowed_limit)
             self._save_youtube_response_to_db(result)
@@ -168,7 +176,21 @@ class Get3rdPartyData(BaseTask):
             self.record_progress(self._progress, self._total_steps)
 
             is_first_run = False
+        if remaining_allowed_limit <= 0:
+            self.append_an_event("Number of comments exceeds allowed limit.")
         return comments
+    
+    def get_events(self):
+        events = super().get_events()
+        return events
+
+    def _update_num_downloaded_texts(self, cache_key, comments):
+        num_dls = cache_region.get(cache_key)
+        if not num_dls:
+            cache_region.set(cache_key, len(comments))
+        else:
+            cache_region.set(cache_key, num_dls + len(comments))
+
 
 
     @record_start_finish_time_in_db
@@ -183,13 +205,15 @@ class Get3rdPartyData(BaseTask):
 
         source_url = self.kwargs['source_url']
         limit_cache_key = self.kwargs['limit_cache_key']
+        total_num_texts_cache_key = self.kwargs['total_num_texts_cache_key']
         limit = float(cache_region.get(limit_cache_key))
 
-        self._total_steps = min(limit / MAX_RESULTS_PER_REQUEST, 100)
+        self._total_steps = int(min(limit / MAX_RESULTS_PER_REQUEST, 100) + 1)
         self._progress = 0
         self.record_progress(self._progress, self._total_steps)
 
         comments = self._get_comments_for_source_url(source_url, limit_cache_key)
+        self._update_num_downloaded_texts(total_num_texts_cache_key, comments)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
 
         self._publish_texts_on_message_bus(comments, self.job_id)

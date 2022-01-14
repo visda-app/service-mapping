@@ -80,6 +80,18 @@ class JobTextMapping(Base):
         )
 
     @classmethod
+    def _get_processed_texts_query(cls, job_id):
+        return session.query(
+            cls, TextModel
+        ).filter(
+            cls.text_id == TextModel.id
+        ).filter(
+            cls.job_id == job_id
+        ).filter(
+            TextModel.embedding != None
+        )
+
+    @classmethod
     def _get_total_texts_query(cls, job_id):
         return session.query(
             cls, TextModel
@@ -92,6 +104,12 @@ class JobTextMapping(Base):
     @classmethod
     def get_unprocessed_texts_count_by_job_id(cls, job_id):
         qu = cls._get_unprocessed_texts_query(job_id)
+        result = qu.count()
+        return result
+
+    @classmethod
+    def get_processed_texts_count_by_job_id(cls, job_id):
+        qu = cls._get_processed_texts_query(job_id)
         result = qu.count()
         return result
 

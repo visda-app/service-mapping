@@ -205,11 +205,37 @@ class TestBaseTasks(unittest.TestCase):
         t1.record_progress(4, 5)
         assert t1.progress == {'done': 4, 'total': 5}
 
-    def test_append_event_id(self):
+    def test_append_an_event(self):
         job_id = "345"
         t = self.create_task(
             DummyTask,
             {'b': 3},
             job_id,
         )
-        t.append_event_ids([])
+
+        result = t.get_events()
+        assert result == []
+
+        test_event_msg_01 = "a test event"
+        t.append_an_event(test_event_msg_01)
+        result = t.get_events()
+        assert result == [
+            test_event_msg_01
+        ]
+
+        test_event_msg_02 = "another event"
+        t.append_an_event(test_event_msg_02)
+        result = t.get_events()
+        assert result == [
+            test_event_msg_01,
+            test_event_msg_02
+        ]
+
+        test_event_msg_03 = 1234
+        t.append_an_event(test_event_msg_03)
+        result = t.get_events()
+        assert result == [
+            test_event_msg_01,
+            test_event_msg_02,
+            str(test_event_msg_03)
+        ]

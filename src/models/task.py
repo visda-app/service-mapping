@@ -4,7 +4,6 @@ text segments.
 """
 import json
 from uuid import uuid4
-from enum import Enum
 from sqlalchemy.sql import func
 from sqlalchemy import (
     Column,
@@ -18,14 +17,6 @@ from models.db import (
     Base,
     session
 )
-
-
-EVENT_MAPPER = {
-    1: {
-        "name": "",
-        "description": "",
-    },
-}
 
 
 class Task(Base):
@@ -128,5 +119,20 @@ class Task(Base):
             total = 0
         return {'done': done, 'total': total}
 
-    def add_event(self, event_id):
-        self.events
+    def append_an_event(self, event_message):
+        """
+        self.event is a list
+        """
+        if self.events is None:
+            self.events = []
+        events = list(self.events)
+        events.append(str(event_message))
+        self.events = events
+        self.save_to_db()
+        return self
+
+    def get_events(self):
+        events = []
+        if self.events:
+            events = list(self.events)
+        return events

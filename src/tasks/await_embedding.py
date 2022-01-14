@@ -7,6 +7,7 @@ from tasks.base_task import record_start_finish_time_in_db
 from lib.logger import logger
 from models.job_text_mapping import JobTextMapping
 from lib.exceptions import ExternalDependencyNotCompleted
+from lib.cache import cache_region
 
 
 class AwaitEmbedding(BaseTask):
@@ -20,9 +21,11 @@ class AwaitEmbedding(BaseTask):
     def execute(self):
         logger.debug("👀 watching for embeddings to finish...")
         job_id = self.job_id
-        not_done = JobTextMapping.get_unprocessed_texts_count_by_job_id(job_id)
-        logger.debug(f"NotDone={not_done}")
-        total = JobTextMapping.get_total_texts_count_by_job_id(job_id)
-        self.record_progress(total - not_done, total)
-        if not_done > 0:
+        total_texts_cache_key = self.kwargs['total_num_texts_cache_key']
+        total_num_texts = int(cache_region.get(total_texts_cache_key))
+        done = JobTextMapping.get_processed_texts_count_by_job_id(job_id)
+        logger.debug(f"Done={done} Total={total_num_texts}")
+        # total = JobTextMapping.get_total_texts_count_by_job_id(job_id)
+        self.record_progress(done, total_num_texts)
+        if done < total_num_texts:
             raise ExternalDependencyNotCompleted

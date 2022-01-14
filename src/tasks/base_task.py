@@ -37,6 +37,7 @@ class BaseTask:
         self.task_class = self._get_full_self_module_and_class_path()
         self.next_task_id = task.next_task_id
         self.progress = task.get_progress()
+        self.events = task.get_events()
 
     def _get_full_self_module_and_class_path(self):
         """
@@ -140,6 +141,18 @@ class BaseTask:
         task_model = self._get_from_db_by_id()
         task_model.save_progress(done, total)
         self.progress = task_model.get_progress()
+
+    def append_an_event(self, event_message):
+        """
+        Append an event message to the set of events for the task and records it in the DB
+        """
+        task_model = self._get_from_db_by_id()
+        task_model.append_an_event(event_message)
+        self.events = task_model.get_events()
+
+    def get_events(self):
+        task_model = self._get_from_db_by_id()
+        return task_model.get_events()
 
     def execute(self):
         raise NotImplementedError(

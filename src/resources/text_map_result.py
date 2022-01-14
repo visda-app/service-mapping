@@ -30,6 +30,7 @@ class TextMapResult(Resource):
                 {
                     'task': task['description'],
                     'progress': task['progress'],
+                    'events': task['events'],  # A list of event messages (strings)
                 }
             )
 
