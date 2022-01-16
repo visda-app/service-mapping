@@ -2,7 +2,9 @@ import json
 from uuid import uuid4
 import unittest
 from unittest.mock import patch
+from unittest import TestCase
 from datetime import timedelta
+from copy import deepcopy
 
 from tasks.base_task import BaseTask
 from tasks.base_task import TASK_RETRY_DELAY_MS
@@ -13,11 +15,12 @@ from models.db import create_all_tables
 from models.task import Task as TaskModel
 from invalid_task import InvalidTask
 from lib.utils import get_module_and_class_from_string
+from tasks import event_collection
 
 create_all_tables()
 
 
-class TestBaseTasks(unittest.TestCase):
+class TestBaseTask(TestCase):
 
     task_ids = []
 
@@ -205,7 +208,7 @@ class TestBaseTasks(unittest.TestCase):
         t1.record_progress(4, 5)
         assert t1.progress == {'done': 4, 'total': 5}
 
-    def test_append_an_event(self):
+    def test__append_event(self):
         job_id = "345"
         t = self.create_task(
             DummyTask,
@@ -217,14 +220,14 @@ class TestBaseTasks(unittest.TestCase):
         assert result == []
 
         test_event_msg_01 = "a test event"
-        t.append_an_event(test_event_msg_01)
+        t._append_event(test_event_msg_01)
         result = t.get_events()
         assert result == [
             test_event_msg_01
         ]
 
         test_event_msg_02 = "another event"
-        t.append_an_event(test_event_msg_02)
+        t._append_event(test_event_msg_02)
         result = t.get_events()
         assert result == [
             test_event_msg_01,
@@ -232,10 +235,109 @@ class TestBaseTasks(unittest.TestCase):
         ]
 
         test_event_msg_03 = 1234
-        t.append_an_event(test_event_msg_03)
+        t._append_event(test_event_msg_03)
         result = t.get_events()
         assert result == [
             test_event_msg_01,
             test_event_msg_02,
-            str(test_event_msg_03)
+            test_event_msg_03,
         ]
+
+
+    def test__append_a_dict_event(self):
+        job_id = "345"
+        t = self.create_task(
+            DummyTask,
+            {'b': 3},
+            job_id,
+        )
+
+        test_events = []
+        test_events.append({
+            "key": "a_unique_key",
+            "description": "a description to know what this was about",
+            "params": {
+                "num_resp": 32,
+                "success": True,
+                "message": "201 success"
+            }
+        })
+        test_events.append("a simple text")
+
+        for e in test_events:
+            t._append_event(e)
+
+        result = t.get_events()
+        assert result == test_events
+
+    @patch('tasks.base_task.BaseTask._get_current_timestamp')
+    def test_append_event(self, dummy_timestamp):
+        job_id = "345"
+        t = self.create_task(
+            DummyTask,
+            {'b': 3},
+            job_id,
+        )
+        a_timestamp = 3984357.45
+        dummy_timestamp.return_value = a_timestamp
+        expected_result = [
+            {
+                'event_lookup_key': 'dummy_event_lookup_key',
+                'timestamp': a_timestamp,
+                'description': 'This is a dummy lookup key for testing',
+                'params': {
+                    'test1': 'one two three',
+                    'test2': 123
+                },
+            },
+        ]
+
+        t.append_event(event_lookup_key='dummy_event_lookup_key')
+        result = t.get_events()
+
+        assert result == [expected_result]
+
+    @patch('tasks.base_task.BaseTask._get_current_timestamp')
+    def test_append_event_with_args(self, dummy_timestamp):
+        job_id = "345"
+        t = self.create_task(
+            DummyTask,
+            {'b': 3},
+            job_id,
+        )
+        a_timestamp = 3984357.45
+        dummy_timestamp.return_value = a_timestamp
+        expected_result = [
+            {
+                'event_lookup_key': 'dummy_event_lookup_key',
+                'timestamp': a_timestamp,
+                'description': 'This is a dummy lookup key for testing',
+                'args': {
+                    'test1': 'one two three',
+                    'test2': 123,
+                    'arg1': 'test_arg1',
+                    'arg2': 23456,
+                },
+            },
+        ]
+
+        t.append_event(
+            event_lookup_key='dummy_event_lookup_key',
+            arg1="test_arg1",
+            arg2=23456,
+        )
+        result = t.get_events()
+
+        assert result == expected_result
+
+
+    def test_append_event_raises(self):
+        job_id = "345"
+        t = self.create_task(
+            DummyTask,
+            {'b': 3},
+            job_id,
+        )
+
+        with TestCase().assertRaises(ValueError) as e:
+            t.append_event(event_lookup_key='TEST_invalid_event_lookup_key')

@@ -1,0 +1,10 @@
+dummy_event_lookup_key:
+  description: "This is a dummy lookup key for testing"
+  args:
+    test1: "one two three"
+    test2: 123
+
+text_count_exceeds_limit:
+  description: "The number of texts requested to download exceeds the limit"
+  args:
+    limit: 0

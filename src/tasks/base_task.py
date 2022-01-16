@@ -3,11 +3,14 @@ import functools
 import time
 from datetime import datetime
 import pytz
+from copy import deepcopy
+import arrow
 
 from models.task import Task as TaskModel
 from lib.utils import get_module_and_class_from_string
 from lib.logger import logger
 from lib.messaging import publish_task
+from tasks import event_collection
 
 
 TASK_RETRY_DELAY_MS = 1250
@@ -142,12 +145,34 @@ class BaseTask:
         task_model.save_progress(done, total)
         self.progress = task_model.get_progress()
 
-    def append_an_event(self, event_message):
+    def _append_event(self, event):
         """
-        Append an event message to the set of events for the task and records it in the DB
+        Append a raw event object to the list of events for the task and records it in the DB
         """
         task_model = self._get_from_db_by_id()
-        task_model.append_an_event(event_message)
+        task_model.append_an_event(event)
+        self.events = task_model.get_events()
+
+    def _get_current_timestamp(self):
+        return arrow.utcnow().timestamp()
+
+    def append_event(self, event_lookup_key=None, **kwargs):
+        """
+        Append an event object determined by event_lookup_key 
+        to the list of events for the task and records it in the DB
+        """
+        event = deepcopy(event_collection.get(event_lookup_key))
+        if event is None:
+            raise ValueError(f"Invalid event lookup key {event_lookup_key}")
+        event.update({
+            'event_lookup_key': event_lookup_key,
+            'timestamp': self._get_current_timestamp(),
+        })
+        event['args'] = event.get('args', {})
+        event['args'].update(**kwargs)
+
+        task_model = self._get_from_db_by_id()
+        task_model.append_an_event(event)
         self.events = task_model.get_events()
 
     def get_events(self):

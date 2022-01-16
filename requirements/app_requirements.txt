@@ -8,6 +8,8 @@ aniso8601==8.0.0
     # via flask-restful
 apache-bookkeeper-client==4.12.0
     # via pulsar-client
+arrow==1.2.1
+    # via -r app_requirements.in
 asbool==0.1.1
     # via -r app_requirements.in
 attrs==19.3.0
@@ -118,7 +120,9 @@ pyparsing==3.0.6
 pyrsistent==0.16.0
     # via jsonschema
 python-dateutil==2.8.1
-    # via pandas
+    # via
+    #   arrow
+    #   pandas
 pytz==2020.1
     # via
     #   apache-bookkeeper-client
@@ -126,6 +130,8 @@ pytz==2020.1
     #   flask-restful
     #   google-api-core
     #   pandas
+pyyaml==6.0
+    # via -r app_requirements.in
 ratelimit==2.2.1
     # via pulsar-client
 redis==4.1.0

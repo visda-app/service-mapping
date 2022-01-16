@@ -51,22 +51,7 @@ class TextMap(Resource):
         """
         Example call:
 
-
-        curl -X POST \
             localhost:5001/textmap \
-            -H "Content-Type: application/json"  \
-            -d '{
-                "source_urls": [
-                    "https://www.youtube.com/watch?v=Z3eNE4Gk-tA"
-                ],
-                "user_id": "a_user_id",
-                "limit": 100
-            }' \
-            | python -m json.tool \
-            | python -c "import sys, json; print(json.load(sys.stdin)['job_id'])" \
-            | tee _temp.txt
-        export SEQ_ID=$(cat _temp.txt)
-        echo sequence_id=$SEQ_ID
 
 
         curl -X POST \
@@ -74,17 +59,18 @@ class TextMap(Resource):
             -H "Content-Type: application/json"  \
             -d '{
                 "source_urls": [
-                    "https://www.youtube.com/watch?v=pA1qb1tkKNo",
-                    "https://www.youtube.com/watch?v=pA1qb1tkKNo",
+                    "https://www.youtube.com/watch?v=pXswr3XmDw8",
+                    "https://www.youtube.com/watch?v=DHjqpvDnNGE"
                 ],
                 "user_id": "a_user_id",
-                "limit": 100
+                "limit": 200
             }' \
             | python -m json.tool \
             | python -c "import sys, json; print(json.load(sys.stdin)['job_id'])" \
-            | tee _temp.txt
-        export SEQ_ID=$(cat _temp.txt)
-        echo sequence_id=$SEQ_ID
+            | tee _temp.txt \
+        && \
+        export SEQ_ID=$(cat _temp.txt) \
+        && echo sequence_id=$SEQ_ID \
         """
         # form_data = request.form.to_dict()
         try:

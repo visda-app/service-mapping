@@ -177,7 +177,7 @@ class Get3rdPartyData(BaseTask):
 
             is_first_run = False
         if remaining_allowed_limit <= 0:
-            self.append_an_event("Number of comments exceeds allowed limit.")
+            self.append_event(event_lookup_key='text_count_exceeds_limit')
         return comments
     
     def get_events(self):

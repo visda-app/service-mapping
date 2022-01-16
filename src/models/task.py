@@ -119,14 +119,14 @@ class Task(Base):
             total = 0
         return {'done': done, 'total': total}
 
-    def append_an_event(self, event_message):
+    def append_an_event(self, event):
         """
         self.event is a list
         """
         if self.events is None:
             self.events = []
         events = list(self.events)
-        events.append(str(event_message))
+        events.append(event)
         self.events = events
         self.save_to_db()
         return self
