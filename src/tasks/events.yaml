@@ -8,3 +8,6 @@ text_count_exceeds_limit:
   description: "The number of texts requested to download exceeds the limit"
   args:
     limit: 0
+
+text_download_finished:
+  description: "Fineshed downloading texts from third party"

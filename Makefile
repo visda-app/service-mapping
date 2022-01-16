@@ -71,6 +71,8 @@ run-dev: build ## Run a server in the prod docker image
 	docker run -it --rm \
 		-v ${CURRENT_DIR}/src:/code/src \
 		--env-file etc/.env \
+		--env SQLALCHEMY_DATABASE_URI="postgresql://sunnyday1:sunnyday2@$(shell minikube service postgresql-proxy -n db --url | cut -d '/' -f3)/aabgoosht" \
+		--env CACHE_URI="$(shell minikube service cache-redis-master --url | cut -d '/' -f3)" \
 		-p ${SERVICE_PORT}:${SERVICE_PORT} \
 		${PROD_IMAGE_TAG} \
 		gunicorn route:app -c configs/gunicorn_configs.py

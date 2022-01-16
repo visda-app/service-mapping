@@ -18,7 +18,6 @@ class TextMapResult(Resource):
             -X GET \
             "$(minikube service mapping-service --url)/textmap/sequence_id/$SEQ_ID?include_clustering=true" \
             | python -m json.tool
-
         """
         data = request.args.to_dict()
         include_clustering = asbool(data.get('include_clustering'))

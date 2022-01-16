@@ -41,7 +41,7 @@ class Get3rdPartyData(BaseTask):
         logger.debug(kwargs)
         super().__init__(*args, **kwargs)
 
-    def _download_youtube_data_page(self, video_id, page_token=None):
+    def _download_youtube_data_page(self, video_id, page_token=None, max_results=None):
         # Disable OAuthlib's HTTPS verification when running locally.
         # TODO: *DO NOT* leave this option enabled in production.
         os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -55,9 +55,18 @@ class Get3rdPartyData(BaseTask):
             developerKey=DEVELOPER_KEY
         )
 
+        num_max_results = MAX_RESULTS_PER_REQUEST
+        try:
+            num_max_results = min(
+                int(float(max_results)),
+                MAX_RESULTS_PER_REQUEST
+            )
+        except ValueError as e:
+            logger.exception(e)
+
         params = {
             'part': 'snippet',
-            'maxResults': MAX_RESULTS_PER_REQUEST,
+            'maxResults': num_max_results,
             'textFormat': 'plainText',
             'videoId': video_id
         }
@@ -83,6 +92,11 @@ class Get3rdPartyData(BaseTask):
                 ]
             sequence_id (str): an id for the job
         """
+        num_messages = len(snippets)
+        logger.debug(
+            f"Publishing messages to the message bus "
+            f"num_messages={num_messages}"
+        )
         mb = MessageBroker(
             broker_service_url=PulsarConf.client,
             producer=Producer(
@@ -92,23 +106,17 @@ class Get3rdPartyData(BaseTask):
         )
         logger.info("Producer created.")
 
-        sync_async_divider = 100
-        for snippet in snippets[:sync_async_divider]:
+        for snippet in snippets:
             msg = TextSchema(
                 uuid=snippet['id'],
                 text=snippet['text'],
                 sequence_id=sequence_id
             )
             mb.producer_send(msg)
+            # mb.producer_send_async(msg)
 
-        for snippet in snippets[sync_async_divider:]:
-            msg = TextSchema(
-                uuid=snippet['id'],
-                text=snippet['text'],
-                sequence_id=sequence_id
-            )
-            mb.producer_send_async(msg)
-
+        # TODO: We should close connection, but I am not sure if closing it would terminate the async send
+        logger.info("Closing connection to Pulsar")
         mb.close()
 
     # def _record_job_text_relationship(self, snippets, job_id):
@@ -156,33 +164,32 @@ class Get3rdPartyData(BaseTask):
             is_first_run
             or (result.get('nextPageToken') and remaining_allowed_limit > 0)
         ):
-            
-            logger.debug(f"remaining_allowed_limit={remaining_allowed_limit} ")
-            
+            logger.debug(f"remaining_allowed_limit={remaining_allowed_limit} ")            
             result = self._download_youtube_data_page(
                 video_id,
-                result.get('nextPageToken')
+                result.get('nextPageToken'),
+                max_results=remaining_allowed_limit,
             )
-            num_downloaded_comments = int(result.get("pageInfo", {}).get("resultsPerPage", 0))
-
+            self._save_youtube_response_to_db(result)
+            just_downloaded_comments = self._extract_comments(result)
+            comments.extend(just_downloaded_comments)
+            # Update the cache for keeping track of remaining limit
+            num_downloaded_comments = len(just_downloaded_comments)
             logger.debug(f"num_downloaded_comments={num_downloaded_comments} ")
-
             remaining_allowed_limit = int(cache_region.get(limit_cache_key)) - num_downloaded_comments
             cache_region.set(limit_cache_key, remaining_allowed_limit)
-            self._save_youtube_response_to_db(result)
-            comments.extend(self._extract_comments(result))
             
             self._progress += 1
             self.record_progress(self._progress, self._total_steps)
 
             is_first_run = False
         if remaining_allowed_limit <= 0:
-            self.append_event(event_lookup_key='text_count_exceeds_limit')
+            self.append_event(
+                event_lookup_key='text_count_exceeds_limit',
+                source_url=source_url,
+            )
         return comments
     
-    def get_events(self):
-        events = super().get_events()
-        return events
 
     def _update_num_downloaded_texts(self, cache_key, comments):
         num_dls = cache_region.get(cache_key)
@@ -215,6 +222,12 @@ class Get3rdPartyData(BaseTask):
         comments = self._get_comments_for_source_url(source_url, limit_cache_key)
         self._update_num_downloaded_texts(total_num_texts_cache_key, comments)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
+        self.append_event(
+            event_lookup_key='text_download_finished',
+            source_url=source_url,
+            num_downloaded_texts=len(comments),
+            job_id=self.job_id,
+        )
 
         self._publish_texts_on_message_bus(comments, self.job_id)
         self.record_progress(self._total_steps, self._total_steps)

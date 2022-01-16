@@ -18,6 +18,16 @@ cache_region = make_region().configure(
     }
 )
 
+
+class CacheKeys:
+    def __init__(self):
+        pass
+
+    @classmethod
+    def get_stop_job_key(cls, job_id=None):
+        return f"{job_id}_STOP"
+
+
 def test_cache():
     key = str(uuid4())
     val = key[:5]
@@ -29,3 +39,4 @@ def test_cache():
     logger.debug("Cache seems to be working fine...")
 
 test_cache()
+

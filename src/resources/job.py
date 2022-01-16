@@ -12,6 +12,7 @@ from models.text import (
     TextEmbedding
 )
 from models.job import Job as JobModel
+from lib.cache import cache_region
 
 
 SCHEMA = {
@@ -81,3 +82,32 @@ class Job(Resource):
         Updates the status of a job
         """
         pass
+
+    def delete(self):
+        """
+        This API is used to stop a job. This is probalby not the best place, but good for now
+
+        curl -X DELETE \
+            $(minikube service mapping-service --url)/job \
+            -d '{
+                "sequence_id": "a_sequence_id"
+            }'
+        """
+        try:
+            data = request.args.to_dict()
+            logger.debug(data)
+            validate(data, SCHEMA)
+
+            sequence_id = data['sequence_id']
+
+            cache_region.set(sequence_id + '_STOP', True)
+
+            return 200
+
+        except ValidationError as e:
+            logger.exception(str(e))
+            return {'message': 'Invalid input parameters'}, 400
+        except Exception as e:
+            logger.exception(str(e))
+            return {'message': 'Something went wrong'}, 500
+
