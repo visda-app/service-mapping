@@ -106,7 +106,9 @@ class Task(Base):
         self.save_to_db()
 
     def save_progress(self, done, total):
-        self.progress = str(int(done)) + '/' + str(int(total))
+        int(done)
+        int(total)
+        self.progress = f"{done}/{total}"
         self.save_to_db()
 
     def get_progress(self):
