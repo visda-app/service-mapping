@@ -189,7 +189,22 @@ class Get3rdPartyData(BaseTask):
                 source_url=source_url,
             )
         return comments
-    
+
+
+    def _test_get_comments_for_source_url(self, source_url, limit_cache_key):
+        from tasks.test_youtube_comments import test_comments
+        from uuid import uuid4
+        comments = []
+        for c in test_comments[:100]:
+            comments.append(
+                {
+                    'id': str(uuid4()),
+                    'text': c,
+                }
+            )
+
+        return comments
+
 
     def _update_num_downloaded_texts(self, cache_key, comments):
         num_dls = cache_region.get(cache_key)
@@ -220,6 +235,7 @@ class Get3rdPartyData(BaseTask):
         self.record_progress(self._progress, self._total_steps)
 
         comments = self._get_comments_for_source_url(source_url, limit_cache_key)
+        # comments = self._test_get_comments_for_source_url(source_url, limit_cache_key)
         self._update_num_downloaded_texts(total_num_texts_cache_key, comments)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
         self.append_event(

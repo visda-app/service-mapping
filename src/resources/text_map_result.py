@@ -14,6 +14,7 @@ class TextMapResult(Resource):
         """
         Return the status of a job        
         
+        export SEQ_ID=$(cat _temp.txt) && \
         curl \
             -X GET \
             "$(minikube service mapping-service --url)/textmap/sequence_id/$SEQ_ID?include_clustering=true" \

@@ -15,7 +15,17 @@ def cache_key():
     cache_region.delete(key)
 
 
-def test_get_3rd_party_data_execute(cache_key):
+@pytest.fixture
+def cache_key_02():
+    key = str(uuid4())
+    cache_region.set(key, 50)
+
+    yield key
+
+    cache_region.delete(key)
+
+
+def test_get_3rd_party_data_execute(cache_key, cache_key_02):
     url= 'https://www.youtube.com/watch?v=jpKoLJ5vc7E'
     job_id = str(uuid4())
 
@@ -24,6 +34,7 @@ def test_get_3rd_party_data_execute(cache_key):
         kwargs={
             'source_url': url,
             'limit_cache_key': cache_key,
+            'total_num_texts_cache_key': cache_key,
         }
     )
 

@@ -26,7 +26,7 @@ def consumer_loop(message_broker):
             logger.debug(
                 f"uuid={text_id}, "
                 f"text='{text_tip(msg.value().text)}' "
-                f"embedding='{msg.value().embedding}'"
+                f"embedding={msg.value().embedding[:1]}... "
                 "Received! 🤓"
             )
 

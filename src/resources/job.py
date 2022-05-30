@@ -11,8 +11,8 @@ from models.text import (
     RawText,
     TextEmbedding
 )
-from models.job import Job as JobModel
 from lib.cache import cache_region
+from models.job import Job as JobModel
 
 
 SCHEMA = {
@@ -89,9 +89,9 @@ class Job(Resource):
 
         curl -X DELETE \
             $(minikube service mapping-service --url)/job \
-            -d '{
-                "sequence_id": "a_sequence_id"
-            }'
+            -d "{
+                \"sequence_id\": \"$a_sequence_id\"
+            }"
         """
         try:
             data = request.args.to_dict()

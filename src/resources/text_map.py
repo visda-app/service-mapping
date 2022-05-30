@@ -77,6 +77,7 @@ class TextMap(Resource):
             -d '{
                 "source_urls": [
                     "https://www.youtube.com/watch?v=pXswr3XmDw8",
+                    "https://www.youtube.com/watch?v=pXswr3XmDw8",
                     "https://www.youtube.com/watch?v=DHjqpvDnNGE"
                 ],
                 "user_id": "a_user_id",

@@ -4,6 +4,7 @@ from flask_restful import Api
 from lib.logger import logger
 from resources.text_map import TextMap
 from resources.text_map_result import TextMapResult
+from resources.job import Job
 from models.db import create_all_tables
 
 
@@ -18,6 +19,7 @@ def create_tables():
 
 api.add_resource(TextMap, '/textmap')
 api.add_resource(TextMapResult, '/textmap/sequence_id/<string:sequence_id>')
+api.add_resource(Job, '/job')
 
 
 @app.route('/status')

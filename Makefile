@@ -64,6 +64,8 @@ run-shell: build-dev ## Run a shell insided the docker image
 	docker run -it --rm \
 		-v ${CURRENT_DIR}:/code \
 		--env-file etc/.env \
+		--env SQLALCHEMY_DATABASE_URI="postgresql://sunnyday1:sunnyday2@$(shell minikube service postgresql-proxy -n db --url | cut -d '/' -f3)/aabgoosht" \
+		--env CACHE_URI="$(shell minikube service cache-redis-master --url | cut -d '/' -f3)" \
 		${DEV_IMAGE_TAG} \
 		bash
 
