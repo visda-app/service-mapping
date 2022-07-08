@@ -2,7 +2,9 @@
 The database models that deal with
 text segments.
 """
+from cgitb import text
 import json
+from enum import Enum
 from sqlalchemy.sql import func
 from sqlalchemy import (
     Column,
@@ -18,12 +20,18 @@ from models.db import (
 from models.text import Text as TextModel
 
 
+class TextTypes(Enum):
+    SENTENCE = 1
+    WORD = 2
+
+
 class JobTextMapping(Base):
     __tablename__ = 'job_text_mappings'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     job_id = Column(String)
     text_id = Column(String)
+    text_type = Column(Integer)
     created = Column(DateTime(timezone=True), server_default=func.now())
 
     def to_dict(self):
@@ -31,6 +39,7 @@ class JobTextMapping(Base):
             'id': self.id,
             'job_id': self.job_id,
             'text_id': self.text_id,
+            'text_type': TextTypes(self.text_type).name,
             'created': self.created,
         }
 
@@ -68,8 +77,8 @@ class JobTextMapping(Base):
         return list(records)
 
     @classmethod
-    def _get_unprocessed_texts_query(cls, job_id):
-        return session.query(
+    def _get_unprocessed_texts_query(cls, job_id, text_type: TextTypes=None):
+        query = session.query(
             cls, TextModel
         ).filter(
             cls.text_id == TextModel.id
@@ -78,10 +87,13 @@ class JobTextMapping(Base):
         ).filter(
             TextModel.embedding == None
         )
+        if text_type is not None:
+            query = query.filter(cls.text_type == text_type.value)
+        return query
 
     @classmethod
-    def _get_processed_texts_query(cls, job_id):
-        return session.query(
+    def _get_processed_texts_query(cls, job_id, text_type: TextTypes=None):
+        query = session.query(
             cls, TextModel
         ).filter(
             cls.text_id == TextModel.id
@@ -90,6 +102,9 @@ class JobTextMapping(Base):
         ).filter(
             TextModel.embedding != None
         )
+        if text_type is not None:
+            query = query.filter(cls.text_type == text_type.value)
+        return query
 
     @classmethod
     def _get_total_texts_query(cls, job_id):

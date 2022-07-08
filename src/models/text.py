@@ -27,7 +27,7 @@ class Text(Base):
     __tablename__ = 'texts'
 
     id = Column(String, primary_key=True)
-    text = Column(Text, nullable=False)
+    text = Column(Text, nullable=False, index=True)
     embedding = Column(Text)
     created = Column(DateTime(timezone=True), server_default=func.now())
 

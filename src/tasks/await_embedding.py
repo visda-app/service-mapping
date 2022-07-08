@@ -20,9 +20,11 @@ class AwaitEmbedding(BaseTask):
 
     @record_start_finish_time_in_db
     def execute(self):
-        logger.debug("👀 watching for embeddings to finish...")
         job_id = self.job_id
-        logger.debug(f"job_id={job_id}")
+        logger.debug(
+            "👀 watching for embeddings to finish for "
+            f"job_id={job_id}"
+        )
         total_texts_cache_key = self.kwargs['total_num_texts_cache_key']
         total_num_texts = int(cache_region.get(total_texts_cache_key))
         done = JobTextMapping.get_processed_texts_count_by_job_id(job_id)

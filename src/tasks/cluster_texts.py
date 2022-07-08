@@ -463,10 +463,11 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
         data_w_low_dim, include_original_cluster_label=True
     )
 
-    logger.debug("Further breaking down clusters...")
     head = {}
     head['children'] = nested_clusters
-    bfs_break_down(head)
+
+    # logger.debug("Further breaking down clusters...")
+    # bfs_break_down(head)
 
     logger.debug("Insert Stuff...")
     insert_children_count(head)
@@ -533,39 +534,3 @@ class ClusterTexts(BaseTask):
         self.record_progress(4, TOTAL_NUMBER_OF_STEPS)
 
         logger.debug("Done!")
-
-
-
-
-"""
-❌ Task failed 👎 task_class=tasks.cluster_texts.ClusterTexts, task_id=aca5e610-2ae2-4b37-b2ce-20bfcf84e471, args=, kwargs='{"sequence_ids": ["e2effd44-db10-4da2-9c64-cf2225f5a9ab"]}' error_msg= 'children'
-Traceback (most recent call last):
-  File "consumers/task.py", line 53, in consumer_loop
-    _execute_task(
-  File "consumers/task.py", line 30, in _execute_task
-    task.execute()
-  File "/code/src/tasks/base_task.py", line 156, in wrapper
-    result = func(self_obj, *args, **kwargs)
-  File "/code/src/tasks/cluster_texts.py", line 523, in execute
-    clustered_data = cluster_hierarchically_add_meta_data(
-  File "/code/src/tasks/cluster_texts.py", line 468, in cluster_hierarchically_add_meta_data
-    bfs_break_down(head)
-  File "/code/src/tasks/cluster_texts.py", line 211, in bfs_break_down
-    if len(next['children']) > max_cluster_size:
-KeyError: 'children'
-[2021-04-04 19:33:20,818] [ERROR] [consumers/task.py:69] 'children'
-Traceback (most recent call last):
-  File "consumers/task.py", line 53, in consumer_loop
-    _execute_task(
-  File "consumers/task.py", line 30, in _execute_task
-    task.execute()
-  File "/code/src/tasks/base_task.py", line 156, in wrapper
-    result = func(self_obj, *args, **kwargs)
-  File "/code/src/tasks/cluster_texts.py", line 523, in execute
-    clustered_data = cluster_hierarchically_add_meta_data(
-  File "/code/src/tasks/cluster_texts.py", line 468, in cluster_hierarchically_add_meta_data
-    bfs_break_down(head)
-  File "/code/src/tasks/cluster_texts.py", line 211, in bfs_break_down
-    if len(next['children']) > max_cluster_size:
-KeyError: 'children'
-"""
