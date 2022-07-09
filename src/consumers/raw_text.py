@@ -42,6 +42,8 @@ while True:
             text=msg.value().text,
         ).save_or_update()
 
+        # TODO for keyword feature: 
+        # REmove this and update the JobTextMapping in the get_3rd_party_data module
         job_id = msg.value().sequence_id
         JobTextMapping(
             job_id=job_id,

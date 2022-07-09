@@ -30,3 +30,6 @@ redis
 schema
 pyyaml
 arrow
+
+#nlp tasks
+nltk

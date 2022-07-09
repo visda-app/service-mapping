@@ -89,6 +89,13 @@ class Text(Base):
         return record
 
     @classmethod
+    def get_embedding_by_text(cls, text):
+        record = session.query(cls).filter(cls.text == text).first()
+        if record and record.embedding:
+            record.embedding = json.loads(record.embedding)
+            return record
+
+    @classmethod
     def delete_by_id(cls, text_id):
         session.query(cls).filter(
             cls.id == text_id

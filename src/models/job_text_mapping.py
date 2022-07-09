@@ -123,8 +123,8 @@ class JobTextMapping(Base):
         return result
 
     @classmethod
-    def get_processed_texts_count_by_job_id(cls, job_id):
-        qu = cls._get_processed_texts_query(job_id)
+    def get_processed_texts_count_by_job_id(cls, job_id, text_type: TextTypes=None):
+        qu = cls._get_processed_texts_query(job_id, text_type)
         result = qu.count()
         return result
 

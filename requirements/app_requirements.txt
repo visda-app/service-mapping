@@ -25,7 +25,9 @@ chapar==0.4.6
 chardet==4.0.0
     # via requests
 click==7.1.2
-    # via flask
+    # via
+    #   flask
+    #   nltk
 contextlib2==21.6.0
     # via schema
 decorator==5.1.1
@@ -73,11 +75,15 @@ itsdangerous==1.1.0
 jinja2==2.11.2
     # via flask
 joblib==0.16.0
-    # via scikit-learn
+    # via
+    #   nltk
+    #   scikit-learn
 jsonschema==3.2.0
     # via -r app_requirements.in
 markupsafe==1.1.1
     # via jinja2
+nltk==3.7
+    # via -r app_requirements.in
 numpy==1.19.1
     # via
     #   -r app_requirements.in
@@ -136,6 +142,8 @@ ratelimit==2.2.1
     # via pulsar-client
 redis==4.1.0
     # via -r app_requirements.in
+regex==2022.7.9
+    # via nltk
 requests==2.25.1
     # via
     #   -r app_requirements.in
@@ -173,6 +181,8 @@ stevedore==3.5.0
     # via dogpile.cache
 threadpoolctl==2.1.0
     # via scikit-learn
+tqdm==4.64.0
+    # via nltk
 uritemplate==3.0.1
     # via google-api-python-client
 urllib3==1.26.2

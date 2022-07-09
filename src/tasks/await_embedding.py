@@ -26,7 +26,8 @@ class AwaitEmbedding(BaseTask):
             f"job_id={job_id}"
         )
         total_texts_cache_key = self.kwargs['total_num_texts_cache_key']
-        total_num_texts = int(cache_region.get(total_texts_cache_key))
+        # total_num_texts = int(cache_region.get(total_texts_cache_key))
+        total_num_texts = JobTextMapping.get_total_texts_count_by_job_id(job_id)
         done = JobTextMapping.get_processed_texts_count_by_job_id(job_id)
         logger.debug(f"Done={done} Total={total_num_texts}")
         
@@ -37,7 +38,6 @@ class AwaitEmbedding(BaseTask):
                 f"CacheKey={CacheKeys.get_stop_job_key(job_id)}"
             )
             return
-        # total = JobTextMapping.get_total_texts_count_by_job_id(job_id)
         self.record_progress(done, total_num_texts)
         if done < total_num_texts:
             raise ExternalDependencyNotCompleted
