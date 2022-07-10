@@ -1,5 +1,4 @@
 import os
-from typing import Text
 import googleapiclient.discovery
 import pprint
 from dataclasses import dataclass
@@ -111,11 +110,6 @@ class Get3rdPartyData(BaseTask):
             f"num_messages={num_messages}"
         )
 
-        logger.debug(
-            f"Publishing text_items as following "
-            f"text_items={text_items}"
-        )
-
         mb = MessageBroker(
             broker_service_url=PulsarConf.client,
             producer=Producer(
@@ -161,7 +155,7 @@ class Get3rdPartyData(BaseTask):
                 not_embedded_texts.append(text_item)
         return not_embedded_texts
 
-    def _tokenize_and_publish(self, text_items, sequence_id):
+    def _tokenize_and_record_and_publish(self, text_items, sequence_id):
         """
         Gets an array of comments, and tokeninze and publishes them to messagebus
         """
@@ -297,7 +291,7 @@ class Get3rdPartyData(BaseTask):
             job_id=self.job_id,
         )
 
-        self._tokenize_and_publish(comments, self.job_id)
+        self._tokenize_and_record_and_publish(comments, self.job_id)
         self.record_progress(self._total_steps, self._total_steps)
 
         # self._record_job_text_relationship(comments, self.job_id)

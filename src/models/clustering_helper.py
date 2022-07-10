@@ -1,17 +1,22 @@
 import json
 
-from models.job_text_mapping import JobTextMapping
+from models.job_text_mapping import (
+    JobTextMapping,
+    TextTypes,
+)
 from models.text import Text
 from models.clustered_text import ClusteredText
 from models.db import session
 from lib.logger import logger
 
 
-def load_embeddings_from_db(job_id):
+def load_first_embeddings_from_db(job_id):
     q = session.query(Text, JobTextMapping).filter(
         Text.id == JobTextMapping.text_id
     ).filter(
         JobTextMapping.job_id == job_id
+    ).filter(
+        JobTextMapping.text_type == TextTypes.SENTENCE.value
     )
     db_vals = q.all()
 

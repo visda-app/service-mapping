@@ -3,6 +3,7 @@ The database models that deal with
 text segments.
 """
 from copy import deepcopy
+from dataclasses import dataclass
 import json
 from sqlalchemy.sql import func
 from sqlalchemy import (
@@ -24,12 +25,19 @@ from models.db import (
 from lib.logger import logger
 
 
+@dataclass
+class TokenItem:
+    text: str
+    relevance: float
+
+
 class Text(Base):
     __tablename__ = 'texts'
 
     id = Column(String, primary_key=True)
     text = Column(Text, nullable=False, index=True)
     embedding = Column(Text)
+    tokens = Column(Text)
     created = Column(DateTime(timezone=True), server_default=func.now())
 
     def to_dict(self):
@@ -37,6 +45,7 @@ class Text(Base):
             "id": self.id,
             "text": self.text,
             "embedding": self.embedding,
+            "tokens": self.tokens,
             "created": self.created,
         }
 
@@ -95,6 +104,8 @@ class Text(Base):
         record_copy = deepcopy(record)
         if record_copy and record_copy.embedding:
             record_copy.embedding = json.loads(record_copy.embedding)
+        if record_copy and record_copy.tokens:
+            record_copy.tokens = json.loads(record_copy.tokens)
         return record_copy
 
     @classmethod
@@ -102,7 +113,6 @@ class Text(Base):
         record = session.query(cls).filter(cls.text == text).first()
         deserialized_embedding = None
         if record and record.embedding:
-            logger.debug(f'Text record for text={text} in DB={record}')
             deserialized_embedding = json.loads(record.embedding)
         return deserialized_embedding
 

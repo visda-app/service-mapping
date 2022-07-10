@@ -17,7 +17,7 @@ class TextMapResult(Resource):
         export SEQ_ID=$(cat _temp.txt) && \
         curl \
             -X GET \
-            "$(minikube service mapping-service --url)/textmap/sequence_id/$SEQ_ID?include_clustering=true" \
+            "$(minikube service mapping-service --url)/textmap/sequence_id/$SEQ_ID?include_clustering=false" \
             | python -m json.tool
         """
         data = request.args.to_dict()

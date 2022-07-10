@@ -75,6 +75,7 @@ def test_cluster_data(low_dim_embedding):
         low_dim_embedding,
         coordinates_key='low_dim_embedding'
         )
+    breakpoint()
     for item in clustered_data:
         assert 'cluster_info' in item
         assert 'is_cluster_head' in item['cluster_info']

@@ -7,7 +7,7 @@ from sklearn.cluster import AffinityPropagation
 
 from lib.logger import logger
 from models.clustering_helper import (
-    load_embeddings_from_db,
+    load_first_embeddings_from_db,
     save_clustering_to_db
 )
 from tasks.base_task import BaseTask
@@ -506,7 +506,7 @@ class ClusterTexts(BaseTask):
         logger.debug("Loading data from DB...")
         embedding_data = []
         for i in sequence_ids:
-            embedding_data.extend(load_embeddings_from_db(i))
+            embedding_data.extend(load_first_embeddings_from_db(i))
         self.record_progress(1, TOTAL_NUMBER_OF_STEPS)
 
         if not embedding_data or type(embedding_data) is not list:
