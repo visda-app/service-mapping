@@ -2,6 +2,7 @@
 The database models that deal with
 text segments.
 """
+from copy import deepcopy
 import json
 from sqlalchemy.sql import func
 from sqlalchemy import (
@@ -57,7 +58,9 @@ class Text(Base):
             self.__class__.id == text_id).first()
 
         if self.embedding:
-            self.embedding = json.dumps(self.embedding)
+            serialized_embedding = json.dumps(self.embedding)
+            self.embedding = serialized_embedding
+
         if record:
             if self.embedding:
                 record.embedding = self.embedding
@@ -68,6 +71,11 @@ class Text(Base):
 
         try:
             session.add(record)
+            # logger.debug(
+            #     f"Commiting to DB "
+            #     f"text={record.text} "
+            #     f"embedding={record.embedding[:10]} "
+            # )
             session.commit()
             return record
         except Exception as e:
@@ -84,16 +92,19 @@ class Text(Base):
     @classmethod
     def get_by_id(cls, text_id):
         record = session.query(cls).filter(cls.id == text_id).first()
-        if record and record.embedding:
-            record.embedding = json.loads(record.embedding)
-        return record
+        record_copy = deepcopy(record)
+        if record_copy and record_copy.embedding:
+            record_copy.embedding = json.loads(record_copy.embedding)
+        return record_copy
 
     @classmethod
     def get_embedding_by_text(cls, text):
         record = session.query(cls).filter(cls.text == text).first()
+        deserialized_embedding = None
         if record and record.embedding:
-            record.embedding = json.loads(record.embedding)
-            return record
+            logger.debug(f'Text record for text={text} in DB={record}')
+            deserialized_embedding = json.loads(record.embedding)
+        return deserialized_embedding
 
     @classmethod
     def delete_by_id(cls, text_id):

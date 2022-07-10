@@ -110,6 +110,12 @@ class Get3rdPartyData(BaseTask):
             f"Publishing messages to the message bus "
             f"num_messages={num_messages}"
         )
+
+        logger.debug(
+            f"Publishing text_items as following "
+            f"text_items={text_items}"
+        )
+
         mb = MessageBroker(
             broker_service_url=PulsarConf.client,
             producer=Producer(
@@ -122,7 +128,7 @@ class Get3rdPartyData(BaseTask):
         for text_item in text_items:
             msg = TextSchema(
                 uuid=text_item.id,
-                text=text_items.text,
+                text=text_item.text,
                 sequence_id=sequence_id
             )
             mb.producer_send(msg)
@@ -155,15 +161,17 @@ class Get3rdPartyData(BaseTask):
                 not_embedded_texts.append(text_item)
         return not_embedded_texts
 
-    def _porcess_and_publish(self, text_items, sequence_id):
+    def _tokenize_and_publish(self, text_items, sequence_id):
         """
         Gets an array of comments, and tokeninze and publishes them to messagebus
         """
         words = []
         for text_item in text_items:
-            words = words.append( nlp.get_tokens(text_item.text) )
-        words = list(set(words))
-        word_items = [TextItem(id=str(uuid4()), text=word) for word in words]
+            words.extend( nlp.get_tokens(text_item.text) )
+
+        # remove redundancies while keeping order
+        words_unique = list(dict.fromkeys(words))
+        word_items = [TextItem(id=str(uuid4()), text=word) for word in words_unique]
 
         not_embedded_words = self._get_not_embedded_texts(word_items)
 
@@ -172,12 +180,13 @@ class Get3rdPartyData(BaseTask):
             sequence_id,
             TextTypes.WORD.value,
         )
-        self._publish_texts_on_message_bus(not_embedded_words, sequence_id)
         self._record_job_text_relationship(
             text_items,
             sequence_id,
             TextTypes.SENTENCE.value
         )
+
+        self._publish_texts_on_message_bus(not_embedded_words, sequence_id)
         self._publish_texts_on_message_bus(text_items, sequence_id)
 
     def _extract_comments(self, youtube_data):
@@ -242,13 +251,8 @@ class Get3rdPartyData(BaseTask):
         from tasks.test_youtube_comments import test_comments
         from uuid import uuid4
         comments = []
-        for c in test_comments[:100]:
-            comments.append(
-                {
-                    'id': str(uuid4()),
-                    'text': c,
-                }
-            )
+        for c in test_comments[:3]:
+            comments.append(TextItem(id=str(uuid4()), text=c))
 
         return comments
 
@@ -281,8 +285,9 @@ class Get3rdPartyData(BaseTask):
         self._progress = 0
         self.record_progress(self._progress, self._total_steps)
 
-        comments = self._get_comments_for_source_url(source_url, limit_cache_key)
-        # comments = self._test_get_comments_for_source_url(source_url, limit_cache_key)
+        # comments = self._get_comments_for_source_url(source_url, limit_cache_key)
+        # TODO: this is only for testing:
+        comments = self._test_get_comments_for_source_url(source_url, limit_cache_key)
         self._update_num_downloaded_texts(total_num_texts_cache_key, comments)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
         self.append_event(
@@ -292,7 +297,7 @@ class Get3rdPartyData(BaseTask):
             job_id=self.job_id,
         )
 
-        self._porcess_and_publish(comments, self.job_id)
+        self._tokenize_and_publish(comments, self.job_id)
         self.record_progress(self._total_steps, self._total_steps)
 
         # self._record_job_text_relationship(comments, self.job_id)
