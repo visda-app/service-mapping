@@ -77,6 +77,15 @@ class JobTextMapping(Base):
         return list(records)
 
     @classmethod
+    def get_texts_by_job_id(cls, job_id):
+        """Get only type SENTENCE texts from DB"""
+        records = session.query(cls).filter(
+            cls.job_id == job_id
+            and cls.text_type == TextTypes.SENTENCE.value
+        ).all()
+        return list(records)
+
+    @classmethod
     def _get_unprocessed_texts_query(cls, job_id, text_type: TextTypes=None):
         query = session.query(
             cls, TextModel

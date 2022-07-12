@@ -32,6 +32,17 @@ def load_first_embeddings_from_db(job_id):
 
     return results
 
+def load_texts_from_db(job_id):
+    results = load_first_embeddings_from_db(job_id)
+    return [
+        {
+            "uuid": e["uuid"],
+            "text": e["text"],
+        } 
+        for e in results
+    ]
+
+
 
 def _get_query_clustering(job_id):
     q = session.query(Text, JobTextMapping).filter(
