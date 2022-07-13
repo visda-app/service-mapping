@@ -48,3 +48,6 @@ class ThirdParty:
     configurations for the third party apps
     """
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+
+
+k8s_readiness_probe_file = os.getenv('K8S_READINESS_PROBE_FILE')

@@ -19,6 +19,7 @@ webServerPort: "5001"
 
 deployment:
     is_dev: false
+    readinessProbeFile: /tmp/healthy
 
 # ## There is a secret-values.yaml file with these secrets,
 # ## but I .gitignore it
