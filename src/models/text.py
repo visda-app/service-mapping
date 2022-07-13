@@ -66,25 +66,26 @@ class Text(Base):
         record = session.query(self.__class__).filter(
             self.__class__.id == text_id).first()
 
-        if self.embedding:
+        if self.embedding and type(self.embedding) is not str:
             serialized_embedding = json.dumps(self.embedding)
             self.embedding = serialized_embedding
+
+        if self.tokens and type(self.tokens) is not str:
+            serialized_tokens = json.dumps(self.tokens)
+            self.tokens = serialized_tokens
 
         if record:
             if self.embedding:
                 record.embedding = self.embedding
             if self.text:
                 record.text = self.text
+            if self.tokens:
+                record.tokens = self.tokens
         else:
             record = self
 
         try:
             session.add(record)
-            # logger.debug(
-            #     f"Commiting to DB "
-            #     f"text={record.text} "
-            #     f"embedding={record.embedding[:10]} "
-            # )
             session.commit()
             return record
         except Exception as e:
