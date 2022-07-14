@@ -23,11 +23,15 @@ def load_first_embeddings_from_db(job_id):
     results = []
 
     for (text, job_text_relation) in db_vals:
+        tokens = None
+        if text.tokens:
+            tokens = json.loads(text.tokens)
         results.append({
             'embedding': json.loads(text.embedding),
             'text': text.text,
             'uuid': text.id,
-            'sequence_id': job_id
+            'sequence_id': job_id,
+            'tokens': tokens,
         })
 
     return results

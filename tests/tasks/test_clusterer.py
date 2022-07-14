@@ -75,7 +75,6 @@ def test_cluster_data(low_dim_embedding):
         low_dim_embedding,
         coordinates_key='low_dim_embedding'
         )
-    breakpoint()
     for item in clustered_data:
         assert 'cluster_info' in item
         assert 'is_cluster_head' in item['cluster_info']
@@ -170,10 +169,37 @@ def test_partition_by_sequence_id():
     assert actual_results == expected_result
 
 
+def test__group_keywords_by_count():
+    sample_data = [
+        {'count': 1, 'keyword': 'cables', 'relevance_score': 0.39},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.3},
+        {'count': 1, 'keyword': 'snapon', 'relevance_score': 0.44},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.23},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.35},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.35},
+        {'count': 1, 'keyword': 'copper', 'relevance_score': 0.39},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.43},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.35},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.43},
+        {'count': 1, 'keyword': 'cable', 'relevance_score': 0.28},
+        {'count': 1, 'keyword': 'cabled', 'relevance_score': 0.39}
+    ]
+    expected_result = [
+        {'count': 8, 'keyword': 'cable', 'relevance_score': 2.72},
+        {'count': 1, 'keyword': 'snapon', 'relevance_score': 0.44},
+        {'count': 1, 'keyword': 'cables', 'relevance_score': 0.39},
+        {'count': 1, 'keyword': 'copper', 'relevance_score': 0.39},
+        {'count': 1, 'keyword': 'cabled', 'relevance_score': 0.39},
+    ]
+    result = clusterer._group_keywords_by_count(sample_data)
+    assert expected_result == result
+
+
 def test_cluster_hierarchically_add_meta_data(low_dim_embedding):
     res = clusterer.cluster_hierarchically_add_meta_data("-", low_dim_embedding)
     import pprint, json
     pp = pprint.PrettyPrinter().pprint
+    breakpoint()
     # pp(res)
     with open("_temp.txt", "w") as f:
         f.write(json.dumps(res, indent=4))

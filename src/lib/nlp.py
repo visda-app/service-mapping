@@ -5,13 +5,17 @@ Tired this for multi word, but didn't work.
 https://datascience.stackexchange.com/questions/17294/nlp-what-are-some-popular-packages-for-multi-word-tokenization
 """
 
+import re
 import nltk
+
 from lib.logger import logger
 
 
 logger.info("Downloading NLP models...")
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 logger.info("Downloading NLP models Done!")
 
 
@@ -51,3 +55,14 @@ def get_tokens(sentence):
     # return single_words + multi_word_tokens
 
     return single_words
+
+
+def _get_lemmatize(word):
+    lemma = nltk.wordnet.WordNetLemmatizer()
+    return lemma.lemmatize(word)
+
+
+def get_pruned_stem(word):
+    stemmed = _get_lemmatize(word)
+    res = re.sub(r'[^\w\d\s]', '', stemmed)
+    return res

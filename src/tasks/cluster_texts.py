@@ -6,6 +6,7 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
 
 from lib.logger import logger
+from lib.nlp import get_pruned_stem
 from models.clustering_helper import (
     load_first_embeddings_from_db,
     save_clustering_to_db
@@ -19,6 +20,11 @@ MAX_CLUSTER_SIZE = 10
 # To calculate radius for each bubble
 MIN_RADIUS = 1
 MIN_ALLOWED_DISTANCE = 1
+MAX_NUM_TOKENS = 3
+
+
+def _round_2(num):
+    return round(num, 2)
 
 
 def run_tsne(x):
@@ -63,6 +69,8 @@ def reduce_dimension(embedding_data):
     # Merge back the low dimensions into the original data
     for i, item in enumerate(embedding_data):
         item['low_dim_embedding'] = list(low_dim_embeddings[i])
+    
+    logger.debug(f'embedding_data_with_low_dimension={embedding_data}')
     return embedding_data
 
 
@@ -350,6 +358,71 @@ def insert_radius(head, radius_multiplier_factor):
         frontiers.extend(next.get('children', []))
 
 
+def _group_keywords_by_count(keywords):
+    """
+    Remove punctuations and stem the words and then insert
+    the counts of the stemmed root words.
+    
+    This function is unit tested; to see the input output
+    examples, refer to the tests.
+    """
+    token_count = defaultdict(int)
+    token_relevance_score = defaultdict(float)
+    for kw in keywords:
+        token_count[kw['keyword']] += kw['count']
+        token_relevance_score[kw['keyword']] += kw['relevance_score']
+    # Construct a new list of results
+    res = []
+    seen = set()
+    for kw in keywords:
+        if kw['keyword'] not in seen:
+            kw.update({
+                'count': token_count[kw['keyword']],
+                'relevance_score': _round_2(token_relevance_score[kw['keyword']])
+            })
+            res.append(kw)
+            seen.add(kw['keyword'])
+    # sort by counts and then relevance scores
+    res.sort(key=lambda x: (-x['count'], -x['relevance_score']))
+    return res
+
+
+def _group_stemmed_keywords_by_counts(keywords):
+    keywords = deepcopy(keywords)
+    for item in keywords:
+        item['keyword'] = get_pruned_stem(item['keyword'])
+    return _group_keywords_by_count(keywords)
+
+
+def insert_and_return_keywords(head):
+    """
+    Performs a post order tree traverse to insert all the keywords. 
+    """
+    keywords = []
+    children = head.get('children')
+    if children:
+        for child in children:
+            keywords.extend(insert_and_return_keywords(child))
+        keywords = _group_stemmed_keywords_by_counts(keywords)
+    else:
+        keywords = [
+            {
+                'keyword': item['token'],
+                'count': 1,
+                'relevance_score': _round_2(item['similarity']), 
+            } for item in head['tokens'][:1]
+        ]
+    head['keywords'] = deepcopy(keywords)
+    return head['keywords']
+
+
+def prune_keywords(head):
+    """
+    Caps the nubmer of keywords to a pre determined value
+    """
+    pass
+
+
 def insert_meta_data(head):
     """
     Insert the metadat field that includes the following
@@ -415,7 +488,9 @@ def get_formatted_item(item):
                 else item['radius']
             ),
             'd3uuid': item['parent']['d3uuid'],
-        }
+        },
+        'children': [],
+        'keywords': item['keywords'],
     }
     return entry
 
@@ -476,6 +551,7 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
     insert_radius(head, radius_multiplier_factor)
     insert_parents_info(head)
     insert_meta_data(head)
+    insert_and_return_keywords(head)
 
     logger.debug("Formatting data...")
     reshaped_data = get_reshaped_data(copy(head))
