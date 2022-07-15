@@ -4,6 +4,7 @@ import numpy as np
 from collections import defaultdict
 from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
+from dataclasses import dataclass
 
 from lib.logger import logger
 from lib.nlp import get_pruned_stem
@@ -23,8 +24,14 @@ MIN_ALLOWED_DISTANCE = 1
 MAX_NUM_TOKENS = 3
 
 
-def _round_2(num):
-    return round(num, 2)
+@dataclass
+class KeywordItem:
+    keyword: str
+    count: int
+    relevance_score: float
+
+    def __post_init__(self):
+        self.relevance_score = round(self.relevance_score, 2)
 
 
 def run_tsne(x):

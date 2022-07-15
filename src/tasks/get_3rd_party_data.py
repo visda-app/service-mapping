@@ -245,7 +245,7 @@ class Get3rdPartyData(BaseTask):
         from tasks.test_youtube_comments import test_comments
         from uuid import uuid4
         comments = []
-        for c in test_comments[:3]:
+        for c in test_comments[:100]:
             comments.append(TextItem(id=str(uuid4()), text=c))
 
         return comments
