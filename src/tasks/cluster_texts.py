@@ -4,7 +4,7 @@ import numpy as np
 from collections import defaultdict
 from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 from lib.logger import logger
 from lib.nlp import get_pruned_stem
@@ -25,13 +25,27 @@ MAX_NUM_TOKENS = 3
 
 
 @dataclass
+class TextDraw:
+    text: str
+    x: float
+    y: float
+    font_size: float = 14
+    d3uuid: str = None
+
+
+@dataclass
 class KeywordItem:
-    keyword: str
+    word: str
     count: int
     relevance_score: float
+    draw: TextDraw = None
+    parent: TextDraw = None
 
     def __post_init__(self):
         self.relevance_score = round(self.relevance_score, 2)
+    
+    def set_relevance_score(self, score):
+        self.relevance_score = round(score, 2)
 
 
 def run_tsne(x):
@@ -124,8 +138,11 @@ def cluster_data(data, coordinates_key=None):
         cluster_info['is_cluster_head'] = item[coordinates_key] in cluster_centers
         cluster_info['cluster_label'] = cluster_labels[i]
         item['cluster_info'] = cluster_info
+        
+        ## TODO : comment these
         # item['embedding'] = ''
         # item['text'] = ''
+        # item['tokens'] = item['tokens'][:1]
 
     # sort data
     result = sorted(
@@ -376,28 +393,30 @@ def _group_keywords_by_count(keywords):
     token_count = defaultdict(int)
     token_relevance_score = defaultdict(float)
     for kw in keywords:
-        token_count[kw['keyword']] += kw['count']
-        token_relevance_score[kw['keyword']] += kw['relevance_score']
+        token_count[kw.word] += kw.count
+        token_relevance_score[kw.word] += kw.relevance_score
     # Construct a new list of results
     res = []
     seen = set()
     for kw in keywords:
-        if kw['keyword'] not in seen:
-            kw.update({
-                'count': token_count[kw['keyword']],
-                'relevance_score': _round_2(token_relevance_score[kw['keyword']])
-            })
+        if kw.word not in seen:
+            kw.count = token_count[kw.word]
+            kw.set_relevance_score(token_relevance_score[kw.word])
+            # Need to assigns a new d3 uuid since this is a new entity 
+            kw.draw.d3uuid = str(uuid4())
+
             res.append(kw)
-            seen.add(kw['keyword'])
+            seen.add(kw.word)
     # sort by counts and then relevance scores
-    res.sort(key=lambda x: (-x['count'], -x['relevance_score']))
+    res.sort(key=lambda x: (-x.count, -x.relevance_score))
     return res
 
 
 def _group_stemmed_keywords_by_counts(keywords):
     keywords = deepcopy(keywords)
     for item in keywords:
-        item['keyword'] = get_pruned_stem(item['keyword'])
+        item.word = get_pruned_stem(item.word)
+        item.draw.text = item.word
     return _group_keywords_by_count(keywords)
 
 
@@ -412,15 +431,56 @@ def insert_and_return_keywords(head):
             keywords.extend(insert_and_return_keywords(child))
         keywords = _group_stemmed_keywords_by_counts(keywords)
     else:
-        keywords = [
-            {
-                'keyword': item['token'],
-                'count': 1,
-                'relevance_score': _round_2(item['similarity']), 
-            } for item in head['tokens'][:1]
-        ]
+        if len(head['tokens']) > 0:
+            word = head['tokens'][0]['token']
+            keywords = [
+                KeywordItem(
+                    word=word,
+                    count=1,
+                    relevance_score=head['tokens'][0]['similarity'],
+                    draw=TextDraw(
+                        x=float(head['low_dim_embedding'][0]),
+                        y=float(head['low_dim_embedding'][1]),
+                        text=word,
+                        d3uuid=str(uuid4())
+                    )
+                )
+            ]
     head['keywords'] = deepcopy(keywords)
     return head['keywords']
+
+
+def insert_keywords_parents_info(head):
+    """
+    Arg:
+        head (dict): a dictionary with the following formatting
+                    {
+                        'children': [
+                            {
+                                'children': [...]
+                                'uuid': '934b0cfe-98c1-4a69-ba01-61565d7ab709',
+                                ...
+                            },
+                            ...
+                        ]
+                    }
+    """
+    if not head:
+        return
+    frontiers = [head]
+    while frontiers:
+        next = frontiers.pop(0)
+        for child in next.get('children', []):
+            for kw in child['keywords']:
+                kw.parent = None
+                if child['parent']['low_dim_embedding'] is not None:  # If the parent is not present 
+                    # find the keword in the parent's set of keyword
+                    for parent_kw in next['keywords']:
+                        if get_pruned_stem(kw.word) == parent_kw.word:
+                            kw.parent = parent_kw
+                            break
+
+        frontiers.extend(next.get('children', []))
 
 
 def prune_keywords(head):
@@ -497,7 +557,7 @@ def get_formatted_item(item):
             'd3uuid': item['parent']['d3uuid'],
         },
         'children': [],
-        'keywords': item['keywords'],
+        'keywords': [asdict(kw) for kw in item['keywords']],
     }
     return entry
 
@@ -559,6 +619,7 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
     insert_parents_info(head)
     insert_meta_data(head)
     insert_and_return_keywords(head)
+    insert_keywords_parents_info(head)
 
     logger.debug("Formatting data...")
     reshaped_data = get_reshaped_data(copy(head))
