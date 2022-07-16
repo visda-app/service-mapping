@@ -38,6 +38,7 @@ class KeywordItem:
     word: str
     count: int
     relevance_score: float
+    kwd3uuid: str = None
     draw: TextDraw = None
     parent: TextDraw = None
 
@@ -404,7 +405,7 @@ def _group_keywords_by_count(keywords):
             kw.set_relevance_score(token_relevance_score[kw.word])
             # Need to assigns a new d3 uuid since this is a new entity 
             kw.draw.d3uuid = str(uuid4())
-
+            kw.kwd3uuid = str(uuid4())
             res.append(kw)
             seen.add(kw.word)
     # sort by counts and then relevance scores
@@ -438,12 +439,13 @@ def insert_and_return_keywords(head):
                     word=word,
                     count=1,
                     relevance_score=head['tokens'][0]['similarity'],
+                    kwd3uuid = str(uuid4()),
                     draw=TextDraw(
                         x=float(head['low_dim_embedding'][0]),
                         y=float(head['low_dim_embedding'][1]),
                         text=word,
-                        d3uuid=str(uuid4())
-                    )
+                        d3uuid=str(uuid4()),
+                    ),
                 )
             ]
     head['keywords'] = deepcopy(keywords)

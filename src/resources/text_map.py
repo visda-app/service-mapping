@@ -77,7 +77,7 @@ class TextMap(Resource):
             -H "Content-Type: application/json"  \
             -d '{
                 "source_urls": [
-                    "https://www.youtube.com/watch?v=pXswr3XmDw8",
+                    "https://www.youtube.com/watch?v=4E29RzEUGrs",
                     "https://www.youtube.com/watch?v=pXswr3XmDw8",
                     "https://www.youtube.com/watch?v=DHjqpvDnNGE"
                 ],
