@@ -196,6 +196,9 @@ def test__group_keywords_by_count():
 
 
 def test_cluster_hierarchically_add_meta_data(low_dim_embedding):
+    """
+    Main test to test the excec function of the 
+    """
     res = clusterer.cluster_hierarchically_add_meta_data("-", low_dim_embedding)
     import pprint, json
     pp = pprint.PrettyPrinter().pprint

@@ -5,6 +5,7 @@ from collections import defaultdict
 from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
 from dataclasses import dataclass, asdict
+from wordcloud import WordCloud
 
 from lib.logger import logger
 from lib.nlp import get_pruned_stem
@@ -92,7 +93,7 @@ def reduce_dimension(embedding_data):
     for i, item in enumerate(embedding_data):
         item['low_dim_embedding'] = list(low_dim_embeddings[i])
     
-    logger.debug(f'embedding_data_with_low_dimension={embedding_data}')
+    # logger.debug(f'embedding_data_with_low_dimension={embedding_data}')
     return embedding_data
 
 
@@ -452,6 +453,41 @@ def insert_and_return_keywords(head):
     return head['keywords']
 
 
+def insert_wordcloud_draw_properties(head):
+    """
+    Inser the draw properties such as x and y coordinates
+    for the word cloud
+    """
+    frontiers = [head]
+    while frontiers:
+        current = frontiers.pop(0)
+
+        if len(current['keywords']) > 1 and current.get('low_dim_embedding'):
+            words = []
+            kw_dict = {}
+            for kw in current['keywords']:
+                kw_dict[kw.word] = kw
+                words.extend([kw.word] * kw.count)
+            words_str = ' '.join(words)
+            default_low_dim_xy = (100, 100)
+            default_radius = 100
+            center_x = float(current['low_dim_embedding'][0])
+            center_y = float(current['low_dim_embedding'][1])
+            width = int( 20 * current['radius'] )
+            height = int( 20 * current['radius'] )
+            # wc = WordCloud(width=width, height=height).generate(words_str)
+            # layout = wc.layout_  # ( ('word', frequency), font_sizes, (pos_x, pos_y), orientations, colors_rgb) )
+            # for wc_item in layout:
+            #     wc_word = wc_item[0][0].split(' ')[0]
+            #     kw_dict[wc_word].draw.x = center_x - width / 2 + wc_item[2][0]  # x
+            #     kw_dict[wc_word].draw.y =  center_y + height / 2 - wc_item[2][1]  # y
+            for kw in current['keywords']:
+                kw.draw.x = center_x
+                kw.draw.y = center_y
+
+        frontiers.extend(current.get('children', []))
+
+
 def insert_keywords_parents_info(head):
     """
     Arg:
@@ -475,7 +511,7 @@ def insert_keywords_parents_info(head):
         for child in next.get('children', []):
             for kw in child['keywords']:
                 kw.parent = None
-                if child['parent']['low_dim_embedding'] is not None:  # If the parent is not present 
+                if child['parent']['low_dim_embedding'] is not None:  # If the parent is present 
                     # find the keword in the parent's set of keyword
                     for parent_kw in next['keywords']:
                         if get_pruned_stem(kw.word) == parent_kw.word:
@@ -621,6 +657,7 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
     insert_parents_info(head)
     insert_meta_data(head)
     insert_and_return_keywords(head)
+    insert_wordcloud_draw_properties(head)
     insert_keywords_parents_info(head)
 
     logger.debug("Formatting data...")
