@@ -202,8 +202,9 @@ def test_cluster_hierarchically_add_meta_data(low_dim_embedding):
     res = clusterer.cluster_hierarchically_add_meta_data("-", low_dim_embedding)
     import pprint, json
     pp = pprint.PrettyPrinter().pprint
-    breakpoint()
     # pp(res)
+    breakpoint()
+
     with open("_temp.txt", "w") as f:
         f.write(json.dumps(res, indent=4))
 

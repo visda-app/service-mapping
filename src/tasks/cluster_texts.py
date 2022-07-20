@@ -1,3 +1,5 @@
+from math import radians
+from typing import Any
 from uuid import uuid4
 from copy import copy, deepcopy
 import numpy as np
@@ -6,6 +8,7 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
 from dataclasses import dataclass, asdict
 from wordcloud import WordCloud
+import random
 
 from lib.logger import logger
 from lib.nlp import get_pruned_stem
@@ -30,7 +33,11 @@ class TextDraw:
     text: str
     x: float
     y: float
+    dx: float = 0  # delta x from the center. The front end scaling for this would be different from x
+    dy: float = 0
     font_size: float = 14
+    orientation: Any = None
+    colors_rgb: list = 0
     d3uuid: str = None
 
 
@@ -39,7 +46,7 @@ class KeywordItem:
     word: str
     count: int
     relevance_score: float
-    kwd3uuid: str = None
+    kwd3uuid: str = None  # Kewyword uuid for D3 plot
     draw: TextDraw = None
     parent: TextDraw = None
 
@@ -417,8 +424,8 @@ def _group_keywords_by_count(keywords):
 def _group_stemmed_keywords_by_counts(keywords):
     keywords = deepcopy(keywords)
     for item in keywords:
-        item.word = get_pruned_stem(item.word)
         item.draw.text = item.word
+        item.word = get_pruned_stem(item.word)
     return _group_keywords_by_count(keywords)
 
 
@@ -437,7 +444,7 @@ def insert_and_return_keywords(head):
             word = head['tokens'][0]['token']
             keywords = [
                 KeywordItem(
-                    word=word,
+                    word=get_pruned_stem(word),
                     count=1,
                     relevance_score=head['tokens'][0]['similarity'],
                     kwd3uuid = str(uuid4()),
@@ -467,23 +474,66 @@ def insert_wordcloud_draw_properties(head):
             kw_dict = {}
             for kw in current['keywords']:
                 kw_dict[kw.word] = kw
-                words.extend([kw.word] * kw.count)
+                words.extend([kw.word] * kw.count * round(10 * kw.relevance_score))
             words_str = ' '.join(words)
-            default_low_dim_xy = (100, 100)
-            default_radius = 100
+            # default_low_dim_xy = (100, 100)
+            # default_radius = 100
             center_x = float(current['low_dim_embedding'][0])
             center_y = float(current['low_dim_embedding'][1])
-            width = int( 20 * current['radius'] )
-            height = int( 20 * current['radius'] )
-            # wc = WordCloud(width=width, height=height).generate(words_str)
-            # layout = wc.layout_  # ( ('word', frequency), font_sizes, (pos_x, pos_y), orientations, colors_rgb) )
-            # for wc_item in layout:
-            #     wc_word = wc_item[0][0].split(' ')[0]
-            #     kw_dict[wc_word].draw.x = center_x - width / 2 + wc_item[2][0]  # x
-            #     kw_dict[wc_word].draw.y =  center_y + height / 2 - wc_item[2][1]  # y
-            for kw in current['keywords']:
-                kw.draw.x = center_x
-                kw.draw.y = center_y
+            radius = round( current['radius'] )
+            # height = round( current['radius'] )
+            try:
+                raise
+                """
+                This throws: 
+                    ValueError: Couldn't find space to draw. Either the Canvas size
+                                is too small or too much of the image is masked out.
+                """
+                # import os
+                # from PIL import Image
+                # files_directory = "/code/notebook/WordCloud"
+                # alice_mask = np.array(Image.open(os.path.join(files_directory, "alice_mask.png")))
+                
+                # Building a mask in the shape of a circle
+                mask_radius = 250
+                alice_mask = np.ones([2 * mask_radius, 2 * mask_radius, 4])
+                for row in range(2 * mask_radius):
+                    for col in range(2 * mask_radius):
+                        for color in range(4):
+                            x = row - mask_radius
+                            y = col - mask_radius
+                            if x ** 2 + y ** 2 > mask_radius ** 2:
+                                alice_mask[row][col] = [255, 255, 255, 255]
+
+
+                wc = WordCloud(
+                    background_color="white",
+                    max_words=100,
+                    mask=alice_mask,
+                    contour_width=3,
+                    contour_color='steelblue'
+                )
+                scale = radius / mask_radius
+                layout = wc.generate(words_str).layout_  # ( ('word', frequency), font_sizes, (pos_x, pos_y), orientations, colors_rgb) )
+                for wc_item in layout:
+                    wc_word = wc_item[0][0].split(' ')[0]
+                    kw_dict[wc_word].draw.x = center_x
+                    kw_dict[wc_word].draw.dx = - radius + scale * wc_item[2][0]  # x
+                    kw_dict[wc_word].draw.y = center_y
+                    kw_dict[wc_word].draw.dy = - radius + scale * wc_item[2][1]  # y
+                    kw_dict[wc_word].draw.font_size = wc_item[1]
+                    kw_dict[wc_word].draw.orientation = wc_item[3]
+                    clr = wc_item[4]
+                    kw_dict[wc_word].draw.colors_rgb = list(map(int, [c.strip() for c in clr[4:-1].split(',')])) 
+            except Exception as e:
+                logger.exception(e)
+                for kw in current['keywords']:
+                    kw.draw.x = center_x
+                    kw.draw.dx = radius * random.gauss(0, 0.2) 
+                    kw.draw.y = center_y
+                    kw.draw.dy = radius * random.gauss(0, 0.35)
+                    import math
+                    kw.draw.font_size = 10 * math.log(kw.count * round(10 * kw.relevance_score))
 
         frontiers.extend(current.get('children', []))
 
@@ -507,18 +557,20 @@ def insert_keywords_parents_info(head):
         return
     frontiers = [head]
     while frontiers:
-        next = frontiers.pop(0)
-        for child in next.get('children', []):
+        current = frontiers.pop(0)
+        children = current.get('children', [])
+        frontiers.extend(children)
+
+        for child in children:
             for kw in child['keywords']:
                 kw.parent = None
                 if child['parent']['low_dim_embedding'] is not None:  # If the parent is present 
                     # find the keword in the parent's set of keyword
-                    for parent_kw in next['keywords']:
-                        if get_pruned_stem(kw.word) == parent_kw.word:
+                    for parent_kw in current['keywords']:
+                        if kw.word == parent_kw.word:
                             kw.parent = parent_kw
                             break
 
-        frontiers.extend(next.get('children', []))
 
 
 def prune_keywords(head):

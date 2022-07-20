@@ -89,7 +89,9 @@ kiwisolver==1.4.4
 markupsafe==1.1.1
     # via jinja2
 matplotlib==3.5.2
-    # via wordcloud
+    # via
+    #   -r app_requirements.in
+    #   wordcloud
 nltk==3.7
     # via -r app_requirements.in
 numpy==1.19.1

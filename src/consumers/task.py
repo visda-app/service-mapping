@@ -76,7 +76,7 @@ def main():
     from lib import nlp
     with open(k8s_readiness_probe_file, 'w') as f:
         f.write('🍌 I am healthy 🥑')
-    logger.info("✅ NLP models are loaded")
+    logger.info("✅ NLP models are loaded.")
 
     logger.info("⌛ Connecting to the message broker...")
     mb = MessageBroker(
