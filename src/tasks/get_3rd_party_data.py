@@ -2,7 +2,7 @@ import os
 import googleapiclient.discovery
 import pprint
 from dataclasses import dataclass
-from schema import Schema
+from schema import Schema, Optional
 import requests
 from uuid import uuid4
 
@@ -40,6 +40,7 @@ KWARGS_SCHEMA = {
     'source_url': str,
     'limit_cache_key': str,  # keeps the limit on the number of comments to be downloaded 
     'total_num_texts_cache_key': str,  # After the download, this gets set to the total downloaded texts
+    Optional('use_test_data'): bool,
 }
 
 
@@ -279,9 +280,10 @@ class Get3rdPartyData(BaseTask):
         self._progress = 0
         self.record_progress(self._progress, self._total_steps)
 
-        comments = self._get_comments_for_source_url(source_url, limit_cache_key)
-        # TODO: this is only for testing:
-        # comments = self._test_get_comments_for_source_url(source_url, limit_cache_key)
+        if self.kwargs.get('use_test_data'):
+            comments = self._test_get_comments_for_source_url(source_url, limit_cache_key)
+        else:
+            comments = self._get_comments_for_source_url(source_url, limit_cache_key)
         self._update_num_downloaded_texts(total_num_texts_cache_key, comments)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
         self.append_event(

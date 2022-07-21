@@ -38,7 +38,6 @@ class TextDraw:
     font_size: float = 14
     orientation: Any = None
     colors_rgb: list = 0
-    d3uuid: str = None
 
 
 @dataclass
@@ -412,7 +411,6 @@ def _group_keywords_by_count(keywords):
             kw.count = token_count[kw.word]
             kw.set_relevance_score(token_relevance_score[kw.word])
             # Need to assigns a new d3 uuid since this is a new entity 
-            kw.draw.d3uuid = str(uuid4())
             kw.kwd3uuid = str(uuid4())
             res.append(kw)
             seen.add(kw.word)
@@ -452,7 +450,6 @@ def insert_and_return_keywords(head):
                         x=float(head['low_dim_embedding'][0]),
                         y=float(head['low_dim_embedding'][1]),
                         text=word,
-                        d3uuid=str(uuid4()),
                     ),
                 )
             ]

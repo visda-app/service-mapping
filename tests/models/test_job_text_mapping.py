@@ -28,7 +28,7 @@ class TestJobTextMapping(unittest.TestCase):
     def test_save_to_db(self):
         TextModel(
             id=self.text_ids[0],
-            text='Humans are driven by selfish gene.',
+            text='Humans are driven by the selfish gene.',
             embedding=self._random_embedding(),
         ).save_or_update()
         TextModel(
@@ -38,7 +38,7 @@ class TestJobTextMapping(unittest.TestCase):
         ).save_or_update()
         TextModel(
             id=self.text_ids[2],
-            text='Selfish gene-s made us collaborative, trustworthy, and social.',
+            text='The selfish gene has made us collaborative, trustworthy, and social.',
             embedding=self._random_embedding(),
         ).save_or_update()
         TextModel(
