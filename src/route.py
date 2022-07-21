@@ -27,3 +27,10 @@ def status():
     logger.debug("We are at the /status, ping!")
     params = request.args.to_dict()
     return {'status': 200, 'data': params}
+
+@app.route('/create_tables')
+def create_tables():
+    params = request.args.to_dict()
+    create_all_tables()
+
+    return {'status': 200, 'data': params}

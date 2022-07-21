@@ -285,7 +285,7 @@ class TestBaseTask(TestCase):
                 'event_lookup_key': 'dummy_event_lookup_key',
                 'timestamp': a_timestamp,
                 'description': 'This is a dummy lookup key for testing',
-                'params': {
+                'args': {
                     'test1': 'one two three',
                     'test2': 123
                 },
@@ -295,7 +295,7 @@ class TestBaseTask(TestCase):
         t.append_event(event_lookup_key='dummy_event_lookup_key')
         result = t.get_events()
 
-        assert result == [expected_result]
+        assert result == expected_result
 
     @patch('tasks.base_task.BaseTask._get_current_timestamp')
     def test_append_event_with_args(self, dummy_timestamp):

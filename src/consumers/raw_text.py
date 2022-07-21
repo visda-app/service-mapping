@@ -42,12 +42,6 @@ while True:
             text=msg.value().text,
         ).save_or_update()
 
-        job_id = msg.value().sequence_id
-        JobTextMapping(
-            job_id=job_id,
-            text_id=text_record.id
-        ).save_to_db()
-
     except Exception as e:
         # Message failed to be processed
         logger.error(

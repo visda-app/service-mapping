@@ -7,6 +7,7 @@ from lib.exceptions import ExternalDependencyNotCompleted
 from lib.utils import get_class_from_string
 from configs.app import (
     PulsarConf,
+    k8s_readiness_probe_file,
 )
 
 
@@ -71,6 +72,12 @@ def consumer_loop(message_broker):
 
 
 def main():
+    logger.info("⌛ Loading NLP modules...")
+    from lib import nlp
+    with open(k8s_readiness_probe_file, 'w') as f:
+        f.write('🍌 I am healthy 🥑')
+    logger.info("✅ NLP models are loaded.")
+
     logger.info("⌛ Connecting to the message broker...")
     mb = MessageBroker(
         broker_service_url=PulsarConf.client,

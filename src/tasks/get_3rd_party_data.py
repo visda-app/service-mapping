@@ -1,8 +1,10 @@
 import os
 import googleapiclient.discovery
 import pprint
-from schema import Schema
+from dataclasses import dataclass
+from schema import Schema, Optional
 import requests
+from uuid import uuid4
 
 from chapar.message_broker import MessageBroker, Producer
 from chapar.schema_repo import TextSchema
@@ -15,8 +17,12 @@ from lib import utils
 from lib.cache import cache_region
 from tasks.base_task import BaseTask
 from tasks.base_task import record_start_finish_time_in_db
-from models.job_text_mapping import JobTextMapping
+from models.text import Text as TextModelDB
+from models.job_text_mapping import (
+    JobTextMapping, TextTypes
+)
 from lib.cache import cache_region
+from lib import nlp
 
 
 pp = pprint.PrettyPrinter().pprint
@@ -24,10 +30,17 @@ DEVELOPER_KEY = ThirdParty.GOOGLE_API_KEY
 MAX_RESULTS_PER_REQUEST = 100
 
 
+@dataclass
+class TextItem:
+    id: str
+    text: str
+
+
 KWARGS_SCHEMA = {
     'source_url': str,
     'limit_cache_key': str,  # keeps the limit on the number of comments to be downloaded 
     'total_num_texts_cache_key': str,  # After the download, this gets set to the total downloaded texts
+    Optional('use_test_data'): bool,
 }
 
 
@@ -81,22 +94,23 @@ class Get3rdPartyData(BaseTask):
             logger.exception(e)
             return {}
 
-    def _publish_texts_on_message_bus(self, snippets, sequence_id):
+    def _publish_texts_on_message_bus(self, text_items, sequence_id):
         """
-        Publish text snippets to the Pulsar message bus
+        Publish text text_items to the Pulsar message bus
 
         Args:
-            snippets (list): a list of input text snippets
+            text_items (list): a list of input text TextItems
                 [
-                    {"id": ..., "text": ...}
+                    TextItem(id='an_id', text='a_text')
                 ]
             sequence_id (str): an id for the job
         """
-        num_messages = len(snippets)
+        num_messages = len(text_items)
         logger.debug(
             f"Publishing messages to the message bus "
             f"num_messages={num_messages}"
         )
+
         mb = MessageBroker(
             broker_service_url=PulsarConf.client,
             producer=Producer(
@@ -106,39 +120,76 @@ class Get3rdPartyData(BaseTask):
         )
         logger.info("Producer created.")
 
-        for snippet in snippets:
+        for text_item in text_items:
             msg = TextSchema(
-                uuid=snippet['id'],
-                text=snippet['text'],
+                uuid=text_item.id,
+                text=text_item.text,
                 sequence_id=sequence_id
             )
             mb.producer_send(msg)
             # mb.producer_send_async(msg)
 
-        # TODO: We should close connection, but I am not sure if closing it would terminate the async send
+        # TODO We should close connection, but I am not sure if closing it would terminate the async send
         logger.info("Closing connection to Pulsar")
         mb.close()
 
-    # def _record_job_text_relationship(self, snippets, job_id):
-    #     """
-    #     Save the relationship between a job and its texts in
-    #     the db
-    #     """
-    #     for snippet in snippets:
-    #         JobTextMapping(
-    #             job_id=job_id,
-    #             text_id=snippet['id']
-    #         ).save_to_db()
+    def _record_job_text_relationship(self, text_items, job_id, text_type):
+        """
+        Save the relationship between a job and its texts in
+        the db
+        """
+        for text_item in text_items:
+            JobTextMapping(
+                job_id=job_id,
+                text_id=text_item.id,
+                text_type=text_type,
+            ).save_to_db()
+    
+    def _get_not_embedded_texts(self, text_items):
+        """
+        Searches DB for the text and embedding to find ones without
+        embeddings
+        """
+        not_embedded_texts = []
+        for text_item in text_items:
+            if TextModelDB.get_embedding_by_text(text_item.text) is None:
+                not_embedded_texts.append(text_item)
+        return not_embedded_texts
+
+    def _tokenize_and_record_and_publish(self, text_items, sequence_id):
+        """
+        Gets an array of comments, and tokeninze and publishes them to messagebus
+        """
+        words = []
+        for text_item in text_items:
+            words.extend( nlp.get_tokens(text_item.text) )
+
+        # remove redundancies while keeping order
+        words_unique = list(dict.fromkeys(words))
+        word_items = [TextItem(id=str(uuid4()), text=word) for word in words_unique]
+
+        not_embedded_words = self._get_not_embedded_texts(word_items)
+
+        self._record_job_text_relationship(
+            not_embedded_words,
+            sequence_id,
+            TextTypes.WORD.value,
+        )
+        self._record_job_text_relationship(
+            text_items,
+            sequence_id,
+            TextTypes.SENTENCE.value
+        )
+
+        self._publish_texts_on_message_bus(not_embedded_words, sequence_id)
+        self._publish_texts_on_message_bus(text_items, sequence_id)
 
     def _extract_comments(self, youtube_data):
         results = []
         for item in youtube_data.get('items', []):
             text = item['snippet']['topLevelComment']['snippet']['textDisplay']
             id = item['snippet']['topLevelComment']['id']
-            results.append({
-                "text": text,
-                "id": id
-            })
+            results.append(TextItem(id=id, text=text))
         return results
 
     def _save_youtube_response_to_db(self, yt_resp):
@@ -196,12 +247,7 @@ class Get3rdPartyData(BaseTask):
         from uuid import uuid4
         comments = []
         for c in test_comments[:100]:
-            comments.append(
-                {
-                    'id': str(uuid4()),
-                    'text': c,
-                }
-            )
+            comments.append(TextItem(id=str(uuid4()), text=c))
 
         return comments
 
@@ -234,8 +280,10 @@ class Get3rdPartyData(BaseTask):
         self._progress = 0
         self.record_progress(self._progress, self._total_steps)
 
-        comments = self._get_comments_for_source_url(source_url, limit_cache_key)
-        # comments = self._test_get_comments_for_source_url(source_url, limit_cache_key)
+        if self.kwargs.get('use_test_data'):
+            comments = self._test_get_comments_for_source_url(source_url, limit_cache_key)
+        else:
+            comments = self._get_comments_for_source_url(source_url, limit_cache_key)
         self._update_num_downloaded_texts(total_num_texts_cache_key, comments)
         logger.debug(f"Number of comments={len(comments)}, job_id={self.job_id}")
         self.append_event(
@@ -245,7 +293,7 @@ class Get3rdPartyData(BaseTask):
             job_id=self.job_id,
         )
 
-        self._publish_texts_on_message_bus(comments, self.job_id)
+        self._tokenize_and_record_and_publish(comments, self.job_id)
         self.record_progress(self._total_steps, self._total_steps)
 
         # self._record_job_text_relationship(comments, self.job_id)

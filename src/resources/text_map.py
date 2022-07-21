@@ -6,6 +6,7 @@ from werkzeug.exceptions import BadRequest
 
 from lib.logger import logger
 from tasks.get_3rd_party_data import Get3rdPartyData
+from tasks.find_keywords import FindKeywords
 from tasks.await_embedding import AwaitEmbedding
 from tasks.cluster_texts import ClusterTexts
 from lib.utils import generate_random_id
@@ -76,7 +77,7 @@ class TextMap(Resource):
             -H "Content-Type: application/json"  \
             -d '{
                 "source_urls": [
-                    "https://www.youtube.com/watch?v=pXswr3XmDw8",
+                    "https://www.youtube.com/watch?v=4E29RzEUGrs",
                     "https://www.youtube.com/watch?v=pXswr3XmDw8",
                     "https://www.youtube.com/watch?v=DHjqpvDnNGE"
                 ],
@@ -128,6 +129,12 @@ class TextMap(Resource):
                 kwargs={
                     'total_num_texts_cache_key': total_num_texts_cache_key,
                 },
+            )
+        )
+        tasks.append(
+            FindKeywords(
+                job_id=job_id,
+                kwargs={},
             )
         )
         tasks.append(

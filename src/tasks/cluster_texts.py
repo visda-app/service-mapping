@@ -1,13 +1,19 @@
+import math
+from typing import Any
 from uuid import uuid4
 from copy import copy, deepcopy
 import numpy as np
 from collections import defaultdict
 from sklearn.manifold import TSNE
 from sklearn.cluster import AffinityPropagation
+from dataclasses import dataclass, asdict
+from wordcloud import WordCloud
+import random
 
 from lib.logger import logger
+from lib.nlp import get_pruned_stem
 from models.clustering_helper import (
-    load_embeddings_from_db,
+    load_first_embeddings_from_db,
     save_clustering_to_db
 )
 from tasks.base_task import BaseTask
@@ -19,6 +25,35 @@ MAX_CLUSTER_SIZE = 10
 # To calculate radius for each bubble
 MIN_RADIUS = 1
 MIN_ALLOWED_DISTANCE = 1
+MAX_NUM_TOKENS = 3
+
+
+@dataclass
+class TextDraw:
+    text: str
+    x: float
+    y: float
+    dx: float = 0  # delta x from the center. The front end scaling for this would be different from x
+    dy: float = 0
+    font_size: float = 14
+    orientation: Any = None
+    colors_rgb: list = 0
+
+
+@dataclass
+class KeywordItem:
+    word: str
+    count: int
+    relevance_score: float
+    kwd3uuid: str = None  # Kewyword uuid for D3 plot
+    draw: TextDraw = None
+    parent: TextDraw = None
+
+    def __post_init__(self):
+        self.relevance_score = round(self.relevance_score, 2)
+    
+    def set_relevance_score(self, score):
+        self.relevance_score = round(score, 2)
 
 
 def run_tsne(x):
@@ -63,6 +98,8 @@ def reduce_dimension(embedding_data):
     # Merge back the low dimensions into the original data
     for i, item in enumerate(embedding_data):
         item['low_dim_embedding'] = list(low_dim_embeddings[i])
+    
+    # logger.debug(f'embedding_data_with_low_dimension={embedding_data}')
     return embedding_data
 
 
@@ -109,8 +146,11 @@ def cluster_data(data, coordinates_key=None):
         cluster_info['is_cluster_head'] = item[coordinates_key] in cluster_centers
         cluster_info['cluster_label'] = cluster_labels[i]
         item['cluster_info'] = cluster_info
+        
+        ## TODO : comment these
         # item['embedding'] = ''
         # item['text'] = ''
+        # item['tokens'] = item['tokens'][:1]
 
     # sort data
     result = sorted(
@@ -350,6 +390,138 @@ def insert_radius(head, radius_multiplier_factor):
         frontiers.extend(next.get('children', []))
 
 
+def _group_keywords_by_count(keywords):
+    """
+    Remove punctuations and stem the words and then insert
+    the counts of the stemmed root words.
+    
+    This function is unit tested; to see the input output
+    examples, refer to the tests.
+    """
+    token_count = defaultdict(int)
+    token_relevance_score = defaultdict(float)
+    for kw in keywords:
+        token_count[kw.word] += kw.count
+        token_relevance_score[kw.word] += kw.relevance_score
+    # Construct a new list of results
+    res = []
+    seen = set()
+    for kw in keywords:
+        if kw.word not in seen:
+            kw.count = token_count[kw.word]
+            kw.set_relevance_score(token_relevance_score[kw.word])
+            # Need to assigns a new d3 uuid since this is a new entity 
+            kw.kwd3uuid = str(uuid4())
+            res.append(kw)
+            seen.add(kw.word)
+    # sort by counts and then relevance scores
+    res.sort(key=lambda x: (-x.count, -x.relevance_score))
+    return res
+
+
+def _group_stemmed_keywords_by_counts(keywords):
+    keywords = deepcopy(keywords)
+    for item in keywords:
+        item.draw.text = item.word
+        item.word = get_pruned_stem(item.word)
+    return _group_keywords_by_count(keywords)
+
+
+def insert_and_return_keywords(head):
+    """
+    Performs a post order tree traverse to insert all the keywords. 
+    """
+    keywords = []
+    children = head.get('children')
+    if children:
+        for child in children:
+            keywords.extend(insert_and_return_keywords(child))
+        keywords = _group_stemmed_keywords_by_counts(keywords)
+    else:
+        if len(head['tokens']) > 0:
+            word = head['tokens'][0]['token']
+            keywords = [
+                KeywordItem(
+                    word=get_pruned_stem(word),
+                    count=1,
+                    relevance_score=head['tokens'][0]['similarity'],
+                    kwd3uuid = str(uuid4()),
+                    draw=TextDraw(
+                        x=float(head['low_dim_embedding'][0]),
+                        y=float(head['low_dim_embedding'][1]),
+                        text=word,
+                    ),
+                )
+            ]
+    head['keywords'] = deepcopy(keywords)
+    return head['keywords']
+
+
+def insert_wordcloud_draw_properties(head):
+    """
+    Inser the draw properties such as x and y coordinates
+    for the word cloud
+    """
+    frontiers = [head]
+    while frontiers:
+        current = frontiers.pop(0)
+        children = current.get('children', [])
+        frontiers.extend(children)
+
+        if len(current['keywords']) > 1 and current.get('low_dim_embedding'):
+            center_x = float(current['low_dim_embedding'][0])
+            center_y = float(current['low_dim_embedding'][1])
+            radius = round( current['radius'] )
+            for kw in current['keywords']:
+                kw.draw.x = center_x
+                kw.draw.dx = radius * random.gauss(0, 0.2) 
+                kw.draw.y = center_y
+                kw.draw.dy = radius * random.gauss(0, 0.35)
+                kw.draw.font_size = 10 * math.log(kw.count * round(10 * kw.relevance_score))
+
+
+def insert_keywords_parents_info(head):
+    """
+    Arg:
+        head (dict): a dictionary with the following formatting
+                    {
+                        'children': [
+                            {
+                                'children': [...]
+                                'uuid': '934b0cfe-98c1-4a69-ba01-61565d7ab709',
+                                ...
+                            },
+                            ...
+                        ]
+                    }
+    """
+    if not head:
+        return
+    frontiers = [head]
+    while frontiers:
+        current = frontiers.pop(0)
+        children = current.get('children', [])
+        frontiers.extend(children)
+
+        for child in children:
+            for kw in child['keywords']:
+                kw.parent = None
+                if child['parent']['low_dim_embedding'] is not None:  # If the parent is present 
+                    # find the keword in the parent's set of keyword
+                    for parent_kw in current['keywords']:
+                        if kw.word == parent_kw.word:
+                            kw.parent = parent_kw
+                            break
+
+
+
+def prune_keywords(head):
+    """
+    Caps the nubmer of keywords to a pre determined value
+    """
+    pass
+
+
 def insert_meta_data(head):
     """
     Insert the metadat field that includes the following
@@ -415,7 +587,9 @@ def get_formatted_item(item):
                 else item['radius']
             ),
             'd3uuid': item['parent']['d3uuid'],
-        }
+        },
+        'children': [],
+        'keywords': [asdict(kw) for kw in item['keywords']],
     }
     return entry
 
@@ -476,6 +650,9 @@ def cluster_hierarchically_add_meta_data(sequence_id, data_w_low_dim):
     insert_radius(head, radius_multiplier_factor)
     insert_parents_info(head)
     insert_meta_data(head)
+    insert_and_return_keywords(head)
+    insert_wordcloud_draw_properties(head)
+    insert_keywords_parents_info(head)
 
     logger.debug("Formatting data...")
     reshaped_data = get_reshaped_data(copy(head))
@@ -506,7 +683,7 @@ class ClusterTexts(BaseTask):
         logger.debug("Loading data from DB...")
         embedding_data = []
         for i in sequence_ids:
-            embedding_data.extend(load_embeddings_from_db(i))
+            embedding_data.extend(load_first_embeddings_from_db(i))
         self.record_progress(1, TOTAL_NUMBER_OF_STEPS)
 
         if not embedding_data or type(embedding_data) is not list:

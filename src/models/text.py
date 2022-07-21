@@ -2,6 +2,8 @@
 The database models that deal with
 text segments.
 """
+from copy import deepcopy
+from dataclasses import dataclass
 import json
 from sqlalchemy.sql import func
 from sqlalchemy import (
@@ -23,12 +25,19 @@ from models.db import (
 from lib.logger import logger
 
 
+@dataclass
+class TokenItem:
+    text: str
+    relevance: float
+
+
 class Text(Base):
     __tablename__ = 'texts'
 
     id = Column(String, primary_key=True)
     text = Column(Text, nullable=False, index=True)
     embedding = Column(Text)
+    tokens = Column(Text)
     created = Column(DateTime(timezone=True), server_default=func.now())
 
     def to_dict(self):
@@ -36,6 +45,7 @@ class Text(Base):
             "id": self.id,
             "text": self.text,
             "embedding": self.embedding,
+            "tokens": self.tokens,
             "created": self.created,
         }
 
@@ -56,13 +66,21 @@ class Text(Base):
         record = session.query(self.__class__).filter(
             self.__class__.id == text_id).first()
 
-        if self.embedding:
-            self.embedding = json.dumps(self.embedding)
+        if self.embedding and type(self.embedding) is not str:
+            serialized_embedding = json.dumps(self.embedding)
+            self.embedding = serialized_embedding
+
+        if self.tokens and type(self.tokens) is not str:
+            serialized_tokens = json.dumps(self.tokens)
+            self.tokens = serialized_tokens
+
         if record:
             if self.embedding:
                 record.embedding = self.embedding
             if self.text:
                 record.text = self.text
+            if self.tokens:
+                record.tokens = self.tokens
         else:
             record = self
 
@@ -84,9 +102,20 @@ class Text(Base):
     @classmethod
     def get_by_id(cls, text_id):
         record = session.query(cls).filter(cls.id == text_id).first()
+        record_copy = deepcopy(record)
+        if record_copy and record_copy.embedding:
+            record_copy.embedding = json.loads(record_copy.embedding)
+        if record_copy and record_copy.tokens:
+            record_copy.tokens = json.loads(record_copy.tokens)
+        return record_copy
+
+    @classmethod
+    def get_embedding_by_text(cls, text):
+        record = session.query(cls).filter(cls.text == text).first()
+        deserialized_embedding = None
         if record and record.embedding:
-            record.embedding = json.loads(record.embedding)
-        return record
+            deserialized_embedding = json.loads(record.embedding)
+        return deserialized_embedding
 
     @classmethod
     def delete_by_id(cls, text_id):

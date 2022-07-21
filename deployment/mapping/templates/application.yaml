@@ -11,6 +11,8 @@ data:
     DB_DATABASENAME: "{{ .Values.db.databasename }}"
     CACHE_HOST: "{{ .Values.cache.host }}"
     CACHE_PORT: "{{ .Values.cache.port }}"
+    K8S_READINESS_PROBE_FILE: "{{ .Values.deployment.readinessProbeFile }}"
+
 
 ---
 
@@ -121,6 +123,14 @@ spec:
                 envFrom:
                     - configMapRef:
                         name: storage-config
+                readinessProbe:
+                    exec:
+                        command:
+                        - cat
+                        - {{ .Values.deployment.readinessProbeFile }}
+                    initialDelaySeconds: 2
+                    periodSeconds: 3
+
 
 ---
 

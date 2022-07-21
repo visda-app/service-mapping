@@ -30,3 +30,12 @@ redis
 schema
 pyyaml
 arrow
+
+#nlp tasks
+nltk
+
+numpy
+
+wordcloud
+matplotlib
+Pillow

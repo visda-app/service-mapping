@@ -1,6 +1,9 @@
 import pytest
 from random import random
 from time import sleep
+import json
+from uuid import uuid4
+from unittest.mock import patch
 
 from lib.logger import logger
 from models.db import create_all_tables
@@ -24,17 +27,27 @@ def _cleanup_texts(job_id):
     JobTextMapping.delete_texts_by_job_id(job_id)
 
 
-def test_textmap_post(client):
-    data = {
-        'youtube_video_id': 'oieNTzEeeX0',
-        'sequence_id': str(int(1000 * random()))
-    }
+@patch('tasks.base_task.publish_task')
+def test_textmap_post(mock_publish_task, client):
+    job_id = str(uuid4())
+    data = json.dumps({
+        "source_urls": [
+            "https://www.youtube.com/watch?v=4E29RzEUGrs",
+            "https://www.youtube.com/watch?v=pXswr3XmDw8",
+            "https://www.youtube.com/watch?v=DHjqpvDnNGE"
+        ],
+        "user_id": "a_user_id",
+        "limit": 200,
+        "sequence_id": job_id
+    })
 
     resp = client.post('/textmap', data=data)
     json_data = resp.get_json()
-    job_id = json_data['job_id']
+    resp_job_id = json_data['job_id']
     assert resp.status_code == 200
+    assert resp_job_id == job_id
     # _cleanup_texts(job_id)
+    mock_publish_task.assert_called_once()
 
 
 def test_status(client):
