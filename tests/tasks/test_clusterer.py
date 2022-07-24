@@ -204,7 +204,7 @@ def test_cluster_hierarchically_add_meta_data(low_dim_embedding):
     import pprint, json
     pp = pprint.PrettyPrinter().pprint
     # pp(res)
-    # breakpoint()
+    breakpoint()
 
     # with open("_temp.txt", "w") as f:
     #     f.write(json.dumps(res, indent=4))

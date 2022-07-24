@@ -43,7 +43,7 @@ class TextDraw:
 @dataclass
 class KeywordItem:
     word: str
-    count: int
+    count: int  # num repetition or aka frequency
     relevance_score: float
     kwd3uuid: str = None  # Kewyword uuid for D3 plot
     draw: TextDraw = None
@@ -461,6 +461,14 @@ def insert_wordcloud_draw_properties(head):
     """
     Inser the draw properties such as x and y coordinates
     for the word cloud
+
+    The word cloud properties like dx, dy, font_size, etc will
+    be determined in the front end. I tried to calculated them
+    in the back end but since it doesn't know about DOM, the
+    back end can't scale properly and the end results are all
+    jumbled up.
+
+    So, here, I just used a simple stupid initializaiton.
     """
     frontiers = [head]
     while frontiers:
