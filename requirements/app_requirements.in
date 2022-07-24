@@ -35,7 +35,3 @@ arrow
 nltk
 
 numpy
-
-wordcloud
-matplotlib
-Pillow
