@@ -35,9 +35,7 @@ class TextDraw:
     y: float
     dx: float = 0  # delta x from the center. The front end scaling for this would be different from x
     dy: float = 0
-    font_size: float = 14
-    orientation: Any = None
-    colors_rgb: list = 0
+    font_size: float = 18
 
 
 @dataclass
@@ -477,7 +475,7 @@ def insert_wordcloud_draw_properties(head):
                 kw.draw.dx = radius * random.gauss(0, 0.2) 
                 kw.draw.y = center_y
                 kw.draw.dy = radius * random.gauss(0, 0.35)
-                kw.draw.font_size = 10 * math.log(kw.count * round(10 * kw.relevance_score))
+                kw.draw.font_size = round(10 * math.log(kw.count * round(10 * kw.relevance_score)), 1)
 
 
 def insert_keywords_parents_info(head):
