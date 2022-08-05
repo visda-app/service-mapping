@@ -21,6 +21,9 @@ from models.text import Text as TextModel
 
 
 class TextTypes(Enum):
+    # RAW_TEST
+    # EXTRACTED_SENTENCE
+    # EXTRACTED_WORD
     SENTENCE = 1
     WORD = 2
 

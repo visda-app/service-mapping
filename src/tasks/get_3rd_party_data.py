@@ -151,6 +151,7 @@ class Get3rdPartyData(BaseTask):
         embeddings
         """
         not_embedded_texts = []
+        # TODO: speed this up by batching
         for text_item in text_items:
             if TextModelDB.get_embedding_by_text(text_item.text) is None:
                 not_embedded_texts.append(text_item)
