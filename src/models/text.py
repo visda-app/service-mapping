@@ -59,7 +59,9 @@ class Text(Base):
     def save_or_update(self):
         """
         First search for a record with the given text_id
-        if the record exists, it updates the record
+        if the record exists, it updates the record.
+        If the record doesn't exist, it will save a new
+        record.
         """
         # check if the record exits
         text_id = self.id

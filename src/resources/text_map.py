@@ -140,7 +140,7 @@ class TextMap(Resource):
         tasks.append(
             ClusterTexts(
                 job_id=job_id, kwargs={
-                    'sequence_ids': [job_id],
+                    'sequence_id': job_id,
                 }
             )
         )

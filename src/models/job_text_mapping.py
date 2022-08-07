@@ -21,11 +21,9 @@ from models.text import Text as TextModel
 
 
 class TextTypes(Enum):
-    # RAW_TEST
-    # EXTRACTED_SENTENCE
-    # EXTRACTED_WORD
-    SENTENCE = 1
-    WORD = 2
+    RAW_TEXT = 1
+    EXTRACTED_SENTENCE = 2
+    EXTRACTED_WORD = 3
 
 
 class JobTextMapping(Base):
@@ -84,7 +82,7 @@ class JobTextMapping(Base):
         """Get only type SENTENCE texts from DB"""
         records = session.query(cls).filter(
             cls.job_id == job_id
-            and cls.text_type == TextTypes.SENTENCE.value
+            and cls.text_type == TextTypes.RAW_TEXT.value
         ).all()
         return list(records)
 

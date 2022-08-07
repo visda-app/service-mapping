@@ -16,7 +16,7 @@ def load_first_embeddings_from_db(job_id):
     ).filter(
         JobTextMapping.job_id == job_id
     ).filter(
-        JobTextMapping.text_type == TextTypes.SENTENCE.value
+        JobTextMapping.text_type == TextTypes.RAW_TEXT.value
     )
     db_vals = q.all()
 
@@ -36,6 +36,7 @@ def load_first_embeddings_from_db(job_id):
 
     return results
 
+
 def load_texts_from_db(job_id):
     results = load_first_embeddings_from_db(job_id)
     return [
@@ -45,7 +46,6 @@ def load_texts_from_db(job_id):
         } 
         for e in results
     ]
-
 
 
 def _get_query_clustering(job_id):

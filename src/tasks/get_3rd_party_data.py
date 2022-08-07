@@ -162,27 +162,41 @@ class Get3rdPartyData(BaseTask):
         Gets an array of comments, and tokeninze and publishes them to messagebus
         """
         words = []
+        sentences = []
         for text_item in text_items:
             words.extend( nlp.get_tokens(text_item.text) )
+
+        for text_item in text_items:
+            sentences.extend( nlp.get_sentences(text_item.text) )
 
         # remove redundancies while keeping order
         words_unique = list(dict.fromkeys(words))
         word_items = [TextItem(id=str(uuid4()), text=word) for word in words_unique]
 
+        sentences_unique = list(dict.fromkeys(sentences))
+        sentence_items = [TextItem(id=str(uuid4()), text=sentence) for sentence in sentences_unique]
+
         not_embedded_words = self._get_not_embedded_texts(word_items)
+        not_embedded_senteces = self._get_not_embedded_texts(sentence_items)
 
         self._record_job_text_relationship(
             not_embedded_words,
             sequence_id,
-            TextTypes.WORD.value,
+            TextTypes.EXTRACTED_WORD.value,
+        )
+        self._record_job_text_relationship(
+            not_embedded_senteces,
+            sequence_id,
+            TextTypes.EXTRACTED_SENTENCE.value,
         )
         self._record_job_text_relationship(
             text_items,
             sequence_id,
-            TextTypes.SENTENCE.value
+            TextTypes.RAW_TEXT.value
         )
 
         self._publish_texts_on_message_bus(not_embedded_words, sequence_id)
+        self._publish_texts_on_message_bus(not_embedded_senteces, sequence_id)
         self._publish_texts_on_message_bus(text_items, sequence_id)
 
     def _extract_comments(self, youtube_data):
