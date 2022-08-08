@@ -46,7 +46,7 @@ class BaseTask:
         """
         E.g., tasks.base_task.BaseTask
         """
-        return self.__module__ + '.' + self.__class__.__name__
+        return f"{self.__module__}.{self.__class__.__name__}"
 
     def _validate_task_class(self, task_class):
         m, c = get_module_and_class_from_string(task_class)

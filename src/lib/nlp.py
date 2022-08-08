@@ -58,6 +58,12 @@ def get_tokens(sentence):
     return single_words
 
 
+def get_sentences(text):
+    sentences = nltk.tokenize.sent_tokenize(text)
+
+    return sentences
+
+
 def _get_lemmatize(word):
     lemma = nltk.wordnet.WordNetLemmatizer()
     return lemma.lemmatize(word)

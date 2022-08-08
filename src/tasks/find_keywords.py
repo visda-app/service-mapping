@@ -22,7 +22,7 @@ class FindKeywords(BaseTask):
     be vectorized (embedded) so in this module, only the
     relevant keywords are extracted from each sentence
     """
-    public_description = "Extracting keywords."
+    public_description = "Extracting keywords"
 
     def __init__(self, *args, **kwargs):
         logger.debug(kwargs)

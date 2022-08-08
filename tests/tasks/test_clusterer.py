@@ -1,4 +1,6 @@
+from curses import raw
 import pytest
+from unittest.mock import patch
 import json
 import numpy as np
 from copy import deepcopy
@@ -25,8 +27,7 @@ class MyEncoder(json.JSONEncoder):
             return super(MyEncoder, self).default(obj)
 
 
-@pytest.fixture
-def raw_embedding():
+def get_test_embedding_data():
     file_name = 'tests/data/raw_embedding_1000.json'
     with open(file_name, 'r') as f:
         lines = f.readlines()
@@ -36,6 +37,19 @@ def raw_embedding():
         line = line.strip()
 
     embedding_data = [json.loads(line) for line in lines]
+    return embedding_data
+
+
+@pytest.fixture
+def raw_embedding():
+    return get_test_embedding_data()
+
+
+@pytest.fixture
+def raw_embedding_w_seq_id():
+    embedding_data = get_test_embedding_data()
+    for item in embedding_data:
+        item['sequence_id'] = 'a_job_id_fixture'
     return embedding_data
 
 
@@ -132,44 +146,6 @@ def test_insert_children_count():
     assert actual_result == expected_result
 
 
-def test_partition_by_sequence_id():
-    KEY = 'sequence_id'
-    data = [
-        {
-            KEY: '1',
-            "text": "This is the first entry",
-        },
-        {
-            KEY: 2,
-            "text": "Fall is colorful",
-        },
-        {
-            KEY: 2,
-            "text": "Baked potato is delicious",
-        }
-    ]
-    actual_results = clusterer.partition_by_sequence_id(data)
-    expected_result = {
-        2: [
-            {
-                KEY: 2,
-                "text": "Fall is colorful",
-            },
-            {
-                KEY: 2,
-                "text": "Baked potato is delicious",
-            }
-        ],
-        '1': [
-            {
-                KEY: '1',
-                "text": "This is the first entry",
-            },
-        ]
-    }
-    assert actual_results == expected_result
-
-
 def test__group_keywords_by_count():
     sample_data = [
         KeywordItem(count=1, word='cables', relevance_score=0.39),
@@ -196,27 +172,15 @@ def test__group_keywords_by_count():
     assert (result[0].word, result[0].count, result[0].relevance_score) == ('cable', 8, 2.72)
 
 
-def test_cluster_hierarchically_add_meta_data(low_dim_embedding):
-    """
-    Main test to test the excec function of the 
-    """
-    res = clusterer.cluster_hierarchically_add_meta_data("-", low_dim_embedding)
-    import pprint, json
+@patch('tasks.cluster_texts._load_embeddings_from_db')
+def test_execute(mock_embedding, raw_embedding_w_seq_id):
+
+    import pprint
     pp = pprint.PrettyPrinter().pprint
-    # pp(res)
+
+    cluster_texts = clusterer.ClusterTexts(kwargs={
+        "sequence_id": 'a_dummy_sequence_id',
+    })
+    mock_embedding.return_value = raw_embedding_w_seq_id
+    res = cluster_texts.execute()
     # breakpoint()
-
-    # with open("_temp.txt", "w") as f:
-    #     f.write(json.dumps(res, indent=4))
-
-
-def test_main():
-    """
-    A functional test for the main clusterer
-    """
-    sequence_ids = ['1', '2']
-    # clusterer.load_and_cluster_and_save(sequence_ids)
-
-    # from models.text import ClusteredText
-    # res = ClusteredText.get_last_by_sequence_id('1')
-    # import pdb; pdb.set_trace()
