@@ -5,7 +5,7 @@ from lib.exceptions import ExternalDependencyNotCompleted
 
 
 class DummyAwaitTask(BaseTask):
-    public_description = "Wait for dummy things."
+    public_description = "Wait for dummy things"
 
     @record_start_finish_time_in_db
     def execute(self):
