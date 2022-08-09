@@ -11,3 +11,6 @@ text_count_exceeds_limit:
 
 text_download_finished:
   description: "Fineshed downloading texts from third party"
+
+not_enough_input_samples:
+  description: "There are not enough input data samples. This might be becaue the source data was empty."

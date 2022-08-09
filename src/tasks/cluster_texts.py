@@ -11,7 +11,11 @@ from dataclasses import dataclass, asdict, field
 import random
 
 from lib.logger import logger
-from lib.nlp import get_pruned_stem
+from lib.nlp import (
+    get_pruned_stem,
+    get_sentences,
+)
+from models.text import Text as TextModel
 from models.clustering_helper import (
     load_first_embeddings_from_db,
     save_clustering_to_db
@@ -21,11 +25,14 @@ from tasks.base_task import record_start_finish_time_in_db
 
 
 
-MAX_CLUSTER_SIZE = 50
+MAX_CLUSTER_SIZE = 100
 # To calculate radius for each bubble
 MIN_RADIUS = 1
 MIN_ALLOWED_DISTANCE = 1
 MAX_NUM_TOKENS = 3
+
+MAX_NUM_EXTRACTED_SUMMARY_SENTENCE = 5
+
 
 
 @dataclass
@@ -70,7 +77,7 @@ class XYCoord:
 class ParentBubbleDrawItem:
     xy_coord: XYCoord
     radius: float
-    d3uuid: str
+    bubble_uuid: str
 
 
 @dataclass
@@ -86,11 +93,12 @@ class BubbleItem:
     children: list = field(default_factory=list)  # list[BubbleItem]
     mid_dimension_coords: list = None
     children_count: int = None
-    d3uuid: str = None
+    bubble_uuid: str = None  # d3 node unique id
     radius: float = None
     parent: ParentBubbleDrawItem = None
     keywords: list = None
     metadata: dict = None
+    extracted_sentences_and_scores: list = field(default_factory=list)
 
 
 def transform_json_data_to_structured(embeddin_data):
@@ -146,7 +154,9 @@ def insert_reduced_dimension_pca(data: List[BubbleItem], target_dim=50):
     for e in data:
         vect_list.append(get_high_dim_coords(e))
     vect_array = np.array(vect_list)
-    n_dim = min(target_dim, vect_array.shape[1])
+    # n_dim = min(target_dim, vect_array.shape[1])
+    logger.debug(f"vect_list_pca={vect_list}")
+    n_dim = target_dim
 
     pca = PCA(n_components=n_dim)
     low_dim = pca.fit_transform(vect_array)
@@ -304,7 +314,7 @@ def insert_children_count(head: BubbleItem):
     return sum
 
 
-def insert_d3uuid(head: BubbleItem):
+def insert_bubble_uuid(head: BubbleItem):
     """
     Traverse the tree of data and insert a unique identifier for
     each node that will be used for d3 distinctions later
@@ -314,7 +324,7 @@ def insert_d3uuid(head: BubbleItem):
     frontiers = [head]
     while frontiers:
         next = frontiers.pop(0)
-        next.d3uuid = str(uuid4())
+        next.bubble_uuid = str(uuid4())
         frontiers.extend(next.children)
 
 
@@ -382,7 +392,7 @@ def insert_parents_info(head: BubbleItem):
             child.parent = ParentBubbleDrawItem(
                 xy_coord=copy(current.xy_coord),
                 radius=current.radius,
-                d3uuid=current.d3uuid,
+                bubble_uuid=current.bubble_uuid,
             )
         frontiers.extend(current.children)
 
@@ -435,7 +445,7 @@ def insert_and_return_keywords(head: BubbleItem):
             keywords.extend(insert_and_return_keywords(child))
         keywords = _group_stemmed_keywords_by_counts(keywords)
     else:
-        if len(head.tokens) > 0:
+        if head.tokens and len(head.tokens) > 0:
             word = head.tokens[0]['token']
             keywords = [
                 KeywordItem(
@@ -532,6 +542,134 @@ def insert_meta_data(head: BubbleItem):
     }
 
 
+def remove_text_for_cluster_heads(head: BubbleItem):
+    frontiers = [head]
+    while frontiers:
+        current = frontiers.pop(0)
+        frontiers.extend(current.children)
+        #
+        if current.children:
+            current.text = None
+
+
+def insert_stuff(head: BubbleItem):
+    """
+    Insert stuff
+    """
+    insert_children_count(head)
+    insert_bubble_uuid(head)
+    insert_radius(head)
+    insert_parents_info(head)
+    insert_meta_data(head)
+    insert_and_return_keywords(head)
+    insert_wordcloud_draw_properties(head)
+    insert_keywords_parents_info(head)
+    remove_text_for_cluster_heads(head)
+
+
+def extract_summary_sentences(head: BubbleItem):
+    """
+    Extranct summary sentences and insert them in the head
+    """
+    @dataclass
+    class SentenceClustering:
+        sentence: str
+        cluster_label: int
+        is_cluster_head: bool
+        score: float = 0
+
+    @dataclass
+    class SentenceScoreItem:
+        sentence: str
+        score: float
+
+    #
+    # Get all texts under the node
+    #
+    texts = []
+    frontiers = [head]
+    while frontiers:
+        current = frontiers.pop(0)
+        frontiers.extend(current.children)
+        if current.text:
+            texts.append(current.text)
+    #
+    # split to senteces 
+    #
+    sentences = []
+    for t in texts:
+        sentences.extend(get_sentences(t))
+    sentences = list(set(sentences))
+    #
+    # load embedding for sentences
+    #
+    sent_embeddings = []
+    for sent in sentences:
+        embedding = TextModel().get_embedding_by_text(sent)  # had to use TextModel() instead of TextModel so that I can mock it in test
+        if embedding:
+            sent_embeddings.append({
+                'sent': sent,
+                'embedding': list(embedding),
+            })
+        else:
+            logger.warning(f"Could not find sentence embedding for sentence={sent}")
+
+    #
+    # Cluster sentences to find cluster heads
+    #
+    cluster_labels, cluster_centers = ap_cluster(np.array(
+        [e['embedding'] for e in sent_embeddings]
+    ))
+
+    #
+    # Form the data structure and sort them
+    #
+    sent_clusterings = []
+    for i, item in enumerate(sent_embeddings):
+        sent_clusterings.append(SentenceClustering(
+            sentence= item['sent'],
+            cluster_label=cluster_labels[i],
+            is_cluster_head=item['embedding'] in cluster_centers,
+        ))
+    sent_clusterings.sort(key=lambda x: (x.cluster_label, not x.is_cluster_head))
+
+    #
+    # Assign relevance scores based on the cluster size for each cluster head 
+    #
+    total_size = 0
+    cluster_size = defaultdict(int)
+    for item in sent_clusterings:
+        cluster_size[item.cluster_label] += 1
+        total_size += 1
+    for item in sent_clusterings:
+        item.score = cluster_size.get(item.cluster_label, 0) / total_size
+    
+    #
+    # Expunge items that are not cluster heads
+    #
+    sent_scores = [
+        SentenceScoreItem(
+            sentence=item.sentence,
+            score=item.score,
+        ) for item in sent_clusterings if item.is_cluster_head
+    ]
+    sent_scores.sort(key=lambda x: -x.score)
+
+    #
+    # Insert back into the data structure
+    #
+    head.extracted_sentences_and_scores = sent_scores[:MAX_NUM_EXTRACTED_SUMMARY_SENTENCE]
+
+
+def traverse_and_extract_summary_sentences(nodes: List[BubbleItem]):
+    frontiers = copy(nodes)
+    while frontiers:
+        current = frontiers.pop(0)
+        frontiers.extend(current.children)
+        if current.children:
+            extract_summary_sentences(current)
+
+
 def get_formatted_item(item: BubbleItem):
     """
     Arg:
@@ -553,7 +691,7 @@ def get_formatted_item(item: BubbleItem):
         'x': float(item.xy_coord.x),
         'y': float(item.xy_coord.y),
         'uuid': item.uuid,
-        'd3uuid': item.d3uuid,
+        'd3uuid': item.bubble_uuid,
         'text': item.text,
         'cluster_label': int(item.original_cluster_label),
         'children_count': item.children_count,
@@ -562,10 +700,11 @@ def get_formatted_item(item: BubbleItem):
             'x': float(get_parent_xy(item).x),
             'y': float(get_parent_xy(item).y),
             'radius': float(get_parent_r(item)),
-            'd3uuid': item.parent.d3uuid,
+            'd3uuid': item.parent.bubble_uuid,
         },
         'children': [],
         'keywords': [asdict(kw) for kw in item.keywords],
+        'summary_sentences': [asdict(e) for e in item.extracted_sentences_and_scores]
     }
     return entry
 
@@ -584,26 +723,11 @@ def get_reshaped_data(head: BubbleItem):
     return new_node
 
 
-def insert_stuff(head: BubbleItem):
-    """
-    Insert stuff
-    """
-    insert_children_count(head)
-    insert_d3uuid(head)
-    insert_radius(head)
-    insert_parents_info(head)
-    insert_meta_data(head)
-    insert_and_return_keywords(head)
-    insert_wordcloud_draw_properties(head)
-    insert_keywords_parents_info(head)
-
-
 def _load_embeddings_from_db(sequence_ids):
     embedding_data = []
     for i in sequence_ids:
         embedding_data.extend(load_first_embeddings_from_db(i))
     return embedding_data
-
 
 
 def _expunge_tree(head):
@@ -613,14 +737,24 @@ def _expunge_tree(head):
         frontiers.extend(copy(next.children))
         # 
         next.embedding = []
-        next.text = ''
+        # next.text = ''
         next.tokens = []
         next.mid_dimension_coords = []
 
 
 class ClusterTexts(BaseTask):
 
-    public_description = "Creating the text maps and clusters."
+    public_description = "Classifying and summarizing texts to create the Babel Map"
+
+    def validate_raw_data(self, raw_data):
+        MIN_NUM_INPUTS = 2
+        if len(raw_data) < MIN_NUM_INPUTS:
+            logger.debug(f"Less than {MIN_NUM_INPUTS} input texts for job_id={self.job_id}")
+            self.append_event(
+                event_lookup_key='not_enough_input_samples',
+                job_id=self.job_id,
+            )
+            raise ValueError(f"There should be at least {MIN_NUM_INPUTS} inputs.")
 
     @record_start_finish_time_in_db
     def execute(self):
@@ -640,21 +774,23 @@ class ClusterTexts(BaseTask):
         sequence_id = self.kwargs['sequence_id']
 
         logger.debug("Loading data from DB...")
-        data = _load_embeddings_from_db([sequence_id])
+        raw_data = _load_embeddings_from_db([sequence_id])
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
-        logger.debug("Formatting data...")
-        data = transform_json_data_to_structured(data)
+        self.validate_raw_data(raw_data)
+
+        logger.debug("Formatting raw_data...")
+        data = transform_json_data_to_structured(raw_data)
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
 
-        # dimention reduction -- pca
-        logger.debug("Reducing dimension to a mid range dimension...")
-        insert_reduced_dimension_pca(data)
-        current_progress += 1
-        self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
+        # # dimention reduction -- pca
+        # logger.debug("Reducing dimension to a mid range dimension...")
+        # insert_reduced_dimension_pca(data)
+        # current_progress += 1
+        # self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
         # dimention reduction and inserting 2D coords -- tSNE
         logger.debug("Reducing dimension to 2D...")
@@ -680,6 +816,12 @@ class ClusterTexts(BaseTask):
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
+        # insert representative senteces 
+        logger.debug("Extract summary sentences for cluster heads")
+        traverse_and_extract_summary_sentences(head.children)
+        current_progress += 1
+        self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
+
         # _expunge(data)
         # _expunge_tree(head)
         # breakpoint()
@@ -695,7 +837,6 @@ class ClusterTexts(BaseTask):
         # with open("_temp.txt", "w") as f:
         #     f.write(json.dumps(data_dict, indent=4))
         #
-
 
         logger.debug(f"Saving sequence_id={sequence_id} to DB...")
         save_clustering_to_db(sequence_id, data_dict)

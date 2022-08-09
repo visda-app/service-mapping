@@ -1,6 +1,6 @@
 from curses import raw
 import pytest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 import json
 import numpy as np
 from copy import deepcopy
@@ -173,10 +173,16 @@ def test__group_keywords_by_count():
 
 
 @patch('tasks.cluster_texts._load_embeddings_from_db')
-def test_execute(mock_embedding, raw_embedding_w_seq_id):
+@patch('tasks.cluster_texts.TextModel')
+def test_execute(mock_text_model, mock_embedding, raw_embedding_w_seq_id):
+    np.random.seed(1)
+    class MockTextModel:
+        def get_embedding_by_text(self, *args):
+            return list(np.random.randn(2))
+    
 
-    import pprint
-    pp = pprint.PrettyPrinter().pprint
+    # mock_text_model.get_embedding_by_text.return_value = list(rnd_vect)
+    mock_text_model.return_value = MockTextModel
 
     cluster_texts = clusterer.ClusterTexts(kwargs={
         "sequence_id": 'a_dummy_sequence_id',

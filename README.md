@@ -1,6 +1,6 @@
 To get the logs:
 `k logs $(k get pods | grep mapping-deploy | cut -d ' ' -f1) mapping-consumer-task --follow`
-`k logs $(k get pods | grep mapping-deploy | grep Running | cut -d ' ' -f1) mapping-consumer-task --follow` 
+`k logs $(k get pods | grep mapping-deploy | grep Running | cut -d ' ' -f1) mapping-consumer-task --follow`
 
 ## Mapping API
 To call the API:
@@ -28,6 +28,18 @@ export SEQ_ID=$(cat _temp.txt) \
 
 To get the results:
 ```shell
+export SEQ_ID=$(cat _temp.txt) && \
+curl \
+    -X GET \
+    "$(minikube service mapping-service --url)/textmap/sequence_id/$SEQ_ID?include_clustering=false" \
+    | python -m json.tool
+```
+
+
+
+To stop the job:
+```shell
+export SEQ_ID=$(cat _temp.txt) && \
 curl -X PUT \
     $(minikube service mapping-service --url)/textmap \
     -d "{

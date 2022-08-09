@@ -1,4 +1,5 @@
 import os
+import math
 import googleapiclient.discovery
 import pprint
 from dataclasses import dataclass
@@ -48,7 +49,7 @@ class Get3rdPartyData(BaseTask):
     """
     Get third party data such as YouTube.
     """
-    public_description = "Downloading data from external source"
+    public_description = "Downloading data from the external source"
 
     def __init__(self, *args, **kwargs):
         logger.debug(kwargs)
@@ -291,7 +292,7 @@ class Get3rdPartyData(BaseTask):
         total_num_texts_cache_key = self.kwargs['total_num_texts_cache_key']
         limit = float(cache_region.get(limit_cache_key))
 
-        self._total_steps = int(min(limit / MAX_RESULTS_PER_REQUEST, 100) + 1)
+        self._total_steps = math.ceil(limit / MAX_RESULTS_PER_REQUEST) + 1
         self._progress = 0
         self.record_progress(self._progress, self._total_steps)
 
