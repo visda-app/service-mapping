@@ -25,7 +25,7 @@ from tasks.base_task import record_start_finish_time_in_db
 
 
 
-MAX_CLUSTER_SIZE = 100
+MAX_CLUSTER_SIZE = float("inf")
 # To calculate radius for each bubble
 MIN_RADIUS = 1
 MIN_ALLOWED_DISTANCE = 1
