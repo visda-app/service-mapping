@@ -127,11 +127,12 @@ class Get3rdPartyData(BaseTask):
                 text=text_item.text,
                 sequence_id=sequence_id
             )
+            # TODO: Check if sending async causes any problems
             mb.producer_send(msg)
             # mb.producer_send_async(msg)
 
         # TODO We should close connection, but I am not sure if closing it would terminate the async send
-        logger.info("Closing connection to Pulsar")
+        logger.debug("Closing connection to Pulsar")
         mb.close()
 
     def _record_job_text_relationship(self, text_items, job_id, text_type):
@@ -292,7 +293,7 @@ class Get3rdPartyData(BaseTask):
         total_num_texts_cache_key = self.kwargs['total_num_texts_cache_key']
         limit = float(cache_region.get(limit_cache_key))
 
-        self._total_steps = math.ceil(limit / MAX_RESULTS_PER_REQUEST) + 1
+        self._total_steps = math.ceil(limit / MAX_RESULTS_PER_REQUEST) + 2
         self._progress = 0
         self.record_progress(self._progress, self._total_steps)
 

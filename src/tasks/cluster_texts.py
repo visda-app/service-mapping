@@ -32,6 +32,7 @@ MIN_ALLOWED_DISTANCE = 1
 MAX_NUM_TOKENS = 3
 
 MAX_NUM_EXTRACTED_SUMMARY_SENTENCE = 5
+MAX_NUM_KEYWORDS_FOR_TEXT = 1
 
 
 
@@ -446,19 +447,19 @@ def insert_and_return_keywords(head: BubbleItem):
         keywords = _group_stemmed_keywords_by_counts(keywords)
     else:
         if head.tokens and len(head.tokens) > 0:
-            word = head.tokens[0]['token']
             keywords = [
                 KeywordItem(
-                    word=get_pruned_stem(word),
+                    word=get_pruned_stem(token['token']),
                     count=1,
-                    relevance_score=head.tokens[0]['similarity'],
+                    relevance_score=token['similarity'],
                     kwd3uuid = str(uuid4()),
                     draw=TextDraw(
                         x=float(head.xy_coord.x),
                         y=float(head.xy_coord.y),
-                        text=word,
+                        text=token['token'],
                     ),
                 )
+                for token in head.tokens[:MAX_NUM_KEYWORDS_FOR_TEXT]
             ]
     head.keywords = deepcopy(keywords)
     return head.keywords
