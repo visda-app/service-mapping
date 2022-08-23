@@ -130,8 +130,16 @@ class Get3rdPartyData(BaseTask):
             )
             for text_item in text_items
         ]
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            executor.map(mb.producer_send, msgs)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+            future_to_msg = {
+                executor.submit(mb.producer_send, msg): msg for msg in msgs
+            }
+            for future in concurrent.futures.as_completed(future_to_msg):
+                try:
+                    res = future.result()
+                except Exception as e:
+                    logger.error(str(e))
+                    raise
 
         # for msg in msgs:
         #     # TODO: Check if sending async causes any problems
