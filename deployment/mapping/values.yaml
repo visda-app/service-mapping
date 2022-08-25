@@ -38,5 +38,5 @@ db:
     databasename: aabgoosht
 
 cache:
-    host: cache-redis-master
+    host: cache-redis-headless
     port: 6379
