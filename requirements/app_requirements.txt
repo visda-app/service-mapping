@@ -6,8 +6,6 @@
 #
 aniso8601==8.0.0
     # via flask-restful
-apache-bookkeeper-client==4.12.0
-    # via pulsar-client
 arrow==1.2.1
     # via -r app_requirements.in
 asbool==0.1.1
@@ -20,7 +18,7 @@ certifi==2020.12.5
     # via
     #   pulsar-client
     #   requests
-chapar==0.4.6
+chapar==0.5
     # via -r app_requirements.in
 chardet==4.0.0
     # via requests
@@ -38,8 +36,6 @@ deprecated==1.2.13
     # via redis
 dogpile.cache==1.1.4
     # via -r app_requirements.in
-fastavro==0.24.0
-    # via pulsar-client
 flask==1.1.2
     # via
     #   -r app_requirements.in
@@ -61,10 +57,6 @@ google-auth-httplib2==0.0.4
     # via google-api-python-client
 googleapis-common-protos==1.52.0
     # via google-api-core
-grpcio==1.27.2
-    # via
-    #   apache-bookkeeper-client
-    #   pulsar-client
 gunicorn==20.0.4
     # via -r app_requirements.in
 httplib2==0.18.1
@@ -114,19 +106,16 @@ pbr==5.8.0
     # via stevedore
 pillow==9.2.0
     # via
+    #   -r app_requirements.in
     #   matplotlib
     #   wordcloud
-prometheus-client==0.9.0
-    # via pulsar-client
 protobuf==3.14.0
     # via
-    #   apache-bookkeeper-client
     #   google-api-core
     #   googleapis-common-protos
-    #   pulsar-client
 psycopg2-binary==2.8.5
     # via -r app_requirements.in
-pulsar-client==2.7.0
+pulsar-client==2.10.1
     # via chapar
 pyasn1==0.4.8
     # via
@@ -137,8 +126,6 @@ pyasn1-modules==0.2.8
     # via
     #   google-auth
     #   oauth2client
-pymmh3==0.0.5
-    # via apache-bookkeeper-client
 pyparsing==3.0.6
     # via
     #   matplotlib
@@ -152,15 +139,11 @@ python-dateutil==2.8.1
     #   pandas
 pytz==2020.1
     # via
-    #   apache-bookkeeper-client
-    #   fastavro
     #   flask-restful
     #   google-api-core
     #   pandas
 pyyaml==6.0
     # via -r app_requirements.in
-ratelimit==2.2.1
-    # via pulsar-client
 redis==4.1.0
     # via -r app_requirements.in
 regex==2022.7.9
@@ -168,7 +151,6 @@ regex==2022.7.9
 requests==2.25.1
     # via
     #   -r app_requirements.in
-    #   apache-bookkeeper-client
     #   google-api-core
 rsa==4.6
     # via
@@ -182,14 +164,12 @@ scipy==1.5.2
     # via scikit-learn
 six==1.15.0
     # via
-    #   apache-bookkeeper-client
     #   asbool
     #   flask-restful
     #   google-api-core
     #   google-api-python-client
     #   google-auth
     #   google-auth-httplib2
-    #   grpcio
     #   jsonschema
     #   oauth2client
     #   protobuf

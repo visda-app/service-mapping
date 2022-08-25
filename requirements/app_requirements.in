@@ -31,7 +31,7 @@ schema
 pyyaml
 arrow
 
-#nlp tasks
+#nlp tasks 
 nltk
 
 numpy
