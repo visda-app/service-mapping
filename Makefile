@@ -77,7 +77,7 @@ run-dev: build ## Run a server in the prod docker image
 		--env CACHE_URI="$(shell minikube service cache-redis-master --url | cut -d '/' -f3)" \
 		-p ${SERVICE_PORT}:${SERVICE_PORT} \
 		${PROD_IMAGE_TAG} \
-		gunicorn route:app -c configs/gunicorn_configs.py
+		gunicorn route:app -w 1 -c configs/gunicorn_configs.py
 
 push: ## Build the prod docker image and push it to docker hub
 	docker login
