@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from schema import Schema, Optional
 import requests
 from uuid import uuid4
+import concurrent.futures
 
 from chapar.message_broker import MessageBroker, Producer
 from chapar.schema_repo import TextSchema
@@ -121,15 +122,29 @@ class Get3rdPartyData(BaseTask):
         )
         logger.info("Producer created.")
 
-        for text_item in text_items:
-            msg = TextSchema(
+        msgs = [
+            TextSchema(
                 uuid=text_item.id,
                 text=text_item.text,
                 sequence_id=sequence_id
             )
-            # TODO: Check if sending async causes any problems
-            mb.producer_send(msg)
-            # mb.producer_send_async(msg)
+            for text_item in text_items
+        ]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+            future_to_msg = {
+                executor.submit(mb.producer_send, msg): msg for msg in msgs
+            }
+            for future in concurrent.futures.as_completed(future_to_msg):
+                try:
+                    res = future.result()
+                except Exception as e:
+                    logger.error(str(e))
+                    raise
+
+        # for msg in msgs:
+        #     # TODO: Check if sending async causes any problems
+        #     mb.producer_send(msg)
+        #     # mb.producer_send_async(msg)
 
         # TODO We should close connection, but I am not sure if closing it would terminate the async send
         logger.debug("Closing connection to Pulsar")
