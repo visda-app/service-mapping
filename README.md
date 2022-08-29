@@ -40,7 +40,7 @@ curl \
 To stop the job:
 ```shell
 export SEQ_ID=$(cat _temp.txt) && \
-curl -X PUT \
+curl -X PATCH \
     $(minikube service mapping-service --url)/textmap \
     -d "{
         \"sequence_id\": \"$SEQ_ID\"

@@ -21,25 +21,25 @@ def consumer_loop(message_broker):
     while True:
         msg = mb.consumer_receive()
         mb.consumer_acknowledge(msg)
-        try:
-            text_id = msg.value().uuid
-            logger.debug(
-                f"uuid={text_id}, "
-                f"text='{text_tip(msg.value().text)}' "
-                f"embedding={msg.value().embedding[:1]}... "
-                "Received! 🤓"
-            )
+        for item in msg.value().items:
+            try:
+                logger.debug(
+                    f"uuid={item.uuid}, "
+                    f"text='{text_tip(item.text)}' "
+                    f"embedding={item.embedding[:1]}... "
+                    "Received! 🤓"
+                )
 
-            TextModel(
-                id=text_id,
-                text=msg.value().text,
-                embedding=msg.value().embedding
-            ).save_or_update()
+                TextModel(
+                    id=item.uuid,
+                    text=item.text,
+                    embedding=item.embedding
+                ).save_or_update()
 
-        except Exception as e:
-            # Message failed to be processed
-            logger.error('❌ message "{}" failed 👎'.format(msg.value().text))
-            logger.exception(e)
+            except Exception as e:
+                # Message failed to be processed
+                logger.error('❌ message "{}" failed 👎'.format(item.text))
+                logger.exception(e)
 
 
 def main():

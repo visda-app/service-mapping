@@ -29,26 +29,26 @@ logger.info("🔁 Starting the infinite loop ... ")
 while True:
     msg = mb.consumer_receive()
     mb.consumer_acknowledge(msg)
-    try:
-        logger.debug(
-            f"uuid={msg.value().uuid}, "
-            f"text='{text_tip(msg.value().text)}' "
-            f"sequence_id='{msg.value().sequence_id}'"
-            "Received! 🤓"
-        )
+    for item in msg.value().items:
+        try:
+            logger.debug(
+                f"uuid={item.uuid}, "
+                f"text='{text_tip(item.text)}' "
+                f"sequence_id='{item.sequence_id}' "
+                "Received! 🤓"
+            )
+            text_record = TextModel(
+                id=item.uuid,
+                text=item.text,
+            ).save_or_update()
 
-        text_record = TextModel(
-            id=msg.value().uuid,
-            text=msg.value().text,
-        ).save_or_update()
-
-    except Exception as e:
-        # Message failed to be processed
-        logger.error(
-            "❌ message failed 👎"
-            f"uuid={msg.value().uuid}, "
-            f"text='{text_tip(msg.value().text)}' "
-        )
-        logger.exception(e)
+        except Exception as e:
+            # Message failed to be processed
+            logger.error(
+                "❌ message failed 👎"
+                f"uuid={item.uuid}, "
+                f"text='{text_tip(item.text)}' "
+            )
+            logger.exception(e)
 
 mb.close()

@@ -2,8 +2,10 @@ numpy
 pandas
 scikit-learn
 chapar
+fastavro
+pulsar-client[avro]
 
-# DB 
+# DB
 SQLAlchemy
 psycopg2-binary
 

@@ -18,7 +18,7 @@ certifi==2020.12.5
     # via
     #   pulsar-client
     #   requests
-chapar==0.5
+chapar==0.6
     # via -r app_requirements.in
 chardet==4.0.0
     # via requests
@@ -36,6 +36,10 @@ deprecated==1.2.13
     # via redis
 dogpile.cache==1.1.4
     # via -r app_requirements.in
+fastavro==0.24.0
+    # via
+    #   -r app_requirements.in
+    #   pulsar-client
 flask==1.1.2
     # via
     #   -r app_requirements.in
@@ -115,8 +119,10 @@ protobuf==3.14.0
     #   googleapis-common-protos
 psycopg2-binary==2.8.5
     # via -r app_requirements.in
-pulsar-client==2.10.1
-    # via chapar
+pulsar-client[avro]==2.10.1
+    # via
+    #   -r app_requirements.in
+    #   chapar
 pyasn1==0.4.8
     # via
     #   oauth2client
@@ -139,6 +145,7 @@ python-dateutil==2.8.1
     #   pandas
 pytz==2020.1
     # via
+    #   fastavro
     #   flask-restful
     #   google-api-core
     #   pandas

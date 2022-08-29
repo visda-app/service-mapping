@@ -2,13 +2,11 @@ import os
 import math
 import googleapiclient.discovery
 import pprint
-from dataclasses import dataclass
 from schema import Schema, Optional
 import requests
 from uuid import uuid4
 
-from chapar.message_broker import MessageBroker, Producer
-from chapar.schema_repo import TextSchema
+
 from lib.logger import logger
 from configs.app import (
     PulsarConf,
@@ -24,17 +22,12 @@ from models.job_text_mapping import (
 )
 from lib.cache import cache_region
 from lib import nlp
+from lib.messaging import publish_texts_on_message_bus, TextItem
 
 
 pp = pprint.PrettyPrinter().pprint
 DEVELOPER_KEY = ThirdParty.GOOGLE_API_KEY
 MAX_RESULTS_PER_REQUEST = 100
-
-
-@dataclass
-class TextItem:
-    id: str
-    text: str
 
 
 KWARGS_SCHEMA = {
@@ -94,46 +87,6 @@ class Get3rdPartyData(BaseTask):
         except Exception as e:
             logger.exception(e)
             return {}
-
-    def _publish_texts_on_message_bus(self, text_items, sequence_id):
-        """
-        Publish text text_items to the Pulsar message bus
-
-        Args:
-            text_items (list): a list of input text TextItems
-                [
-                    TextItem(id='an_id', text='a_text')
-                ]
-            sequence_id (str): an id for the job
-        """
-        num_messages = len(text_items)
-        logger.debug(
-            f"Publishing messages to the message bus "
-            f"num_messages={num_messages}"
-        )
-
-        mb = MessageBroker(
-            broker_service_url=PulsarConf.client,
-            producer=Producer(
-                PulsarConf.text_topic,
-                schema_class=TextSchema
-            )
-        )
-        logger.info("Producer created.")
-
-        for text_item in text_items:
-            msg = TextSchema(
-                uuid=text_item.id,
-                text=text_item.text,
-                sequence_id=sequence_id
-            )
-            # TODO: Check if sending async causes any problems
-            mb.producer_send(msg)
-            # mb.producer_send_async(msg)
-
-        # TODO We should close connection, but I am not sure if closing it would terminate the async send
-        logger.debug("Closing connection to Pulsar")
-        mb.close()
 
     def _record_job_text_relationship(self, text_items, job_id, text_type):
         """
@@ -197,9 +150,9 @@ class Get3rdPartyData(BaseTask):
             TextTypes.RAW_TEXT.value
         )
 
-        self._publish_texts_on_message_bus(not_embedded_words, sequence_id)
-        self._publish_texts_on_message_bus(not_embedded_senteces, sequence_id)
-        self._publish_texts_on_message_bus(text_items, sequence_id)
+        publish_texts_on_message_bus(not_embedded_words, sequence_id)
+        publish_texts_on_message_bus(not_embedded_senteces, sequence_id)
+        publish_texts_on_message_bus(text_items, sequence_id)
 
     def _extract_comments(self, youtube_data):
         results = []

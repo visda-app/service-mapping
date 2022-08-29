@@ -3,7 +3,6 @@ from pulsar.schema import (
     Record,
     String,
     Array,
-    Float,
     AvroSchema,
 )
 
@@ -16,41 +15,38 @@ class TextItem(Record):
     sequence_id = String()
 
 
-class TextEmbeddingItem(Record):
-    uuid = String(required=True)
-    text = String()
-    embedding = Array(Float())
-
-
 class TextSchema(Record):
-    items = Array(TextItem)
+    items = Array(TextItem())
 
 
-class TextEmbeddingSchema(Record):
-    items = Array(TextEmbeddingItem())
-
-
-class TaskSchema(Record):
-    task_class = String(required=True)
-    task_id = String()
-    job_id = String()
-    args = String()
-    kwargs = String()
-
-schema = AvroSchema(TextItem)
-
-breakpoint()
+schema = AvroSchema(TextSchema)
 
 
 broker_service_url = PulsarConf.client
 client = pulsar.Client(broker_service_url)
 
-
 _producer = client.create_producer(
-    'apache/pulsar/text-topic',
+    PulsarConf.text_topic,
     batching_enabled=True,
     batching_max_publish_delay_ms=10,
     schema=schema
 )
 
 
+obj01 = TextItem(
+    uuid="4thq3o4t",
+    text="a test is here",
+    sequence_id="a seq id jq304tu",
+)
+obj02 = TextItem(
+    uuid="8943ty934ty0",
+    text="a second test",
+    sequence_id="a seq id q0tu",
+)
+msg = TextSchema(items=[obj01, obj02])
+
+_producer.send(msg)
+
+
+
+client.close()

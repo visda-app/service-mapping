@@ -25,7 +25,8 @@ while True:
     try:
         # in_text = json.loads(msg.data().decode())
         logger.debug(f"Received message{msg} with data: {msg.data()} ✅")
-        logger.debug(f"{msg.value().uuid}, {msg.value().text}")
+        for item in msg.value().items:
+            logger.debug(f"🤓 {item.uuid}, {item.text} ")
     except Exception as e:
         # Message failed to be processed
         logger.info("❌ message '{}' 👎".format(msg.data()))
