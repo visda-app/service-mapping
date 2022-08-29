@@ -14,6 +14,9 @@ from lib.logger import logger
 from configs.app import PulsarConf
 
 
+TEXT_BATCH_SIZE = 25
+
+
 @dataclass
 class TextItem:
     id: str
@@ -76,10 +79,10 @@ def publish_texts_on_message_bus(text_items: List[TextItem], sequence_id: str):
     """
     Publish text text_items to the Pulsar message bus
     """
-    num_messages = len(text_items)
+    num_items = len(text_items)
     logger.debug(
         f"Publishing messages to the message bus "
-        f"num_messages={num_messages}"
+        f"num_texts={num_items}"
     )
 
     mb = MessageBroker(
@@ -91,18 +94,18 @@ def publish_texts_on_message_bus(text_items: List[TextItem], sequence_id: str):
     )
     logger.info("Producer created.")
 
-    for text_item in text_items:
-        msg = TextSchema(
-            items=[
-                TextSchemaItem(
-                    uuid=text_item.id,
-                    text=text_item.text,
-                    sequence_id=sequence_id
-                )
-            ]
-        )
-        # TODO: Check if sending async causes any problems
+    for i in range(0, num_items, TEXT_BATCH_SIZE):
+        msg_items = [
+            TextSchemaItem(
+                uuid=text_item.id,
+                text=text_item.text,
+                sequence_id=sequence_id
+            )
+            for text_item in text_items[i : i + TEXT_BATCH_SIZE]
+        ]
+        msg = TextSchema(items=msg_items)
         mb.producer_send(msg)
+        # TODO: Check if sending async causes any problems
         # mb.producer_send_async(msg)
 
     # TODO We should close connection, but I am not sure if closing it would terminate the async send
