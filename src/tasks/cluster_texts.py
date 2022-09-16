@@ -195,8 +195,8 @@ def _get_clustered_data(data: List[BubbleItem]):
         should be modified. 
         """
         # TODO: Choose a dimention size
-        # return copy(data_item.embedding)
-        return [data_item.xy_coord.x, data_item.xy_coord.y]
+        return copy(data_item.embedding)
+        # return [data_item.xy_coord.x, data_item.xy_coord.y]
         # return data_item.mid_dimension_coords
 
 
