@@ -2,3 +2,4 @@ __pycache__
 secret-values.yaml
 tmp/output*.json
 test-app.db
+.env

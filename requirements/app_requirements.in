@@ -41,3 +41,6 @@ numpy
 wordcloud
 matplotlib
 Pillow
+
+watchtower
+boto3

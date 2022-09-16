@@ -25,6 +25,7 @@ api.add_resource(Job, '/job')
 @app.route('/status')
 def status():
     logger.debug("We are at the /status, ping!")
+    logger.warning("Warning: We are at the /status, ping!")
     params = request.args.to_dict()
     return {'status': 200, 'data': params}
 

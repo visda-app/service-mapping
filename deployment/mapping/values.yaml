@@ -40,3 +40,10 @@ db:
 cache:
     host: cache-redis-headless
     port: 6379
+
+aws:
+    access_key_id: AKIAVQCOA2CZ2ZAWLWQH
+    region: us-west-2
+
+logging:
+    logGroupName: ApplicationLogs

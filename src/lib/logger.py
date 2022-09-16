@@ -1,8 +1,19 @@
 import logging
 import logging.config
+import boto3
+
+from configs.app import AWS as aws_configs
+from configs.app import Logging as logging_configs
 
 
-service_logger = "service_logger"
+boto3_logs_client = boto3.client(
+    'logs',
+    aws_access_key_id=aws_configs.access_key_id,
+    aws_secret_access_key=aws_configs.secret_access_key,
+    region_name=aws_configs.region,
+)
+
+service_logger = logging_configs.service_name
 
 d = {
     "version": 1,
@@ -33,12 +44,25 @@ d = {
             "backupCount": 10,
             "encoding": "utf8"
         },
+        "watchtower": {
+            "class": "watchtower.CloudWatchLogHandler",
+            "boto3_client": boto3_logs_client,
+            "log_group_name": logging_configs.log_group_name,
+            # Decrease the verbosity level here to send only those logs to watchtower,
+            # but still see more verbose logs in the console. See the watchtower
+            # documentation for other parameters that can be set here.
+            "level": "DEBUG",
+            "send_interval": 5,
+            "create_log_group": False,
+            "log_stream_name": "{logger_name}/{strftime:%y-%m-%d}",
+            "formatter": "detailed",
+        },
     },
     "loggers": {
         service_logger: {
-            "level": "DEBUG",
+            "level": "INFO",
             "handlers": [
-                "console", "rotating_file"
+                "console", "rotating_file", "watchtower",
             ],
             "propagate": False
         }

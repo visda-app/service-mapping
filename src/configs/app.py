@@ -50,4 +50,15 @@ class ThirdParty:
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
 
+class AWS:
+    access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+    secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    region = os.environ.get('AWS_REGION')
+
+
+class Logging:
+    log_group_name = os.environ.get('LOG_GROUP_NAME')  # AWS cloud watch log group name
+    service_name = os.environ.get('SERVICE_NAME')
+
+
 k8s_readiness_probe_file = os.getenv('K8S_READINESS_PROBE_FILE')

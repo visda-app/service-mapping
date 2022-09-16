@@ -1,14 +1,22 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: storage-config
+    name: app-settings
 data:
+    SERVICE_NAME: "{{ .Values.serviceName }}"
+    LOG_GROUP_NAME: "{{ .Values.logging.logGroupName }}"
+    # AWS:
+    AWS_REGION: "{{ .Values.aws.region }}"
+    AWS_ACCESS_KEY_ID: "{{ .Values.aws.access_key_id }}"
+    AWS_SECRET_ACCESS_KEY: "{{ .Values.secrets.aws.secret_access_key }}"
+    # DB:
     DB_DRIVER: "{{ .Values.db.driver }}"
     DB_USER: "{{ .Values.db.user }}"
     DB_PASSWORD: "{{ .Values.secrets.db.password }}"
     DB_HOST: "{{ .Values.db.host }}"
     DB_PORT: "{{ .Values.db.port }}"
     DB_DATABASENAME: "{{ .Values.db.databasename }}"
+    # Cache: 
     CACHE_HOST: "{{ .Values.cache.host }}"
     CACHE_PORT: "{{ .Values.cache.port }}"
     K8S_READINESS_PROBE_FILE: "{{ .Values.deployment.readinessProbeFile }}"
@@ -42,7 +50,7 @@ spec:
                 args: ["route:app", "-c", "configs/gunicorn_configs.py", "--preload"]
                 envFrom:
                     - configMapRef:
-                        name: storage-config
+                        name: app-settings
                 env:
                 -   name: BROKER_SERVICE_URL
                     value: {{ .Values.brokerServiceUrl }}
@@ -86,7 +94,7 @@ spec:
                 #     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 envFrom:
                     - configMapRef:
-                        name: storage-config
+                        name: app-settings
             -   name: {{ .Values.podContainerName }}-consumer-text-embedding
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
@@ -103,7 +111,7 @@ spec:
                     value: {{ .Values.pulsarTextEmbeddingTopic }}
                 envFrom:
                     - configMapRef:
-                        name: storage-config
+                        name: app-settings
             -   name: {{ .Values.podContainerName }}-consumer-task
                 image: {{ .Values.dockerImage }}
                 imagePullPolicy: {{ .Values.imagePullPolicy }}
@@ -122,7 +130,7 @@ spec:
                     value: "{{ .Values.secrets.google.api_key }}"
                 envFrom:
                     - configMapRef:
-                        name: storage-config
+                        name: app-settings
                 readinessProbe:
                     exec:
                         command:

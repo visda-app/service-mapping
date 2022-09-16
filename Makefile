@@ -75,6 +75,7 @@ run-dev: build ## Run a server in the prod docker image
 		--env-file etc/.env \
 		--env SQLALCHEMY_DATABASE_URI="postgresql://sunnyday1:sunnyday2@$(shell minikube service postgresql-proxy -n db --url | cut -d '/' -f3)/aabgoosht" \
 		--env CACHE_URI="$(shell minikube service cache-redis-master --url | cut -d '/' -f3)" \
+		--env SERVICE_NAME=${SERVICE_NAME} \
 		-p ${SERVICE_PORT}:${SERVICE_PORT} \
 		${PROD_IMAGE_TAG} \
 		gunicorn route:app -w 1 -c configs/gunicorn_configs.py
@@ -97,6 +98,7 @@ hi: push  ## Install the helm chart (hi: helm install)
 	helm upgrade --install \
 		-f ./deployment/${SERVICE_NAME}/values.yaml \
 		-f ../_secrets/secret-values.yaml \
+		--set serviceName=${SERVICE_NAME} \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
 		${HELM_RELEASE} \
 		./deployment/${SERVICE_NAME}/
@@ -105,6 +107,7 @@ ht:  ## Shows the Helm template
 	helm template \
 		-f ./deployment/${SERVICE_NAME}/values.yaml \
 		-f ../_secrets/secret-values.yaml \
+		--set serviceName=${SERVICE_NAME} \
 		--set dockerImage=${DOCKER_HUB_USERNAME}/${PROD_IMAGE_TAG} \
 		--debug \
 		${HELM_RELEASE} \
