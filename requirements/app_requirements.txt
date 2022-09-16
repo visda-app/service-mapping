@@ -12,6 +12,14 @@ asbool==0.1.1
     # via -r app_requirements.in
 attrs==19.3.0
     # via jsonschema
+boto3==1.24.74
+    # via
+    #   -r app_requirements.in
+    #   watchtower
+botocore==1.27.74
+    # via
+    #   boto3
+    #   s3transfer
 cachetools==4.2.0
     # via google-auth
 certifi==2020.12.5
@@ -74,6 +82,10 @@ itsdangerous==1.1.0
     # via flask
 jinja2==2.11.2
     # via flask
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
 joblib==0.16.0
     # via
     #   nltk
@@ -141,6 +153,7 @@ pyrsistent==0.16.0
 python-dateutil==2.8.1
     # via
     #   arrow
+    #   botocore
     #   matplotlib
     #   pandas
 pytz==2020.1
@@ -163,6 +176,8 @@ rsa==4.6
     # via
     #   google-auth
     #   oauth2client
+s3transfer==0.6.0
+    # via boto3
 schema==0.7.5
     # via -r app_requirements.in
 scikit-learn==0.23.2
@@ -194,7 +209,11 @@ tqdm==4.64.0
 uritemplate==3.0.1
     # via google-api-python-client
 urllib3==1.26.2
-    # via requests
+    # via
+    #   botocore
+    #   requests
+watchtower==3.0.0
+    # via -r app_requirements.in
 werkzeug==1.0.1
     # via flask
 wordcloud==1.8.2.2
