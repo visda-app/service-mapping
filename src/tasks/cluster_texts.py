@@ -83,11 +83,11 @@ class ParentBubbleDrawItem:
 
 @dataclass
 class BubbleItem:
+    text: str
+    uuid: str
+    sequence_id: str
     embedding: List[float]  # high dimension embedding
-    text: str = None
-    uuid: str = None
-    sequence_id: str = None
-    tokens: list = field(default_factory=list)
+    tokens: list
     xy_coord: XYCoord = None
     cluster_info: ClusterInfo = None
     original_cluster_label: int = 0
@@ -102,7 +102,7 @@ class BubbleItem:
     extracted_sentences_and_scores: list = field(default_factory=list)
 
 
-def get_structured_data_from_json(embeddin_data):
+def transform_json_data_to_structured(embeddin_data):
     return [
         BubbleItem(
            text=item['text'],
@@ -179,19 +179,6 @@ def ap_cluster(x):
     cluster_centers = clustering.cluster_centers_
     return cluster_labels, cluster_centers
 
-def _get_coordinate_for_clustering(data_item: BubbleItem):
-    """
-    If one needs to cluster based on another set of
-    coordinates, e.g., a reduced dimension, here
-    should be modified. 
-        should be modified. 
-    should be modified. 
-    """
-    # TODO: Choose a dimention size
-    # return copy(data_item.embedding)
-    return [data_item.xy_coord.x, data_item.xy_coord.y]
-    # return data_item.mid_dimension_coords
-
 
 def _get_clustered_data(data: List[BubbleItem]):
     """
@@ -200,16 +187,29 @@ def _get_clustered_data(data: List[BubbleItem]):
     Returns
         Adds the clustering_info to each object in the input list of data
     """
+
+    def get_coordinate(data_item: BubbleItem):
+        """
+        If one needs to cluster based on another set of
+        coordinates, e.g., a reduced dimension, here
+        should be modified. 
+        """
+        # TODO: Choose a dimention size
+        return copy(data_item.embedding)
+        # return [data_item.xy_coord.x, data_item.xy_coord.y]
+        # return data_item.mid_dimension_coords
+
+
     # Cluster data
     coordinates = []
     for item in data:
-        coordinates.append(_get_coordinate_for_clustering(item))
+        coordinates.append(get_coordinate(item))
     cluster_labels, cluster_centers = ap_cluster(np.array(coordinates))
 
     # add clustering info to the data structure
     for i, item in enumerate(data):
         item.cluster_info = ClusterInfo(
-            is_cluster_head=_get_coordinate_for_clustering(item) in cluster_centers,
+            is_cluster_head=get_coordinate(item) in cluster_centers,
             cluster_label=cluster_labels[i]
         )
 
@@ -239,42 +239,22 @@ def _transform_flat_clusters_to_tree(clustered_data: List[BubbleItem]):
     if num_cluster_heads == 1:
         return clustered_data
 
-    items_by_cluster_label = defaultdict(list)
+    # Break down if there are more than one cluster
     result = []
-
-    for d in clustered_data:
-        items_by_cluster_label[d.cluster_info.cluster_label].append(d)
-
-    for _, val in items_by_cluster_label.items():
-        if len(val) > 1:
-            head = BubbleItem(embedding=[], children=val)
+    for item in clustered_data:
+        if item.cluster_info.is_cluster_head:
+            # Add cluster head to the tree and also add it as the first child
+            result.append(item)
+            if not item.children:
+                result[-1].children.append(deepcopy(item))
         else:
-            head = val[0]
-        result.append(head)
-
+            result[-1].children.append(item)
+    # Prune nodes with only one child.
+    # which would be the parent that is just repeated
+    for item in result:
+        if len(item.children) <= 1:
+            item.children = []
     return result
-
-
-def cluster_based_on_keywords(data: List[BubbleItem]):
-    """
-    cluster text wit the same keyword together
-    """
-    bubbles_by_token = defaultdict(list)
-    for d in data:
-        if d.tokens:
-            keyword = get_pruned_stem(d.tokens[0]['token'])
-        else:
-            keyword = None
-            logger.warning(f"No keywords for text item={d.text}")
-        bubbles_by_token[keyword].append(d)
-    new_data = []
-    for _, value in bubbles_by_token.items():
-        if len(value) > 1:
-            head = BubbleItem(embedding=[], children=value)
-        else:
-            head = value[0]
-        new_data.append(head)
-    data = new_data
 
 
 def cluster_and_transform_to_tree(
@@ -324,14 +304,15 @@ def insert_children_count(head: BubbleItem):
     if not head.children:
         head.children_count = 0
         return 0
-    num_children = 0
+    sum = 0
     for node in head.children:
-        if node.children:
-            num_children += insert_children_count(node)
+        sum += 1 
+        if node.children_count is not None:
+            sum += node.children_count
         else:
-            num_children += 1
-    head.children_count = num_children
-    return num_children
+            sum += insert_children_count(node)
+    head.children_count = sum
+    return sum
 
 
 def insert_bubble_uuid(head: BubbleItem):
@@ -346,41 +327,6 @@ def insert_bubble_uuid(head: BubbleItem):
         next = frontiers.pop(0)
         next.bubble_uuid = str(uuid4())
         frontiers.extend(next.children)
-
-
-leaf_coords_memo = defaultdict(list)
-def _get_leaf_coords(head: BubbleItem):
-    global leaf_coords_memo
-    if head.bubble_uuid in leaf_coords_memo:
-        return leaf_coords_memo[head.bubble_uuid]
-
-    if not head:
-        return []
-    if len(head.children) == 0:
-        return [head.xy_coord]
-    coords = []
-    for child in head.children:
-        coords.extend(_get_leaf_coords(child))
-
-    leaf_coords_memo[head.bubble_uuid] = coords
-
-    return coords
-
-
-def insert_cluster_heads_coords(head: BubbleItem):
-    if not head:
-        return
-    frontiers = [head]
-    while frontiers:
-        next = frontiers.pop(0)
-        frontiers.extend(next.children)
-
-        if next.children:
-            x_coords = np.array( [c.x for c in _get_leaf_coords(next)] )
-            y_coords = np.array( [c.x for c in _get_leaf_coords(next)] )
-            x = np.mean(x_coords)
-            y = np.mean(y_coords)
-            next.xy_coord = XYCoord(x=x, y=y)
 
 
 def _get_radius_multiplier(clustering_data):
@@ -420,7 +366,7 @@ def insert_radius(head: BubbleItem):
     """
     radius_multiplier_factor = _get_radius_multiplier(head.children)
 
-    frontiers = [head]
+    frontiers = copy(head.children)
     while frontiers:
         next = frontiers.pop(0)
         frontiers.extend(next.children)
@@ -527,7 +473,8 @@ def insert_wordcloud_draw_properties(head: BubbleItem):
     frontiers = [head]
     while frontiers:
         current = frontiers.pop(0)
-        frontiers.extend(current.children)
+        children = current.children
+        frontiers.extend(children)
 
         if len(current.keywords) > 1 and current.xy_coord:
             center_x = float(current.xy_coord.x)
@@ -612,14 +559,13 @@ def insert_stuff(head: BubbleItem):
     """
     insert_children_count(head)
     insert_bubble_uuid(head)
-    insert_cluster_heads_coords(head)
     insert_radius(head)
     insert_parents_info(head)
+    insert_meta_data(head)
     insert_and_return_keywords(head)
     insert_wordcloud_draw_properties(head)
     insert_keywords_parents_info(head)
-    # remove_text_for_cluster_heads(head)
-    insert_meta_data(head)
+    remove_text_for_cluster_heads(head)
 
 
 def extract_summary_sentences(head: BubbleItem):
@@ -730,10 +676,17 @@ def get_formatted_item(item: BubbleItem):
     Arg:
         An input item
     """
-    if item.parent:
-        parent_item = item.parent
-    else:
-        parent_item = item
+    def get_parent_xy(item):
+        if item.parent.xy_coord:
+            return item.parent.xy_coord
+        else: 
+            return item.xy_coord
+
+    def get_parent_r(item):
+        if item.parent.radius:
+            return  item.parent.radius
+        else:
+            return item.radius
 
     entry = {
         'x': float(item.xy_coord.x),
@@ -745,10 +698,10 @@ def get_formatted_item(item: BubbleItem):
         'children_count': item.children_count,
         'radius': item.radius,
         'parent': {
-            'x': float(parent_item.xy_coord.x),
-            'y': float(parent_item.xy_coord.y),
-            'radius': float(parent_item.radius),
-            'd3uuid': parent_item.bubble_uuid,
+            'x': float(get_parent_xy(item).x),
+            'y': float(get_parent_xy(item).y),
+            'radius': float(get_parent_r(item)),
+            'd3uuid': item.parent.bubble_uuid,
         },
         'children': [],
         'keywords': [asdict(kw) for kw in item.keywords],
@@ -829,7 +782,7 @@ class ClusterTexts(BaseTask):
         self.validate_raw_data(raw_data)
 
         logger.debug("Formatting raw_data...")
-        data = get_structured_data_from_json(raw_data)
+        data = transform_json_data_to_structured(raw_data)
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
@@ -848,7 +801,6 @@ class ClusterTexts(BaseTask):
 
         # clustering affinity Propagation
         logger.debug("First round of clustering data...")
-        cluster_based_on_keywords(data)
         clusters = cluster_and_transform_to_tree(data, include_original_cluster_label=True)
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
