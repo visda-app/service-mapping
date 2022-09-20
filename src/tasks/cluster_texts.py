@@ -259,6 +259,37 @@ def _transform_flat_clusters_to_tree(clustered_data: List[BubbleItem]):
     return result
 
 
+def cluster_based_on_keywords(data: List[BubbleItem]):
+    """
+    cluster text with the same keyword together
+    """
+    bubbles_by_token = defaultdict(list)
+    for d in data:
+        if d.tokens:
+            keyword = get_pruned_stem(d.tokens[0]['token'])
+        else:
+            keyword = None
+            logger.warning(f"No keywords for text item={d.text}")
+        bubbles_by_token[keyword].append(d)
+    new_data = []
+    for _, value in bubbles_by_token.items():
+        if len(value) > 1:
+            x_coords = np.array( [node.xy_coord.x for node in value] )
+            y_coords = np.array( [node.xy_coord.y for node in value] )
+            x = np.mean(x_coords)
+            y = np.mean(y_coords)
+
+            head = BubbleItem(
+                embedding=[],
+                children=value,
+                xy_coord=XYCoord(x=x, y=y)
+            )
+        else:
+            head = value[0]
+        new_data.append(head)
+    return new_data
+
+
 def cluster_and_transform_to_tree(
     data: List[BubbleItem],  # flat list
     include_original_cluster_label=False
@@ -348,7 +379,8 @@ def _get_leaf_coords(head: BubbleItem):
     for child in head.children:
         coords.extend(_get_leaf_coords(child))
 
-    leaf_coords_memo[head.bubble_uuid] = coords
+    if head.bubble_uuid:
+        leaf_coords_memo[head.bubble_uuid] = coords
 
     return coords
 
@@ -513,19 +545,24 @@ def insert_wordcloud_draw_properties(head: BubbleItem):
     frontiers = [head]
     while frontiers:
         current = frontiers.pop(0)
-        children = current.children
-        frontiers.extend(children)
+        frontiers.extend(current.children)
 
-        if len(current.keywords) > 1 and current.radius:
+        if len(current.children) > 1 and current.radius:
             center_x = float(current.xy_coord.x)
             center_y = float(current.xy_coord.y)
             radius = round( current.radius )
-            for kw in current.keywords:
+            if len(current.keywords) == 1:
+                kw = current.keywords[0]
                 kw.draw.x = center_x
-                kw.draw.dx = radius * random.gauss(0, 0.2) 
                 kw.draw.y = center_y
-                kw.draw.dy = radius * random.gauss(0, 0.35)
                 kw.draw.font_size = round(10 * math.log(kw.count * round(10 * kw.relevance_score)), 1)
+            else:
+                for kw in current.keywords:
+                    kw.draw.x = center_x
+                    kw.draw.dx = radius * random.gauss(0, 0.2) 
+                    kw.draw.y = center_y
+                    kw.draw.dy = radius * random.gauss(0, 0.35)
+                    kw.draw.font_size = round(10 * math.log(kw.count * round(10 * kw.relevance_score)), 1)
 
 
 def insert_keywords_parents_info(head: BubbleItem):
@@ -809,7 +846,7 @@ class ClusterTexts(BaseTask):
             sequence_ids (list[str]): A list of ids for all
                 the texts in the sequence that will be processed
         """
-        TOTAL_NUMBER_OF_STEPS = 10
+        TOTAL_NUMBER_OF_STEPS = 11
         current_progress = 0
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
@@ -839,6 +876,12 @@ class ClusterTexts(BaseTask):
         insert_reduced_2d_coords_tsne(data)
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
+
+        # clustering based on common keywords
+        data = cluster_based_on_keywords(data)
+        current_progress += 1
+        self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
+
 
         # clustering affinity Propagation
         logger.debug("First round of clustering data...")
