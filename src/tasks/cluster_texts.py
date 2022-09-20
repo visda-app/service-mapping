@@ -240,20 +240,22 @@ def _transform_flat_clusters_to_tree(clustered_data: List[BubbleItem]):
         return clustered_data
 
     # Break down if there are more than one cluster
+    items_by_cluster_label = defaultdict(list)
     result = []
-    for item in clustered_data:
-        if item.cluster_info.is_cluster_head:
-            # Add cluster head to the tree and also add it as the first child
-            result.append(item)
-            if not item.children:
-                result[-1].children.append(deepcopy(item))
+
+    for d in clustered_data:
+        items_by_cluster_label[d.cluster_info.cluster_label].append(d)
+
+    for _, val in items_by_cluster_label.items():
+        if len(val) > 1:
+            head = BubbleItem(
+                embedding=[],
+                original_cluster_label=val[0].cluster_info.cluster_label,
+                children=val
+            )
         else:
-            result[-1].children.append(item)
-    # Prune nodes with only one child.
-    # which would be the parent that is just repeated
-    for item in result:
-        if len(item.children) <= 1:
-            item.children = []
+            head = val[0]
+        result.append(head)
     return result
 
 
