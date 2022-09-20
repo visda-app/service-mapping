@@ -83,11 +83,11 @@ class ParentBubbleDrawItem:
 
 @dataclass
 class BubbleItem:
-    text: str
-    uuid: str
-    sequence_id: str
     embedding: List[float]  # high dimension embedding
-    tokens: list
+    text: str = None
+    uuid: str = None
+    sequence_id: str = None
+    tokens: list = field(default_factory=list)
     xy_coord: XYCoord = None
     cluster_info: ClusterInfo = None
     original_cluster_label: int = 0
@@ -195,8 +195,8 @@ def _get_clustered_data(data: List[BubbleItem]):
         should be modified. 
         """
         # TODO: Choose a dimention size
-        return copy(data_item.embedding)
-        # return [data_item.xy_coord.x, data_item.xy_coord.y]
+        # return copy(data_item.embedding)
+        return [data_item.xy_coord.x, data_item.xy_coord.y]
         # return data_item.mid_dimension_coords
 
 
@@ -279,14 +279,17 @@ def cluster_and_transform_to_tree(
     return nested_clusters
 
 
-def trim_tree_breadth(clustered_data: list, max_cluster_size=MAX_CLUSTER_SIZE):
+def put_tree_under_head(data: List[BubbleItem]):
+    head = BubbleItem(embedding=[])
+    head.children = data
+    return head
+
+
+def trim_tree_breadth(head: BubbleItem, max_cluster_size=MAX_CLUSTER_SIZE):
     """
     BFS traverse the nested clustering and break down if a node has too many
     children
     """
-    head = BubbleItem(text='', uuid='', sequence_id='', embedding=[], tokens=[])
-    head.children = clustered_data
-
     frontiers = [head]
     while frontiers:
         next = frontiers.pop(0)
@@ -327,6 +330,41 @@ def insert_bubble_uuid(head: BubbleItem):
         next = frontiers.pop(0)
         next.bubble_uuid = str(uuid4())
         frontiers.extend(next.children)
+
+
+leaf_coords_memo = defaultdict(list)
+def _get_leaf_coords(head: BubbleItem):
+    global leaf_coords_memo
+    if head.bubble_uuid in leaf_coords_memo:
+        return leaf_coords_memo[head.bubble_uuid]
+
+    if not head:
+        return []
+    if len(head.children) == 0:
+        return [head.xy_coord]
+    coords = []
+    for child in head.children:
+        coords.extend(_get_leaf_coords(child))
+
+    leaf_coords_memo[head.bubble_uuid] = coords
+
+    return coords
+
+
+def insert_cluster_heads_coords(head: BubbleItem):
+    if not head:
+        return
+    frontiers = [head]
+    while frontiers:
+        next = frontiers.pop(0)
+        frontiers.extend(next.children)
+
+        if len(next.children) > 0:
+            x_coords = np.array( [c.x for c in _get_leaf_coords(next)] )
+            y_coords = np.array( [c.y for c in _get_leaf_coords(next)] )
+            x = np.mean(x_coords)
+            y = np.mean(y_coords)
+            next.xy_coord = XYCoord(x=x, y=y)
 
 
 def _get_radius_multiplier(clustering_data):
@@ -476,7 +514,7 @@ def insert_wordcloud_draw_properties(head: BubbleItem):
         children = current.children
         frontiers.extend(children)
 
-        if len(current.keywords) > 1 and current.xy_coord:
+        if len(current.keywords) > 1 and current.radius:
             center_x = float(current.xy_coord.x)
             center_y = float(current.xy_coord.y)
             radius = round( current.radius )
@@ -559,6 +597,7 @@ def insert_stuff(head: BubbleItem):
     """
     insert_children_count(head)
     insert_bubble_uuid(head)
+    insert_cluster_heads_coords(head)
     insert_radius(head)
     insert_parents_info(head)
     insert_meta_data(head)
@@ -677,13 +716,13 @@ def get_formatted_item(item: BubbleItem):
         An input item
     """
     def get_parent_xy(item):
-        if item.parent.xy_coord:
+        if item.parent:
             return item.parent.xy_coord
         else: 
             return item.xy_coord
 
     def get_parent_r(item):
-        if item.parent.radius:
+        if item.parent and item.parent.radius:
             return  item.parent.radius
         else:
             return item.radius
@@ -696,7 +735,7 @@ def get_formatted_item(item: BubbleItem):
         'text': item.text,
         'cluster_label': int(item.original_cluster_label),
         'children_count': item.children_count,
-        'radius': item.radius,
+        'radius': float(item.radius),
         'parent': {
             'x': float(get_parent_xy(item).x),
             'y': float(get_parent_xy(item).y),
@@ -710,13 +749,13 @@ def get_formatted_item(item: BubbleItem):
     return entry
 
 
-def get_reshaped_data(head: BubbleItem):
+def get_reshaped_data(head: BubbleItem, is_first_head=False):
     """
     """
     if not head:
         return
     new_node = {}
-    if head.xy_coord is not None:
+    if not is_first_head:
         new_node = get_formatted_item(head)
     new_node['children'] = [
         get_reshaped_data(c) for c in head.children
@@ -768,7 +807,7 @@ class ClusterTexts(BaseTask):
             sequence_ids (list[str]): A list of ids for all
                 the texts in the sequence that will be processed
         """
-        TOTAL_NUMBER_OF_STEPS = 9
+        TOTAL_NUMBER_OF_STEPS = 10
         current_progress = 0
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
@@ -805,9 +844,14 @@ class ClusterTexts(BaseTask):
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
+        # Put a head on top
+        head = put_tree_under_head(clusters)
+        current_progress += 1
+        self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
+
         # Trim down
         logger.debug("Trim tree and breakdown big clusters")
-        head = trim_tree_breadth(clusters)
+        head = trim_tree_breadth(head)
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
@@ -828,7 +872,7 @@ class ClusterTexts(BaseTask):
         # breakpoint()
 
         logger.debug("Get reshaped data...")
-        data_dict = get_reshaped_data(head)
+        data_dict = get_reshaped_data(head, is_first_head=True)
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
