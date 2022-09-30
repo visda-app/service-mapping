@@ -878,9 +878,9 @@ class ClusterTexts(BaseTask):
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
         # clustering based on common keywords
-        data = cluster_based_on_keywords(data)
-        current_progress += 1
-        self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
+        # data = cluster_based_on_keywords(data)
+        # current_progress += 1
+        # self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
 
         # clustering affinity Propagation
