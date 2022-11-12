@@ -857,7 +857,12 @@ class ClusterTexts(BaseTask):
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
-        self.validate_raw_data(raw_data)
+        try:
+            self.validate_raw_data(raw_data)
+        except ValueError as e:
+            self.record_progress(TOTAL_NUMBER_OF_STEPS, TOTAL_NUMBER_OF_STEPS)
+            raise
+
 
         logger.debug("Formatting raw_data...")
         data = transform_json_data_to_structured(raw_data)
