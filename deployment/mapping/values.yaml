@@ -38,7 +38,7 @@ db:
     databasename: aabgoosht
 
 cache:
-    host: cache-redis-headless
+    host: redis.cache
     port: 6379
 
 aws:
