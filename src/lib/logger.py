@@ -60,7 +60,7 @@ d = {
     },
     "loggers": {
         service_logger: {
-            "level": "INFO",
+            "level": "DEBUG",
             "handlers": [
                 "console", "rotating_file", "watchtower",
             ],

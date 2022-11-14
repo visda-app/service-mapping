@@ -4,11 +4,6 @@ from chapar.schema_repo import TextSchema, TextItem
 
 from src.lib.logger import logger
 from src.configs.app import PulsarConf
-import pulsar, _pulsar
-from uuid import uuid4
-
-
-# import pdb; pdb.set_trace()
 
 
 mb = MessageBroker(
@@ -26,6 +21,21 @@ movie_review = 'I admit, the great majority Howard Hughes?'
 # msg = {"uuid": str(uuid4()), "text": movie_review, "embedding": [3, 2.1, 0.34]}
 
 
+obj01 = TextItem(
+    uuid="4thq3o4t",
+    text="a test is here",
+    sequence_id="a seq id jq304tu",
+)
+obj02 = TextItem(
+    uuid="8943ty934ty0",
+    text="a second test",
+    sequence_id="a seq id q0tu",
+)
+msg = TextSchema(items=[obj01, obj02])
+
+mb.producer_send(msg)
+
+
 # msg = TextSchema(
 #     uuid="uuid324",
 #     text=movie_review
@@ -35,6 +45,5 @@ movie_review = 'I admit, the great majority Howard Hughes?'
 #     mb.producer_send(msg)
 
 
-breakpoint()
 
-# mb.close()
+mb.close()

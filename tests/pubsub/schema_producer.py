@@ -16,10 +16,11 @@ class TextItem(Record):
 
 
 class TextSchema(Record):
-    items = Array(TextItem())
+    items = Array(TextItem(), required=True)
 
 
 schema = AvroSchema(TextSchema)
+breakpoint()
 
 
 broker_service_url = PulsarConf.client

@@ -48,13 +48,17 @@ def log(msg):
         # mb.consumer_negative_acknowledge(msg)
 
 
+logger.info("🔁 Starting the infinite loop...")
+
 while True:
+    logger.info("👀 In the infinite loop...")
     try:
         msg = _consumer.receive()
         _consumer.acknowledge(msg)
+        log(msg)
     except KeyboardInterrupt:
         break
-    log(msg)
+
 
 
 _consumer.close()
