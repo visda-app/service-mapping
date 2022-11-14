@@ -44,3 +44,5 @@ Pillow
 
 watchtower
 boto3
+
+blinker

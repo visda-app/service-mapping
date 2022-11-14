@@ -12,6 +12,8 @@ asbool==0.1.1
     # via -r app_requirements.in
 attrs==19.3.0
     # via jsonschema
+blinker==1.5
+    # via -r app_requirements.in
 boto3==1.24.74
     # via
     #   -r app_requirements.in
