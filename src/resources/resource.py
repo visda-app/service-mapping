@@ -17,7 +17,12 @@ def _request_call_logger(f):
         logger.info(
             f"{request.method} {request.full_path} args={args} kwargs={kwargs} user_id={user_id}"  # noqa
         )
-        return f(*args, **kwargs)
+        # Catch all the exceptions and log them
+        try:
+            return f(*args, **kwargs)
+        except Exception as e:
+            logger.exception(e)
+            raise
     return wrapper
 
 

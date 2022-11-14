@@ -1,4 +1,3 @@
-from flask_restful import Resource
 from flask import request
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
@@ -7,6 +6,7 @@ from asbool import asbool
 from lib.logger import logger
 from tasks.job_auditor import JobAuditor
 from models.clustered_text import ClusteredText
+from resources.resource import Resource
 
 
 class TextMapResult(Resource):

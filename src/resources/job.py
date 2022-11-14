@@ -1,4 +1,3 @@
-from flask_restful import Resource
 from flask import request
 import json
 from jsonschema import validate
@@ -6,6 +5,7 @@ from jsonschema.exceptions import ValidationError
 
 from lib.logger import logger
 from lib.cache import cache_region
+from resources.resource import Resource
 
 
 SCHEMA = {

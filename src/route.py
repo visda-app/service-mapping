@@ -1,9 +1,7 @@
 from flask import Flask, request
-from flask import got_request_exception
 from flask_restful import Api
 
 from lib.logger import logger
-from lib.resource import log_exception
 from resources.text_map import TextMap
 from resources.text_map_result import TextMapResult
 from resources.job import Job
@@ -12,8 +10,6 @@ from models.db import create_all_tables
 
 app = Flask(__name__)
 api = Api(app)
-
-got_request_exception.connect(log_exception, app)
 
 
 @app.before_first_request
