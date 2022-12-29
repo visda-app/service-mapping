@@ -100,9 +100,10 @@ class BubbleItem:
     keywords: list = None
     metadata: dict = None
     extracted_sentences_and_scores: list = field(default_factory=list)
+    is_most_top_head: bool = False
 
 
-def transform_json_data_to_structured(embeddin_data):
+def transform_json_data_to_structured(embedding_data):
     return [
         BubbleItem(
            text=item['text'],
@@ -110,7 +111,7 @@ def transform_json_data_to_structured(embeddin_data):
            uuid=item['uuid'],
            sequence_id=item['sequence_id'],
            tokens=item['tokens'],
-        ) for item in embeddin_data
+        ) for item in embedding_data
     ]
 
 
@@ -313,7 +314,7 @@ def cluster_and_transform_to_tree(
 
 
 def put_tree_under_head(data: List[BubbleItem]):
-    head = BubbleItem(embedding=[])
+    head = BubbleItem(embedding=[], is_most_top_head=True)
     head.children = data
     return head
 
@@ -461,13 +462,15 @@ def insert_parents_info(head: BubbleItem):
     frontiers = [head]
     while frontiers:
         current = frontiers.pop(0)
-        for child in current.children:
-            child.parent = ParentBubbleDrawItem(
-                xy_coord=copy(current.xy_coord),
-                radius=current.radius,
-                bubble_uuid=current.bubble_uuid,
-            )
         frontiers.extend(current.children)
+
+        if not current.is_most_top_head:
+            for child in current.children:
+                child.parent = ParentBubbleDrawItem(
+                    xy_coord=copy(current.xy_coord),
+                    radius=current.radius,
+                    bubble_uuid=current.bubble_uuid,
+                )
 
 
 def _group_keywords_by_count(keywords: List[KeywordItem]):
@@ -577,8 +580,8 @@ def insert_keywords_parents_info(head: BubbleItem):
         for child in children:
             for kw in child.keywords:
                 kw.parent = None
-                if child.parent.xy_coord is not None:  # If the parent is present 
-                    # find the keword in the parent's set of keyword
+                if child.parent and child.parent.xy_coord:  # If the parent is present 
+                    # find the keyword in the parent's set of keyword
                     for parent_kw in current.keywords:
                         if kw.word == parent_kw.word:
                             kw.parent = parent_kw
@@ -754,18 +757,6 @@ def get_formatted_item(item: BubbleItem):
     Arg:
         An input item
     """
-    def get_parent_xy(item):
-        if item.parent:
-            return item.parent.xy_coord
-        else: 
-            return item.xy_coord
-
-    def get_parent_r(item):
-        if item.parent and item.parent.radius:
-            return  item.parent.radius
-        else:
-            return item.radius
-
     entry = {
         'x': float(item.xy_coord.x),
         'y': float(item.xy_coord.y),
@@ -776,11 +767,11 @@ def get_formatted_item(item: BubbleItem):
         'children_count': item.children_count,
         'radius': float(item.radius),
         'parent': {
-            'x': float(get_parent_xy(item).x),
-            'y': float(get_parent_xy(item).y),
-            'radius': float(get_parent_r(item)),
+            'x': float(item.parent.xy_coord.x),
+            'y': float(item.parent.xy_coord.y),
+            'radius': float(item.parent.radius),
             'd3uuid': item.parent.bubble_uuid,
-        },
+        } if item.parent else None,
         'children': [],
         'keywords': [asdict(kw) for kw in item.keywords],
         'summary_sentences': [asdict(e) for e in item.extracted_sentences_and_scores]
@@ -788,13 +779,13 @@ def get_formatted_item(item: BubbleItem):
     return entry
 
 
-def get_reshaped_data(head: BubbleItem, is_first_head=False):
+def get_reshaped_data(head: BubbleItem):
     """
     """
     if not head:
         return
     new_node = {}
-    if not is_first_head:
+    if not head.is_most_top_head:
         new_node = get_formatted_item(head)
     new_node['children'] = [
         get_reshaped_data(c) for c in head.children
@@ -911,7 +902,7 @@ class ClusterTexts(BaseTask):
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
-        # insert representative senteces 
+        # insert representative sentences 
         logger.debug("Extract summary sentences for cluster heads")
         traverse_and_extract_summary_sentences(head.children)
         current_progress += 1
@@ -922,7 +913,7 @@ class ClusterTexts(BaseTask):
         # breakpoint()
 
         logger.debug("Get reshaped data...")
-        data_dict = get_reshaped_data(head, is_first_head=True)
+        data_dict = get_reshaped_data(head)
         current_progress += 1
         self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
