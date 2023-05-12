@@ -63,3 +63,10 @@ class ClusteredText(Base):
         results = cls._get_last_by_sequence_id(sequence_id)
         if results:
             return results.clustering
+
+    @classmethod
+    def delete_by_sequence_id(cls, sequence_id):
+        session.query(cls).filter(
+            cls.sequence_id == sequence_id
+        ).delete()
+        session.commit()

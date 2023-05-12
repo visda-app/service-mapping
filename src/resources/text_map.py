@@ -9,6 +9,7 @@ from tasks.get_3rd_party_data import Get3rdPartyData
 from tasks.find_keywords import FindKeywords
 from tasks.await_embedding import AwaitEmbedding
 from tasks.cluster_texts import ClusterTexts
+from tasks.upload_to_s3 import UploadToS3
 from lib.utils import generate_random_id
 from lib.cache import cache_region as cache
 from resources.resource import Resource
@@ -73,7 +74,7 @@ class TextMap(Resource):
 
 
         curl -X POST \
-            $(minikube service mapping-service --url)/textmap \
+            127.0.0.1:56550/textmap \
             -H "Content-Type: application/json"  \
             -d '{
                 "source_urls": [
@@ -82,7 +83,7 @@ class TextMap(Resource):
                     "https://www.youtube.com/watch?v=DHjqpvDnNGE"
                 ],
                 "user_id": "a_user_id",
-                "limit": 200
+                "limit": 100
             }' \
             | python -m json.tool \
             | python -c "import sys, json; print(json.load(sys.stdin)['job_id'])" \
@@ -139,6 +140,14 @@ class TextMap(Resource):
         )
         tasks.append(
             ClusterTexts(
+                job_id=job_id, kwargs={
+                    'sequence_id': job_id,
+                }
+            )
+        )
+
+        tasks.append(
+            UploadToS3(
                 job_id=job_id, kwargs={
                     'sequence_id': job_id,
                 }
