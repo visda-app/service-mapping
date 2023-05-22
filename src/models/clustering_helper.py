@@ -62,9 +62,3 @@ def get_clustering_count(sequence_id):
     q = _get_query_clustering(sequence_id)
     return q.count()
 
-
-def save_clustering_to_db(sequence_id, clustering):
-    ClusteredText(
-        sequence_id=sequence_id,
-        clustering=clustering
-    ).save_to_db()

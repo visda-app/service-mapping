@@ -4,6 +4,7 @@ from unittest.mock import Mock, patch
 import json
 import numpy as np
 from copy import deepcopy
+from uuid import uuid4
 
 import tasks.cluster_texts as clusterer
 from tasks.cluster_texts import KeywordItem
@@ -175,17 +176,19 @@ def test__group_keywords_by_count():
 @patch('tasks.cluster_texts._load_embeddings_from_db')
 @patch('tasks.cluster_texts.TextModel')
 def test_execute(mock_text_model, mock_embedding, raw_embedding_w_seq_id):
+
     np.random.seed(1)
     class MockTextModel:
         def get_embedding_by_text(self, *args):
             return list(np.random.randn(2))
-    
+
+    sequence_id = 'test_sequence_id_' + str(uuid4())
 
     # mock_text_model.get_embedding_by_text.return_value = list(rnd_vect)
     mock_text_model.return_value = MockTextModel
 
     cluster_texts = clusterer.ClusterTexts(kwargs={
-        "sequence_id": 'a_dummy_sequence_id',
+        "sequence_id": sequence_id,
     })
     mock_embedding.return_value = raw_embedding_w_seq_id
     res = cluster_texts.execute()

@@ -10,6 +10,7 @@ from sklearn.cluster import AffinityPropagation
 from dataclasses import dataclass, asdict, field
 import random
 
+from lib import s3 as s3_client
 from lib.logger import logger
 from lib.nlp import (
     get_pruned_stem,
@@ -18,7 +19,6 @@ from lib.nlp import (
 from models.text import Text as TextModel
 from models.clustering_helper import (
     load_first_embeddings_from_db,
-    save_clustering_to_db
 )
 from tasks.base_task import BaseTask
 from tasks.base_task import record_start_finish_time_in_db
@@ -924,8 +924,12 @@ class ClusterTexts(BaseTask):
         #     f.write(json.dumps(data_dict, indent=4))
         #
 
-        logger.debug(f"Saving sequence_id={sequence_id} to DB...")
-        save_clustering_to_db(sequence_id, data_dict)
+        logger.debug(f"🌩️ Uploading data to S3 sequence_id={sequence_id} ...")
+        s3_client.upload_clustering_data_to_s3(sequence_id, data_dict)
+        current_progress += 1
+        self.record_progress(current_progress, TOTAL_NUMBER_OF_STEPS)
 
-        self.record_progress(TOTAL_NUMBER_OF_STEPS, TOTAL_NUMBER_OF_STEPS)
+        # To make the progress to 100%
+        self.record_progress(current_progress, current_progress)
+
         logger.debug("Done!")

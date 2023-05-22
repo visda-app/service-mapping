@@ -74,7 +74,7 @@ class TextMap(Resource):
 
 
         curl -X POST \
-            127.0.0.1:56550/textmap \
+            $(minikube service mapping-service --url)/textmap \
             -H "Content-Type: application/json"  \
             -d '{
                 "source_urls": [
@@ -146,13 +146,13 @@ class TextMap(Resource):
             )
         )
 
-        tasks.append(
-            UploadToS3(
-                job_id=job_id, kwargs={
-                    'sequence_id': job_id,
-                }
-            )
-        )
+        # tasks.append(
+        #     UploadToS3(
+        #         job_id=job_id, kwargs={
+        #             'sequence_id': job_id,
+        #         }
+        #     )
+        # )
 
         task_chain = tasks[0]
         for task in tasks[1:]:
