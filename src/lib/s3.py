@@ -53,7 +53,7 @@ def _delete_from_s3(key):
     return response
 
 
-def _get_object_from_s3(key):
+def _download_from_s3(key):
     """
     """
     response = client.get_object(
@@ -82,7 +82,7 @@ def _does_obj_exist(key):
         return False
     return True
 
-def _dumps_and_compress(data):
+def _compress(data: str):
     """
     Compress data to be unzipped in the JavaScript Code
 
@@ -96,28 +96,28 @@ def _dumps_and_compress(data):
         let jsonObject = JSON.parse(decompressedData);
         ```
     """
-    if type(data) is dict:
+    if type(data) is not str:
+        raise ValueError('Data must be a string')
         # data = base64.b64encode(
         #     zlib.compress(
         #         bytes(json.dumps(data), "utf-8")
         #     )
         # ).decode("ascii")
 
-        data_dumped = json.dumps(data)
-        data_bytes = bytes(data_dumped, "utf-8")
-        data_zipped = zlib.compress(data_bytes)
-        data_b64 = base64.b64encode(data_zipped)
-        data_ascii = data_b64.decode("ascii")
+    # data_dumped = json.dumps(data)
+    data_bytes = bytes(data, "utf-8")
+    data_compressed = zlib.compress(data_bytes)
+    data_b64 = base64.b64encode(data_compressed)
+    data_ascii = data_b64.decode("ascii")
 
     return data_ascii
 
 
-def _get_compressed_data_from_s3(key):
+def _decompress(obj_binary: bytes):
     """
     """
-    obj_bin = _get_object_from_s3(key)
-    
-    d0 = obj_bin.decode('utf-8')
+    # This is because AWS S3 return object is a bytes object
+    d0 = obj_binary.decode('utf-8')
     d1 = bytes(d0, "ascii")
     d2 = base64.b64decode(d1)
     d3 = zlib.decompress(d2)
@@ -142,6 +142,6 @@ def upload_clustering_data_to_s3(sequence_id, data):
 
     s3_key = _get_s3_key(sequence_id)
 
-    data = _dumps_and_compress(data)
+    data_compressed = _compress(json.dumps(data))
 
-    upload_to_s3_with_check(s3_key, data)
+    upload_to_s3_with_check(s3_key, data_compressed)
