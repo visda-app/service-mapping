@@ -142,6 +142,14 @@ def upload_clustering_data_to_s3(sequence_id, data):
 
     s3_key = _get_s3_key(sequence_id)
 
-    data_compressed = _compress(json.dumps(data))
+    data_dump = json.dumps(data)
+    data_compressed = _compress(data_dump)
 
     upload_to_s3_with_check(s3_key, data_compressed)
+
+def get_s3_url_if_exist(sequence_id):
+    key = _get_s3_key(sequence_id)
+    if not _does_obj_exist(key):
+        return
+    
+    return f"https://{CLUSTERING_BUCKET_NAME}.s3.us-west-2.amazonaws.com/{key}"

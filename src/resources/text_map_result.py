@@ -4,6 +4,7 @@ from jsonschema.exceptions import ValidationError
 from asbool import asbool
 
 from lib.logger import logger
+from lib import s3
 from tasks.job_auditor import JobAuditor
 from models.clustered_text import ClusteredText
 from resources.resource import Resource
@@ -34,13 +35,13 @@ class TextMapResult(Resource):
                 }
             )
 
-        clustering = None
+        clustering_s3_url = None
         if include_clustering:
-            clustering = ClusteredText.get_last_by_sequence_id(sequence_id)
+            clustering_s3_url = s3.get_s3_url_if_exist(sequence_id)
 
         return {
             'status': res,
-            'clustering': clustering
+            'clustering_data_url': clustering_s3_url
         }, 200
 
     def put(self):
