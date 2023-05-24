@@ -464,13 +464,21 @@ def insert_parents_info(head: BubbleItem):
         current = frontiers.pop(0)
         frontiers.extend(current.children)
 
-        if not current.is_most_top_head:
+        if current.is_most_top_head:
+            for child in current.children:
+                child.parent = ParentBubbleDrawItem(
+                    xy_coord=copy(child.xy_coord),
+                    radius=0,
+                    bubble_uuid=child.bubble_uuid,
+                )
+        else:
             for child in current.children:
                 child.parent = ParentBubbleDrawItem(
                     xy_coord=copy(current.xy_coord),
                     radius=current.radius,
                     bubble_uuid=current.bubble_uuid,
                 )
+
 
 
 def _group_keywords_by_count(keywords: List[KeywordItem]):
@@ -568,24 +576,36 @@ def insert_wordcloud_draw_properties(head: BubbleItem):
                     kw.draw.font_size = round(10 * math.log(kw.count * round(10 * kw.relevance_score)), 1)
 
 
+def _insert_keywords_parents_info_for_a_first_layer_node(current: BubbleItem):
+    for child in current.children:
+        for kw in child.keywords:
+            kw.parent = copy(kw)
+            kw.parent.parent = None
+
+
+def _insert_keywords_parents_info_for_a_second_layer_or_deeper_node(current: BubbleItem):
+    for child in current.children:
+        for kw in child.keywords:
+            kw.parent = None
+            # find the keyword in the parent's set of keyword
+            for parent_kw in current.keywords:
+                if kw.word == parent_kw.word:
+                    kw.parent = parent_kw
+                    break
+
+
 def insert_keywords_parents_info(head: BubbleItem):
     if not head:
         return
     frontiers = [head]
     while frontiers:
         current = frontiers.pop(0)
-        children = current.children
-        frontiers.extend(children)
+        frontiers.extend(current.children)
 
-        for child in children:
-            for kw in child.keywords:
-                kw.parent = None
-                if child.parent and child.parent.xy_coord:  # If the parent is present 
-                    # find the keyword in the parent's set of keyword
-                    for parent_kw in current.keywords:
-                        if kw.word == parent_kw.word:
-                            kw.parent = parent_kw
-                            break
+        if current.is_most_top_head:
+            _insert_keywords_parents_info_for_a_first_layer_node(current)
+        else:
+            _insert_keywords_parents_info_for_a_second_layer_or_deeper_node(current)
 
 
 def insert_meta_data(head: BubbleItem):
@@ -676,7 +696,7 @@ def extract_summary_sentences(head: BubbleItem):
         if current.text:
             texts.append(current.text)
     #
-    # split to senteces 
+    # split to sentences 
     #
     sentences = []
     for t in texts:

@@ -67,7 +67,7 @@ def _download_from_s3(key):
 def _get_s3_key(sequence_id):
     """
     """
-    return f"maps/{sequence_id}"
+    return f"test_data/{sequence_id}"
 
 
 def _does_obj_exist(key):
