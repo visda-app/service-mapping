@@ -69,7 +69,6 @@ run-shell: build-dev ## Run a shell insided the docker image
 		${DEV_IMAGE_TAG} \
 		bash
 
-
 run-dev: build ## Run a server in the prod docker image
 	docker run -it --rm \
 		-v ${CURRENT_DIR}/src:/code/src \
