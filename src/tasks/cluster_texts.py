@@ -580,6 +580,8 @@ def _insert_keywords_parents_info_for_a_first_layer_node(current: BubbleItem):
     for child in current.children:
         for kw in child.keywords:
             kw.parent = copy(kw)
+            kw.parent.dx = 0
+            kw.parent.dy = 0
             kw.parent.parent = None
 
 
