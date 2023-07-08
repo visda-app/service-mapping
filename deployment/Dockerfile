@@ -17,20 +17,27 @@ RUN adduser -uid 1000 -gid 1000 \
 # Python image from base linux image
 #
 FROM base_image as python_image
-ENV PYTHON_VERSION 3.8
+ENV PYTHON_VERSION 3.11
 # Install Python and pip
+RUN apt-get update && \
+    apt-get install \
+    -y \
+    --no-install-recommends \
+    software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update && \
     apt-get install -y \
     --no-install-recommends \
-    python$PYTHON_VERSION python3-pip python3-setuptools \
+    python$PYTHON_VERSION \
+    python$PYTHON_VERSION-venv \
     git \
     sudo vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # Make some useful symlinks that are expected to exist
 RUN ln -s /usr/bin/python$PYTHON_VERSION /usr/bin/python
-# Upgrade PIP
-RUN pip3 install --upgrade pip
+# Intall PIP
+RUN python -m ensurepip
 
 
 #
@@ -38,7 +45,7 @@ RUN pip3 install --upgrade pip
 # Install setup tools
 #
 FROM python_image as pip_tools
-RUN pip install pip-tools
+RUN pip3 install pip-tools
 
 
 #
@@ -46,7 +53,7 @@ RUN pip install pip-tools
 # Build linting image
 #
 FROM python_image as linting_image
-RUN pip install flake8
+RUN pip3 install flake8
 
 #
 # BUILD STEP: 
@@ -55,7 +62,7 @@ RUN pip install flake8
 FROM python_image as prod_requirements
 WORKDIR /code
 COPY requirements/app_requirements.txt requirements/
-RUN pip install -r requirements/app_requirements.txt
+RUN pip3 install -r requirements/app_requirements.txt
 
 #
 # BUILD STEP: 
@@ -79,7 +86,7 @@ FROM prod_requirements as dev_image
 USER root
 
 COPY requirements/dev_requirements.txt requirements/
-RUN pip install -r requirements/dev_requirements.txt
+RUN pip3 install -r requirements/dev_requirements.txt
 
 RUN chown -R app:app /code
 RUN chown -R app:app /var/log
