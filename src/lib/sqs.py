@@ -28,7 +28,8 @@ class Queues:
     ** only add the name of queues to the class attributes
     """
     tasks = 'tasks.fifo'
-    raw_texts = 'raw_texts.fifo'
+    raw_texts = 'raw_texts.fifo'    # For write in DB
+    texts = 'texts.fifo'    # For being embedded by the deep learning model
     text_embeddings = 'text_embeddings.fifo'
     test = 'just_for_test.fifo'
 

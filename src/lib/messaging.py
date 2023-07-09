@@ -7,11 +7,8 @@ from lib import sqs
 
 TEXT_BATCH_SIZE = 1
 TASK_MAX_PROCESSING_TIME_SEC = 300
-
-@dataclass
-class TextItem:
-    id: str
-    text: str
+NUM_RAW_TEXT_READ_FROM_Q = 10
+NUM_TEXT_EMBEDDING_READ_FROM_Q = 10
 
 
 @dataclass
@@ -21,6 +18,20 @@ class TaskItem:
     task_id: str = None
     args: tuple = None
     kwargs: dict = None
+
+
+@dataclass
+class TextItem:
+    uuid: str
+    text: str
+    sequence_id: str = None
+
+
+@dataclass
+class TextEmbeddingItem:
+    uuid: str
+    text: str = None
+    embedding: list[float] = None
 
 
 def publish_task(
@@ -71,7 +82,6 @@ def pull_a_task_from_queue():
         max_number_of_messages=1,
         visibility_timeout_sec=TASK_MAX_PROCESSING_TIME_SEC
     )
-    
     sqs.delete_messages(q_name, receipt_handles=handles)
 
     if len(msgs) == 0:
@@ -82,11 +92,13 @@ def pull_a_task_from_queue():
     return TaskItem(**task_dict)
 
 
-def publish_texts_on_message_bus(text_items: list[TextItem], sequence_id: str):
-    """
-    Publish text text_items to the Pulsar message bus
-    """
+def _publish_texts_on_message_bus(
+        queue_name: str,
+        text_items: list[TextItem],
+        sequence_id: str
+        ):
     num_items = len(text_items)
+
     logger.debug(
         f"Publishing messages to the message bus "
         f"num_texts={num_items}"
@@ -94,10 +106,66 @@ def publish_texts_on_message_bus(text_items: list[TextItem], sequence_id: str):
 
     for text_item in text_items:
         msg = {
-            "uuid": text_item.id,
+            "uuid": text_item.uuid,
             "text": text_item.text,
             "sequence_id": sequence_id,
         }
-        sqs.send_message(sqs.Queues.raw_texts, msg)
+        sqs.send_message(queue_name, json.dumps(msg))
 
 
+
+def publish_texts_on_message_bus(text_items: list[TextItem], sequence_id: str):
+    """
+    Publish text text_items to the Pulsar message bus
+    """
+    q_name = sqs.Queues.raw_texts
+    _publish_texts_on_message_bus(q_name, text_items, sequence_id)
+
+
+def publish_text_for_embedding(text_item: TextItem):
+    """
+    Publish text text_item to the Pulsar message bus
+    """
+    q_name = sqs.Queues.texts
+    _publish_texts_on_message_bus(q_name, [text_item], text_item.sequence_id)
+
+
+def pull_raw_texts_from_queue():
+    """
+    """
+    q_name = sqs.Queues.raw_texts
+
+    handles, msgs = sqs.receive_messages(
+        q_name,
+        max_number_of_messages=NUM_RAW_TEXT_READ_FROM_Q,
+        visibility_timeout_sec=TASK_MAX_PROCESSING_TIME_SEC
+    )
+    sqs.delete_messages(q_name, receipt_handles=handles)
+
+    text_items = []
+    for msg in msgs:
+        raw_text_dict = json.loads(msg)
+        text_items.append(TextItem(**raw_text_dict))
+
+    return text_items
+
+
+def pull_embeddings_from_queue():
+    """
+    """
+    q_name = sqs.Queues.text_embeddings
+
+    handles, msgs = sqs.receive_messages(
+        q_name,
+        max_number_of_messages=NUM_TEXT_EMBEDDING_READ_FROM_Q,
+        visibility_timeout_sec=TASK_MAX_PROCESSING_TIME_SEC
+    )
+    
+    sqs.delete_messages(q_name, receipt_handles=handles)
+
+    text_embeddings = []
+    for msg in msgs:
+        text_embedding_dict = json.loads(msg)
+        text_embeddings.append(TextEmbeddingItem(**text_embedding_dict))
+
+    return text_embeddings

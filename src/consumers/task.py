@@ -58,7 +58,7 @@ def consumer_loop():
                 msg.kwargs
             )
             logger.debug(
-                "✅ Task execution successfull "
+                "✅ Task execution was successful "
                 f"task_class={msg.task_class}, "
                 f"task_id={msg.task_id}, "
                 f"job_id={msg.job_id}, "
