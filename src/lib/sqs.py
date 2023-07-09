@@ -155,7 +155,7 @@ create_all_queues()
 def test_sqs_health():
     q_name = Queues.test
 
-    expected_message = f"test message uuid={str(uuid4())} "
+    expected_message = f"A test message uuid={str(uuid4())} "
     try:
         # send messages 
         status = send_message(q_name, expected_message)

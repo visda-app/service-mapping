@@ -1,12 +1,10 @@
 import json
-from chapar.message_broker import MessageBroker, Consumer
-from chapar.schema_repo import TaskSchema
 
 from lib.logger import logger
 from lib.exceptions import ExternalDependencyNotCompleted
 from lib.utils import get_class_from_string
+from lib import messaging
 from configs.app import (
-    PulsarConf,
     k8s_readiness_probe_file,
 )
 
@@ -34,40 +32,48 @@ def _execute_task(
         task.retry_with_delay()
 
 
-def consumer_loop(message_broker):
+def consumer_loop():
     """
     Infinite loop. Consume tasks one by one and perform the required actions.
     """
-    mb = message_broker
     while True:
-        msg = mb.consumer_receive()
-        mb.consumer_acknowledge(msg)
+        msg = messaging.pull_a_task_from_queue()
+        if msg is None:
+            continue
+
         logger.debug(
-            f"task_class={msg.value().task_class}, "
-            f"task_id={msg.value().task_id}, "
-            f"job_id={msg.value().job_id}, "
-            f"args={msg.value().args}, "
-            f"kwargs='{msg.value().kwargs}'"
+            f"task_class={msg.task_class}, "
+            f"task_id={msg.task_id}, "
+            f"job_id={msg.job_id}, "
+            f"args={msg.args}, "
+            f"kwargs='{msg.kwargs}'"
             "  Received! 🤓"
         )
         try:
             _execute_task(
-                msg.value().task_class,
-                msg.value().job_id,
-                msg.value().task_id,
-                msg.value().args,
-                msg.value().kwargs
+                msg.task_class,
+                msg.job_id,
+                msg.task_id,
+                msg.args,
+                msg.kwargs
+            )
+            logger.debug(
+                "✅ Task execution successfull "
+                f"task_class={msg.task_class}, "
+                f"task_id={msg.task_id}, "
+                f"job_id={msg.job_id}, "
+                f"args={msg.args}, "
+                f"kwargs='{msg.kwargs}'"
             )
         except Exception as e:
             logger.exception(
                 f"❌ Task failed 👎 "
-                f"task_class={msg.value().task_class}, "
-                f"task_id={msg.value().task_id}, "
-                f"args={msg.value().args}, "
-                f"kwargs='{msg.value().kwargs}' "
+                f"task_class={msg.task_class}, "
+                f"task_id={msg.task_id}, "
+                f"args={msg.args}, "
+                f"kwargs='{msg.kwargs}' "
                 f"error_msg= {str(e)}"
             )
-            logger.exception(e)
             # TODO: Should it retry the task?
 
 
@@ -78,21 +84,8 @@ def main():
         f.write('🍌 I am healthy 🥑')
     logger.info("✅ NLP models are loaded.")
 
-    logger.info("⌛ Connecting to the message broker...")
-    mb = MessageBroker(
-        broker_service_url=PulsarConf.client,
-        consumer=Consumer(
-            PulsarConf.task_topic,
-            PulsarConf.subscription_name,
-            schema_class=TaskSchema
-        ),
-    )
-    logger.info("✅ Connection to the message broker established.")
-
     logger.info("🔁 Starting the infinite loop ... ")
-    consumer_loop(mb)
-
-    mb.close()
+    consumer_loop()
 
 
 main()

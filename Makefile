@@ -78,7 +78,8 @@ run-dev: build ## Run a server in the prod docker image
 		--env SERVICE_NAME=${SERVICE_NAME} \
 		-p ${SERVICE_PORT}:${SERVICE_PORT} \
 		${PROD_IMAGE_TAG} \
-		gunicorn route:app -w 1 -c configs/gunicorn_configs.py
+		gunicorn route:app -w 1 -c configs/gunicorn_configs.py		
+#		 --preload
 
 push: ## Build the prod docker image and push it to docker hub
 	docker login

@@ -11,9 +11,7 @@ from models.db import create_all_tables
 app = Flask(__name__)
 api = Api(app)
 
-
-@app.before_first_request
-def create_tables():
+with app.app_context():
     create_all_tables()
 
 

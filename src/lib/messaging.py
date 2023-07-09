@@ -1,26 +1,26 @@
 import json
-from typing import List
-from dataclasses import dataclass
-from chapar.message_broker import MessageBroker, Producer
-from chapar.schema_repo import TaskSchema
-
-
-from chapar.message_broker import MessageBroker, Producer
-from chapar.schema_repo import TextSchema
-from chapar.schema_repo import TextItem as TextSchemaItem
-
+from dataclasses import dataclass, asdict
 
 from lib.logger import logger
-from configs.app import PulsarConf
+from lib import sqs
 
 
-TEXT_BATCH_SIZE = 25
-
+TEXT_BATCH_SIZE = 1
+TASK_MAX_PROCESSING_TIME_SEC = 300
 
 @dataclass
 class TextItem:
     id: str
     text: str
+
+
+@dataclass
+class TaskItem:
+    task_class: str
+    job_id: str = None
+    task_id: str = None
+    args: tuple = None
+    kwargs: dict = None
 
 
 def publish_task(
@@ -38,44 +38,51 @@ def publish_task(
         task_args (list): a list of args for task
         task_kwargs (dict): a dictionary of args for the task
     """
-    mb = MessageBroker(
-        broker_service_url=PulsarConf.client,
-        producer=Producer(
-            PulsarConf.task_topic,
-            schema_class=TaskSchema
-        )
-    )
-    logger.info("Producer created.")
 
     # task_class = String(required=True)
     # task_id = String()
     # args = String()
     # kwargs = String()
-    params = {
-        "task_class": task_class,
-    }
+    task_item = TaskItem(task_class=task_class)
     if task_id:
-        params['task_id'] = task_id
+        task_item.task_id = task_id
     if job_id:
-        params['job_id'] = job_id
+        task_item.job_id = job_id
     if task_args:
         if type(task_args) not in [list, tuple]:
             raise ValueError('Args must be a list.')
-        params['args'] = json.dumps(task_args)
+        task_item.args = tuple(task_args)
     if task_kwargs:
         if type(task_kwargs) is not dict:
             raise ValueError('kwargs must a be a dict.')
-        params['kwargs'] = json.dumps(task_kwargs)
+        task_item.kwargs = task_kwargs
 
-    msg = TaskSchema(**params)
+    msg = json.dumps(asdict(task_item))
 
-    mb.producer_send(msg, deliver_after_ms=deliver_after_ms)
-
-    mb.close()
+    sqs.send_message(sqs.Queues.tasks, msg)
 
 
+def pull_a_task_from_queue():
+    
+    q_name = sqs.Queues.tasks
 
-def publish_texts_on_message_bus(text_items: List[TextItem], sequence_id: str):
+    handles, msgs = sqs.receive_messages(
+        q_name,
+        max_number_of_messages=1,
+        visibility_timeout_sec=TASK_MAX_PROCESSING_TIME_SEC
+    )
+    
+    sqs.delete_messages(q_name, receipt_handles=handles)
+
+    if len(msgs) == 0:
+        return
+    
+    task_dict = json.loads(msgs[0])
+
+    return TaskItem(**task_dict)
+
+
+def publish_texts_on_message_bus(text_items: list[TextItem], sequence_id: str):
     """
     Publish text text_items to the Pulsar message bus
     """
@@ -85,29 +92,12 @@ def publish_texts_on_message_bus(text_items: List[TextItem], sequence_id: str):
         f"num_texts={num_items}"
     )
 
-    mb = MessageBroker(
-        broker_service_url=PulsarConf.client,
-        producer=Producer(
-            PulsarConf.text_topic,
-            schema_class=TextSchema
-        )
-    )
-    logger.info("Producer created.")
+    for text_item in text_items:
+        msg = {
+            "uuid": text_item.id,
+            "text": text_item.text,
+            "sequence_id": sequence_id,
+        }
+        sqs.send_message(sqs.Queues.raw_texts, msg)
 
-    for i in range(0, num_items, TEXT_BATCH_SIZE):
-        msg_items = [
-            TextSchemaItem(
-                uuid=text_item.id,
-                text=text_item.text,
-                sequence_id=sequence_id
-            )
-            for text_item in text_items[i : i + TEXT_BATCH_SIZE]
-        ]
-        msg = TextSchema(items=msg_items)
-        mb.producer_send(msg)
-        # TODO: Check if sending async causes any problems
-        # mb.producer_send_async(msg)
 
-    # TODO We should close connection, but I am not sure if closing it would terminate the async send
-    logger.debug("Closing connection to Pulsar")
-    mb.close()

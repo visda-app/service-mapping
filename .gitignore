@@ -3,3 +3,4 @@ secret-values.yaml
 tmp/output*.json
 test-app.db
 .env
+_test.txt\

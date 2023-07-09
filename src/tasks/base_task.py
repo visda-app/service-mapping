@@ -33,7 +33,7 @@ class BaseTask:
             task_id, job_id, kwargs
         )
         if not task:
-            raise ValueError('Invalid task ID.')
+            raise ValueError('Task was not created in the DB or there was no task in the DB.')
         self.id = task.id
         self.job_id = task.job_id
         self.kwargs = json.loads(task.kwargs)
