@@ -1,9 +1,13 @@
+import time
+
 from lib.utils import text_tip
 from lib.logger import logger
 from models.text import Text as TextModel
 from models.db import create_all_tables
 from lib.messaging import pull_embeddings_from_queue
 
+
+EMPTY_QUEUE_SLEEP_TIME_SEC = 1
 
 create_all_tables()
 
@@ -15,6 +19,10 @@ def consumer_loop():
 
     while True:
         embeddings = pull_embeddings_from_queue()
+
+        if not embeddings:
+            time.sleep(EMPTY_QUEUE_SLEEP_TIME_SEC)
+
         for item in embeddings:
             try:
                 logger.debug(

@@ -1,20 +1,24 @@
+import time
 from lib.utils import text_tip
 from lib.logger import logger
 from models.text import Text as TextModel
-from models.job_text_mapping import JobTextMapping
 from models.db import create_all_tables
 from lib.messaging import (
     pull_raw_texts_from_queue,
     publish_text_for_embedding,
 )
 
+
+EMPTY_QUEUE_SLEEP_TIME_SEC = 1
+
 create_all_tables()
 
 logger.info("🔁 Starting the infinite loop ... ")
-
 while True:
-
     raw_texts = pull_raw_texts_from_queue()
+
+    if not raw_texts:
+        time.sleep(EMPTY_QUEUE_SLEEP_TIME_SEC)
 
     for item in raw_texts:
         try:

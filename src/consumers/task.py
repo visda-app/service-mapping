@@ -1,4 +1,4 @@
-import json
+import time
 
 from lib.logger import logger
 from lib.exceptions import ExternalDependencyNotCompleted
@@ -7,6 +7,9 @@ from lib import messaging
 from configs.app import (
     k8s_readiness_probe_file,
 )
+
+
+EMPTY_QUEUE_SLEEP_TIME_SEC = 1
 
 
 def _execute_task(
@@ -38,7 +41,9 @@ def consumer_loop():
     """
     while True:
         msg = messaging.pull_a_task_from_queue()
+
         if msg is None:
+            time.sleep(EMPTY_QUEUE_SLEEP_TIME_SEC)
             continue
 
         logger.debug(
