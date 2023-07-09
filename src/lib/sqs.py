@@ -1,155 +1,189 @@
 import boto3
-import json
-from botocore import errorfactory
+import pprint
+import inspect
+# from dataclasses import dataclass, fields, asdict
+from uuid import uuid4
 from lib.logger import logger
-import base64
-import zlib
+from time import time
 
 from configs.app import AWS as aws_configs
 
 
-CLUSTERING_BUCKET_NAME = "cogneetion-clustering-data"
-LOCATION_CONSTRAINT_VALUE = aws_configs.region
+DEFAULT_VISIBILITY_TIMEOUT_SEC = '60'  # max: 43,200 (12 hours)
+DEFAULT_MESSAGE_GROUP_ID = 'groupA'
 
+queue_urls = {}
 client = boto3.client(
-    's3',
+    'sqs',
     aws_access_key_id=aws_configs.access_key_id,
     aws_secret_access_key=aws_configs.secret_access_key,
     region_name=aws_configs.region,
 )
 
-try:
-    client.create_bucket(
-        Bucket=CLUSTERING_BUCKET_NAME,
-        CreateBucketConfiguration={
-            'LocationConstraint': LOCATION_CONSTRAINT_VALUE,
-        }
-    )
-except client.exceptions.BucketAlreadyOwnedByYou:
-    pass
-except Exception:
-    logger.exception()
-    raise
+
+class Queues:
+    """
+    Application wide queues.
+
+    ** only add the name of queues to the class attributes
+    """
+    tasks = 'tasks.fifo'
+    raw_texts = 'raw_texts.fifo'
+    text_embeddings = 'text_embeddings.fifo'
+    test = 'just_for_test.fifo'
+
+    @classmethod
+    def get_all_queue_names(cls):
+        """
+        Returns the queue names. E.g., 
+            [
+                'raw_text_queue.fifo', 
+                'task_queue.fifo',
+                'text_embedding_queue.fifo'
+            ]
+        """
+        queue_names = []
+        for attr_name, val in inspect.getmembers(cls):
+            if not attr_name.startswith("_") and not inspect.ismethod(val):
+                queue_names.append(val)
+        return queue_names
 
 
-def _upload_to_s3(key, data):
-    """
-    """
-    client.put_object(
-        Body=data,
-        Bucket=CLUSTERING_BUCKET_NAME,
-        Key=key,
-        ACL='public-read'
-    )
-
-
-def _delete_from_s3(key):
-    """
-    """
-    response = client.delete_object(
-        Bucket=CLUSTERING_BUCKET_NAME,
-        Key=key,
-    )
-    return response
-
-
-def _download_from_s3(key):
-    """
-    """
-    response = client.get_object(
-        Bucket=CLUSTERING_BUCKET_NAME,
-        Key=key,
-    )
-    obj_bin = response['Body'].read()
-    return obj_bin
-
-
-def _get_s3_key(sequence_id):
-    """
-    """
-    return f"test_data/{sequence_id}"
-
-
-def _does_obj_exist(key):
-    """
-    """
+def create_queue(queue_name):
+    visibility_timeout_sec = DEFAULT_VISIBILITY_TIMEOUT_SEC
     try:
-        head_obj = client.head_object(
-            Bucket=CLUSTERING_BUCKET_NAME,
-            Key=key,
+        create_resp = client.create_queue(
+            QueueName=queue_name,
+            Attributes={
+                'ReceiveMessageWaitTimeSeconds': '0',
+                'VisibilityTimeout': visibility_timeout_sec,
+                'FifoQueue': 'true',
+            },
+            tags={
+                'string': 'string'
+            }
         )
-    except client.exceptions.ClientError:
-        return False
-    return True
+    except Exception as e:
+        logger.exception(e)
+        raise
+    queue_url = create_resp['QueueUrl']
 
-def _compress(data: str):
-    """
-    Compress data to be unzipped in the JavaScript Code
-
-    More info at:
-    https://stackoverflow.com/questions/72947222/compress-with-python-zlib-decompress-in-javascript-zlib
-
-    To decompress in JavaScript:
-        ```
-        let compressedData = Uint8Array.from(atob(input), (c) => c.charCodeAt(0));
-        let decompressedData = pako.inflate(compressedData, { to: "string" });
-        let jsonObject = JSON.parse(decompressedData);
-        ```
-    """
-    if type(data) is not str:
-        raise ValueError('Data must be a string')
-        # data = base64.b64encode(
-        #     zlib.compress(
-        #         bytes(json.dumps(data), "utf-8")
-        #     )
-        # ).decode("ascii")
-
-    # data_dumped = json.dumps(data)
-    data_bytes = bytes(data, "utf-8")
-    data_compressed = zlib.compress(data_bytes)
-    data_b64 = base64.b64encode(data_compressed)
-    data_ascii = data_b64.decode("ascii")
-
-    return data_ascii
+    return queue_url
 
 
-def _decompress(obj_binary: bytes):
-    """
-    """
-    # This is because AWS S3 return object is a bytes object
-    d0 = obj_binary.decode('utf-8')
-    d1 = bytes(d0, "ascii")
-    d2 = base64.b64decode(d1)
-    d3 = zlib.decompress(d2)
-    d4 = d3.decode("utf-8")
-
-    return d4
+def create_all_queues():
+    for q in Queues.get_all_queue_names():
+        q_url = create_queue(q)
+        queue_urls[q] = q_url
 
 
-def upload_to_s3_with_check(key, data):
-    """
-    """
-    if _does_obj_exist(key):
-        raise ValueError(f"S3 Obj exists at key={key}")
-    _upload_to_s3(key, data)
+def get_queue_url(queue_name):
+    return queue_urls[queue_name]
 
 
-def upload_clustering_data_to_s3(sequence_id, data):
-    """
-    """
-    if type(data) is not dict:
-        raise ValueError("An input with type dictionary is required.")
+def send_message(
+        queue_name: str,
+        msg: str,
+        message_group_id: str=DEFAULT_MESSAGE_GROUP_ID,
+        ):
+    queue_url = get_queue_url(queue_name)
+    send_resp = client.send_message(
+        QueueUrl=queue_url,
+        MessageBody=msg,
+        # DelaySeconds=i,
+        MessageGroupId=message_group_id,
+        MessageDeduplicationId=str(uuid4()),
+    )
+    status_code = send_resp["ResponseMetadata"]["HTTPStatusCode"]
+    return status_code
 
-    s3_key = _get_s3_key(sequence_id)
 
-    data_dump = json.dumps(data)
-    data_compressed = _compress(data_dump)
+def receive_messages(
+        queue_name:str,
+        max_number_of_messages=1,
+        visibility_timeout_sec=DEFAULT_VISIBILITY_TIMEOUT_SEC,
+        ):
+    queue_url = get_queue_url(queue_name)
+    receive_request_attempt_id = str(uuid4())
 
-    upload_to_s3_with_check(s3_key, data_compressed)
+    receive_resp = client.receive_message(
+        QueueUrl=queue_url,
+        AttributeNames=['All'],
+        MaxNumberOfMessages=max_number_of_messages,
+        VisibilityTimeout=int(visibility_timeout_sec),
+        WaitTimeSeconds=0,
+        ReceiveRequestAttemptId=receive_request_attempt_id,
+    )
 
-def get_s3_url_if_exist(sequence_id):
-    key = _get_s3_key(sequence_id)
-    if not _does_obj_exist(key):
+    receipt_handles = [ e["ReceiptHandle"] for e in  receive_resp.get("Messages", [])]
+
+    msgs = [ e["Body"] for e in receive_resp.get("Messages", []) ]
+    return receipt_handles, msgs
+
+
+def delete_messages(
+        queue_name: str,
+        receipt_handles: list[str]
+        ):
+    queue_url = get_queue_url(queue_name)
+    if not receipt_handles:
         return
-    
-    return f"https://{CLUSTERING_BUCKET_NAME}.s3.us-west-2.amazonaws.com/{key}"
+    try:
+        del_resp = client.delete_message_batch(
+            QueueUrl=queue_url,
+            Entries=[
+                {
+                    'Id': str(uuid4()),
+                    'ReceiptHandle': handle
+                } 
+                for handle in receipt_handles
+            ]
+        )
+    except Exception as e:
+        logger.exception(e)
+        raise
+
+    success = del_resp.get("Successful", [])
+    fail = del_resp.get("Failed", [])
+
+    return success, fail
+
+
+create_all_queues()
+
+
+def test_sqs_health():
+    q_name = Queues.test
+
+    expected_message = f"test message uuid={str(uuid4())} "
+    try:
+        # send messages 
+        status = send_message(q_name, expected_message)
+        if status != 200:
+            raise Exception(f"Sending message to queue={q_name} failed.")
+
+        # receive messages
+        receipt_handles, msgs = receive_messages(
+            q_name,
+            max_number_of_messages=10,
+            visibility_timeout_sec=3
+        )
+        msgs_len = len(msgs)
+        if msgs_len != 1: 
+            raise Exception(f"Expected '1' message but '{msgs_len}' messages received.")
+        actual_message = msgs[0]
+        if expected_message != actual_message:
+            raise Exception(f"Expected message={expected_message}, but message={actual_message} received.")
+
+        # delete message
+        success, fail = delete_messages(q_name, receipt_handles)
+        if len(success) != 1 or len(fail) != 0:
+            raise Exception("Failed to delete message.")
+    except:
+        client.purge_queue(QueueUrl=get_queue_url(q_name))
+        raise
+    logger.info("🫥 . AWS SQS seems to be healthy...")
+
+
+test_sqs_health()
+
