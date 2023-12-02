@@ -42,7 +42,7 @@ class Get3rdPartyData(BaseTask):
     """
     Get third party data such as YouTube.
     """
-    public_description = "Downloading data from the external source"
+    public_description = "Downloading data"
 
     def __init__(self, *args, **kwargs):
         logger.debug(kwargs)
@@ -96,7 +96,7 @@ class Get3rdPartyData(BaseTask):
         for text_item in text_items:
             JobTextMapping(
                 job_id=job_id,
-                text_id=text_item.id,
+                text_id=text_item.uuid,
                 text_type=text_type,
             ).save_to_db()
     
@@ -126,10 +126,10 @@ class Get3rdPartyData(BaseTask):
 
         # remove redundancies while keeping order
         words_unique = list(dict.fromkeys(words))
-        word_items = [TextItem(id=str(uuid4()), text=word) for word in words_unique]
+        word_items = [TextItem(uuid=str(uuid4()), text=word) for word in words_unique]
 
         sentences_unique = list(dict.fromkeys(sentences))
-        sentence_items = [TextItem(id=str(uuid4()), text=sentence) for sentence in sentences_unique]
+        sentence_items = [TextItem(uuid=str(uuid4()), text=sentence) for sentence in sentences_unique]
 
         not_embedded_words = self._get_not_embedded_texts(word_items)
         not_embedded_senteces = self._get_not_embedded_texts(sentence_items)
@@ -159,7 +159,7 @@ class Get3rdPartyData(BaseTask):
         for item in youtube_data.get('items', []):
             text = item['snippet']['topLevelComment']['snippet']['textDisplay']
             id = item['snippet']['topLevelComment']['id']
-            results.append(TextItem(id=id, text=text))
+            results.append(TextItem(uuid=id, text=text))
         return results
 
     def _save_youtube_response_to_db(self, yt_resp):
@@ -217,7 +217,7 @@ class Get3rdPartyData(BaseTask):
         from uuid import uuid4
         comments = []
         for c in test_comments[:100]:
-            comments.append(TextItem(id=str(uuid4()), text=c))
+            comments.append(TextItem(uuid=str(uuid4()), text=c))
 
         return comments
 
@@ -262,6 +262,7 @@ class Get3rdPartyData(BaseTask):
             num_downloaded_texts=len(comments),
             job_id=self.job_id,
         )
+        self.record_progress(self._total_steps - 1, self._total_steps)
 
         self._tokenize_and_record_and_publish(comments, self.job_id)
         self.record_progress(self._total_steps, self._total_steps)

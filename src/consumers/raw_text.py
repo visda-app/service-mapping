@@ -5,7 +5,7 @@ from models.text import Text as TextModel
 from models.db import create_all_tables
 from lib.messaging import (
     pull_raw_texts_from_queue,
-    publish_text_for_embedding,
+    publish_texts_for_embedding,
 )
 
 
@@ -33,8 +33,6 @@ while True:
                 text=item.text,
             ).save_or_update()
 
-            publish_text_for_embedding(item)
-
         except Exception as e:
             # Message failed to be processed
             logger.error(
@@ -43,3 +41,5 @@ while True:
                 f"text='{text_tip(item.text)}' "
             )
             logger.exception(e)
+
+    publish_texts_for_embedding(raw_texts)

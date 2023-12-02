@@ -97,6 +97,29 @@ def send_message(
     return status_code
 
 
+def send_message_batch(
+        queue_name: str,
+        msgs: list[str],
+        message_group_id: str=DEFAULT_MESSAGE_GROUP_ID,
+        ):
+    queue_url = get_queue_url(queue_name)
+    send_resp = client.send_message_batch(
+        QueueUrl=queue_url,
+        Entries=[
+            {
+                "Id": str(uuid4()),
+                "MessageBody": msg,
+                # "DelaySeconds": i,
+                "MessageGroupId": message_group_id,
+                "MessageDeduplicationId": str(uuid4()),
+            }
+            for msg in msgs
+        ]
+    )
+    status_code = send_resp["ResponseMetadata"]["HTTPStatusCode"]
+    return status_code
+
+
 def receive_messages(
         queue_name:str,
         max_number_of_messages=1,

@@ -103,14 +103,26 @@ def _publish_texts_on_message_bus(
         f"Publishing messages to the message bus "
         f"num_texts={num_items}"
     )
+    sqs_batch_size = 10
+    for i in range(0, len(text_items), sqs_batch_size):
+        start = i
+        end = min(i + sqs_batch_size, len(text_items))
+        msgs = [
+            json.dumps({
+                "uuid": text_item.uuid,
+                "text": text_item.text,
+                "sequence_id": sequence_id,
+            }) for text_item in text_items[start:end]
+        ]
+        sqs.send_message_batch(queue_name, msgs)
 
-    for text_item in text_items:
-        msg = {
-            "uuid": text_item.uuid,
-            "text": text_item.text,
-            "sequence_id": sequence_id,
-        }
-        sqs.send_message(queue_name, json.dumps(msg))
+    # for text_item in text_items:
+    #     msg = {
+    #         "uuid": text_item.uuid,
+    #         "text": text_item.text,
+    #         "sequence_id": sequence_id,
+    #     }
+    #     sqs.send_message(queue_name, json.dumps(msg))
 
 
 
@@ -122,12 +134,16 @@ def publish_texts_on_message_bus(text_items: list[TextItem], sequence_id: str):
     _publish_texts_on_message_bus(q_name, text_items, sequence_id)
 
 
-def publish_text_for_embedding(text_item: TextItem):
+def publish_texts_for_embedding(text_items: list[TextItem]):
     """
     Publish text text_item to the Pulsar message bus
     """
     q_name = sqs.Queues.texts
-    _publish_texts_on_message_bus(q_name, [text_item], text_item.sequence_id)
+    if not text_items:
+        return
+
+    seq_id = text_items[0].sequence_id
+    _publish_texts_on_message_bus(q_name, text_items, seq_id)
 
 
 def pull_raw_texts_from_queue():

@@ -3,7 +3,6 @@ from dataclasses import asdict
 
 from src.lib.logger import logger
 from src.lib.messaging import (
-    publish_text_for_embedding,
     TextEmbeddingItem,
 )
 from src.lib import sqs
